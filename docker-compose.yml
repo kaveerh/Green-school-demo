@@ -22,38 +22,11 @@ services:
       timeout: 5s
       retries: 5
 
-  # Keycloak Authentication
-  keycloak:
-    image: quay.io/keycloak/keycloak:23.0
-    container_name: greenschool-keycloak
-    environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://database:5432/keycloak
-      KC_DB_USERNAME: postgres
-      KC_DB_PASSWORD: postgres
-      KC_HOSTNAME_STRICT: false
-      KC_HTTP_ENABLED: true
-      KC_HEALTH_ENABLED: true
-    command:
-      - start-dev
-      - --import-realm
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
-      - keycloak_data:/opt/keycloak/data
-    depends_on:
-      database:
-        condition: service_healthy
-    networks:
-      - greenschool-network
-    healthcheck:
-      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080;echo -e 'GET /health/ready HTTP/1.1\\r\\nhost: http://localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3;grep -q '200 OK' <&3"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+  # Note: Keycloak is already running externally on port 8080
+  # Realm: green-school-id
+  # Client ID: green-school-id
+  # Test User: admin@greenschool.edu / Admin123
+  # Config: http://localhost:8080/realms/green-school-id/.well-known/openid-configuration
 
   # Backend API (Python FastAPI)
   backend:
@@ -63,9 +36,9 @@ services:
     container_name: greenschool-backend
     environment:
       DATABASE_URL: postgresql://postgres:postgres@database:5432/greenschool
-      KEYCLOAK_URL: http://keycloak:8080
-      KEYCLOAK_REALM: Green-School-id
-      KEYCLOAK_CLIENT_ID: Green-School-id
+      KEYCLOAK_URL: http://host.docker.internal:8080
+      KEYCLOAK_REALM: green-school-id
+      KEYCLOAK_CLIENT_ID: green-school-id
       JWT_SECRET_KEY: your-secret-key-change-in-production
       CORS_ORIGINS: http://localhost:3000,http://localhost
       ENVIRONMENT: development
@@ -76,8 +49,6 @@ services:
       - /app/__pycache__
     depends_on:
       database:
-        condition: service_healthy
-      keycloak:
         condition: service_healthy
     networks:
       - greenschool-network
@@ -97,8 +68,8 @@ services:
     environment:
       VITE_API_URL: http://localhost:8000/api/v1
       VITE_KEYCLOAK_URL: http://localhost:8080
-      VITE_KEYCLOAK_REALM: Green-School-id
-      VITE_KEYCLOAK_CLIENT_ID: Green-School-id
+      VITE_KEYCLOAK_REALM: green-school-id
+      VITE_KEYCLOAK_CLIENT_ID: green-school-id
     ports:
       - "3000:3000"
     volumes:
@@ -116,6 +87,4 @@ networks:
 
 volumes:
   postgres_data:
-    driver: local
-  keycloak_data:
     driver: local

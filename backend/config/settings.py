@@ -20,8 +20,8 @@ class Settings(BaseSettings):
 
     # Keycloak
     KEYCLOAK_URL: str = "http://localhost:8080"
-    KEYCLOAK_REALM: str = "Green-School-id"
-    KEYCLOAK_CLIENT_ID: str = "Green-School-id"
+    KEYCLOAK_REALM: str = "green-school-id"
+    KEYCLOAK_CLIENT_ID: str = "green-school-id"
 
     # Security
     JWT_SECRET_KEY: str = "your-secret-key-change-in-production"
