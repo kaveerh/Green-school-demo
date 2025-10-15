@@ -12,8 +12,8 @@ from datetime import datetime
 from config.database import engine, Base
 from config.settings import settings
 
-# Import controllers (will be added as features are developed)
-# from controllers import users, schools, teachers, students, etc.
+# Import controllers
+from controllers import user_router
 
 # Configure logging
 logging.basicConfig(
@@ -90,10 +90,8 @@ async def root():
     }
 
 
-# Include routers (will be added as features are developed)
-# app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
-# app.include_router(schools.router, prefix="/api/v1/schools", tags=["schools"])
-# ... more routers
+# Include routers
+app.include_router(user_router, prefix=settings.API_V1_PREFIX)
 
 
 if __name__ == "__main__":

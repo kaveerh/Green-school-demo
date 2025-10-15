@@ -13,13 +13,37 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/DashboardView.vue'),
     meta: { requiresAuth: true }
   },
-  // User routes will be added here as Feature 01 is implemented
-  // {
-  //   path: '/users',
-  //   name: 'users',
-  //   component: () => import('@/views/users/UserList.vue'),
-  //   meta: { requiresAuth: true, requiresRole: ['administrator'] }
-  // },
+  // User Management Routes
+  {
+    path: '/users',
+    name: 'users',
+    component: () => import('@/components/UserList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/users/statistics',
+    name: 'user-statistics',
+    component: () => import('@/components/UserStatistics.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/users/create',
+    name: 'user-create',
+    component: () => import('@/components/UserForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/users/:id',
+    name: 'user-detail',
+    component: () => import('@/components/UserDetail.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/users/:id/edit',
+    name: 'user-edit',
+    component: () => import('@/components/UserForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
 ]
 
 const router = createRouter({

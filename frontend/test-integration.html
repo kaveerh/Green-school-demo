@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User API Integration Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #42b883;
+    }
+    .test-section {
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .test-section h3 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+    button {
+      background: #42b883;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #35a372;
+    }
+    .result {
+      margin-top: 10px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 4px;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .success {
+      border-left: 4px solid #28a745;
+    }
+    .error {
+      border-left: 4px solid #dc3545;
+    }
+    .status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .status.pass {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status.fail {
+      background: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>User Management API Integration Tests</h1>
+    <p>Testing connection between Frontend → Backend → Database</p>
+
+    <div class="test-section">
+      <h3>1. Test GET /api/v1/users (List All Users)</h3>
+      <button onclick="testListUsers()">Run Test</button>
+      <div id="test1-result"></div>
+    </div>
+
+    <div class="test-section">
+      <h3>2. Test GET /api/v1/users/{id} (Get Single User)</h3>
+      <button onclick="testGetUser()">Run Test</button>
+      <div id="test2-result"></div>
+    </div>
+
+    <div class="test-section">
+      <h3>3. Test POST /api/v1/users (Create User)</h3>
+      <button onclick="testCreateUser()">Run Test</button>
+      <div id="test3-result"></div>
+    </div>
+
+    <div class="test-section">
+      <h3>4. Test GET /api/v1/users/statistics/summary</h3>
+      <button onclick="testStatistics()">Run Test</button>
+      <div id="test4-result"></div>
+    </div>
+
+    <div class="test-section">
+      <h3>5. Run All Tests</h3>
+      <button onclick="runAllTests()">Run All Tests</button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:8000/api/v1';
+
+    function showResult(elementId, success, data) {
+      const element = document.getElementById(elementId);
+      const status = success
+        ? '<span class="status pass">✓ PASS</span>'
+        : '<span class="status fail">✗ FAIL</span>';
+
+      const resultClass = success ? 'result success' : 'result error';
+      element.innerHTML = `
+        ${status}
+        <div class="${resultClass}">${JSON.stringify(data, null, 2)}</div>
+      `;
+    }
+
+    async function testListUsers() {
+      try {
+        const response = await fetch(`${API_BASE}/users`);
+        const data = await response.json();
+
+        const success = response.ok && data.data && Array.isArray(data.data);
+        showResult('test1-result', success, {
+          status: response.status,
+          users_count: data.data?.length || 0,
+          pagination: data.pagination,
+          sample_user: data.data?.[0]
+        });
+      } catch (error) {
+        showResult('test1-result', false, { error: error.message });
+      }
+    }
+
+    async function testGetUser() {
+      try {
+        // First get a user ID from the list
+        const listResponse = await fetch(`${API_BASE}/users`);
+        const listData = await listResponse.json();
+
+        if (!listData.data || listData.data.length === 0) {
+          showResult('test2-result', false, { error: 'No users found to test with' });
+          return;
+        }
+
+        const userId = listData.data[0].id;
+        const response = await fetch(`${API_BASE}/users/${userId}`);
+        const data = await response.json();
+
+        const success = response.ok && data.id === userId;
+        showResult('test2-result', success, {
+          status: response.status,
+          user: data
+        });
+      } catch (error) {
+        showResult('test2-result', false, { error: error.message });
+      }
+    }
+
+    async function testCreateUser() {
+      try {
+        const testUser = {
+          email: `test${Date.now()}@greenschool.edu`,
+          first_name: 'Integration',
+          last_name: 'Test',
+          persona: 'teacher',
+          password: 'TestPass123!',
+          school_id: '60da2256-81fc-4ca5-bf6b-467b8d371c61'
+        };
+
+        const response = await fetch(`${API_BASE}/users`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(testUser)
+        });
+        const data = await response.json();
+
+        const success = response.ok && data.email === testUser.email;
+        showResult('test3-result', success, {
+          status: response.status,
+          created_user: data
+        });
+      } catch (error) {
+        showResult('test3-result', false, { error: error.message });
+      }
+    }
+
+    async function testStatistics() {
+      try {
+        const response = await fetch(`${API_BASE}/users/statistics/summary`);
+        const data = await response.json();
+
+        const success = response.ok && data.total !== undefined;
+        showResult('test4-result', success, {
+          status: response.status,
+          statistics: data
+        });
+      } catch (error) {
+        showResult('test4-result', false, { error: error.message });
+      }
+    }
+
+    async function runAllTests() {
+      await testListUsers();
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await testGetUser();
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await testCreateUser();
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await testStatistics();
+    }
+
+    // Auto-run tests on page load
+    window.addEventListener('load', () => {
+      console.log('Integration test page loaded');
+    });
+  </script>
+</body>
+</html>
