@@ -43,7 +43,7 @@
             type="text"
             :disabled="isSubmitting"
             placeholder="url-friendly-name (auto-generated if empty)"
-            pattern="[a-z0-9-]+"
+            pattern="[a-z0-9\-]+"
           />
           <small class="help-text">URL-friendly identifier (lowercase, numbers, hyphens only)</small>
         </div>

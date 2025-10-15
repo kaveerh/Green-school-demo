@@ -13,8 +13,7 @@ import type {
   SchoolStatus
 } from '@/types/school';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-const API_PREFIX = '/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
 class SchoolService {
   /**
@@ -33,7 +32,7 @@ class SchoolService {
     if (params?.order) queryParams.append('order', params.order);
 
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools?${queryParams.toString()}`,
+      `${API_BASE_URL}/schools?${queryParams.toString()}`,
       {
         method: 'GET',
         headers: {
@@ -56,7 +55,7 @@ class SchoolService {
    */
   async getSchool(id: string): Promise<School> {
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools/${id}`,
+      `${API_BASE_URL}/schools/${id}`,
       {
         method: 'GET',
         headers: {
@@ -79,7 +78,7 @@ class SchoolService {
    */
   async getSchoolBySlug(slug: string): Promise<School> {
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools/slug/${slug}`,
+      `${API_BASE_URL}/schools/slug/${slug}`,
       {
         method: 'GET',
         headers: {
@@ -102,7 +101,7 @@ class SchoolService {
    */
   async createSchool(data: SchoolCreate): Promise<School> {
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools`,
+      `${API_BASE_URL}/schools`,
       {
         method: 'POST',
         headers: {
@@ -126,7 +125,7 @@ class SchoolService {
    */
   async updateSchool(id: string, data: SchoolUpdate): Promise<School> {
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools/${id}`,
+      `${API_BASE_URL}/schools/${id}`,
       {
         method: 'PUT',
         headers: {
@@ -150,7 +149,7 @@ class SchoolService {
    */
   async deleteSchool(id: string): Promise<void> {
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools/${id}`,
+      `${API_BASE_URL}/schools/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -171,7 +170,7 @@ class SchoolService {
    */
   async changeStatus(id: string, status: SchoolStatus): Promise<School> {
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools/${id}/status`,
+      `${API_BASE_URL}/schools/${id}/status`,
       {
         method: 'PATCH',
         headers: {
@@ -195,7 +194,7 @@ class SchoolService {
    */
   async updateSettings(id: string, settings: Record<string, any>): Promise<School> {
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools/${id}/settings`,
+      `${API_BASE_URL}/schools/${id}/settings`,
       {
         method: 'PATCH',
         headers: {
@@ -219,7 +218,7 @@ class SchoolService {
    */
   async assignLeadership(id: string, data: SchoolLeadership): Promise<School> {
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools/${id}/leadership`,
+      `${API_BASE_URL}/schools/${id}/leadership`,
       {
         method: 'PATCH',
         headers: {
@@ -243,7 +242,7 @@ class SchoolService {
    */
   async uploadLogo(id: string, logoUrl: string): Promise<School> {
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools/${id}/logo`,
+      `${API_BASE_URL}/schools/${id}/logo`,
       {
         method: 'POST',
         headers: {
@@ -267,7 +266,7 @@ class SchoolService {
    */
   async getStatistics(): Promise<SchoolStatistics> {
     const response = await fetch(
-      `${API_BASE_URL}${API_PREFIX}/schools/statistics/summary`,
+      `${API_BASE_URL}/schools/statistics/summary`,
       {
         method: 'GET',
         headers: {
