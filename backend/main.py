@@ -13,7 +13,7 @@ from config.database import engine, Base
 from config.settings import settings
 
 # Import controllers
-from controllers import user_router
+from controllers import user_router, school_router
 
 # Configure logging
 logging.basicConfig(
@@ -92,6 +92,7 @@ async def root():
 
 # Include routers
 app.include_router(user_router, prefix=settings.API_V1_PREFIX)
+app.include_router(school_router, prefix=settings.API_V1_PREFIX)
 
 
 if __name__ == "__main__":
