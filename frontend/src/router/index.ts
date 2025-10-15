@@ -44,6 +44,31 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/components/UserForm.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator'] }
   },
+  // School Management Routes
+  {
+    path: '/schools',
+    name: 'schools',
+    component: () => import('@/components/SchoolList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/schools/create',
+    name: 'school-create',
+    component: () => import('@/components/SchoolForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/schools/:id',
+    name: 'school-detail',
+    component: () => import('@/components/SchoolDetail.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/schools/:id/edit',
+    name: 'school-edit',
+    component: () => import('@/components/SchoolForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
 ]
 
 const router = createRouter({

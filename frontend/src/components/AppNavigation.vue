@@ -63,13 +63,35 @@
         </div>
       </li>
 
-      <!-- Placeholder for future modules -->
-      <li class="nav-item nav-item-disabled">
-        <span class="nav-link">
-          <span class="nav-icon">🏫</span>
-          <span class="nav-text">Schools</span>
-          <span class="coming-soon">Coming Soon</span>
-        </span>
+      <!-- Schools Management -->
+      <li class="nav-item" v-if="canAccessSchools">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('schools')"
+            :class="{ 'is-active': isDropdownOpen('schools') || isSchoolsRoute }"
+          >
+            <span class="nav-icon">🏫</span>
+            <span class="nav-text">Schools</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('schools') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('schools')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/schools" class="nav-dropdown-link" @click="closeMobileMenu">
+                List Schools
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/schools/create" class="nav-dropdown-link" @click="closeMobileMenu">
+                Create School
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </li>
 
       <li class="nav-item nav-item-disabled">
@@ -150,10 +172,24 @@ const canAccessUsers = computed(() => {
 })
 
 /**
+ * Check if user can access schools module
+ */
+const canAccessSchools = computed(() => {
+  return currentUserRole.value === 'administrator'
+})
+
+/**
  * Check if current route is users-related
  */
 const isUsersRoute = computed(() => {
   return route.path.startsWith('/users')
+})
+
+/**
+ * Check if current route is schools-related
+ */
+const isSchoolsRoute = computed(() => {
+  return route.path.startsWith('/schools')
 })
 
 /**
