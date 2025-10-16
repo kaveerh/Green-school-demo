@@ -25,16 +25,19 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label for="user_id">User Account * {{ !isEditMode ? '' : '(cannot be changed)' }}</label>
-            <input
-              id="user_id"
+            <UserSelector
               v-model="formData.user_id"
-              type="text"
-              required
+              label="User Account"
+              placeholder="Search for user by name or email..."
+              help-text="Select the user account that will be associated with this teacher"
+              filter-persona="teacher"
+              :required="true"
               :disabled="isSubmitting || isEditMode"
-              placeholder="Enter user UUID"
+              input-id="user_id"
+              name="user_id"
+              @select="handleUserSelect"
             />
-            <small class="help-text">UUID of the user with teacher persona</small>
+            <small v-if="isEditMode" class="help-text">User account cannot be changed after creation</small>
           </div>
 
           <div class="form-group">
@@ -339,6 +342,7 @@ import { ref, computed, onMounted, reactive, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTeacherStore } from '@/stores/teacherStore'
 import type { TeacherCreateInput, TeacherUpdateInput } from '@/types'
+import UserSelector from './UserSelector.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -574,6 +578,14 @@ async function updateTeacher() {
  */
 function goBack() {
   router.push('/teachers')
+}
+
+/**
+ * Handle user selection from UserSelector
+ */
+function handleUserSelect(user: any) {
+  console.log('Selected user:', user)
+  // Optionally auto-populate department or other fields from user data
 }
 </script>
 

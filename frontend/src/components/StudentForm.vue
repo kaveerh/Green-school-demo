@@ -25,33 +25,21 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label for="school_id">School ID *</label>
-            <input
-              id="school_id"
-              v-model="formData.school_id"
-              type="text"
-              required
-              :disabled="isSubmitting || isEditMode"
-              placeholder="Enter school UUID"
-            />
-            <small v-if="isEditMode" class="help-text">School ID cannot be changed</small>
-          </div>
-
-          <div class="form-group">
-            <label for="user_id">User ID *</label>
-            <input
-              id="user_id"
+            <UserSelector
               v-model="formData.user_id"
-              type="text"
-              required
+              label="Student User Account"
+              placeholder="Search for student by name or email..."
+              help-text="Select the user account that will be associated with this student"
+              filter-persona="student"
+              :required="true"
               :disabled="isSubmitting || isEditMode"
-              placeholder="Enter user UUID"
+              input-id="user_id"
+              name="user_id"
+              @select="handleUserSelect"
             />
-            <small class="help-text">User must have 'student' persona</small>
+            <small v-if="isEditMode" class="help-text">User account cannot be changed after creation</small>
           </div>
-        </div>
 
-        <div class="form-row">
           <div class="form-group">
             <label for="student_id">Student ID *</label>
             <input
@@ -64,6 +52,9 @@
             />
             <small v-if="isEditMode" class="help-text">Student ID cannot be changed</small>
           </div>
+        </div>
+
+        <div class="form-row">
 
           <div class="form-group">
             <label for="grade_level">Grade Level *</label>
@@ -255,6 +246,7 @@ import { ref, computed, onMounted, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStudentStore } from '@/stores/studentStore'
 import type { StudentCreateInput, StudentUpdateInput } from '@/types/student'
+import UserSelector from './UserSelector.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -367,8 +359,11 @@ async function handleSubmit() {
  * Create new student
  */
 async function createStudent() {
+  // Get school_id from localStorage (set during login/session)
+  const schoolId = localStorage.getItem('current_school_id') || formData.school_id
+
   const studentData: StudentCreateInput = {
-    school_id: formData.school_id,
+    school_id: schoolId,
     user_id: formData.user_id,
     student_id: formData.student_id,
     grade_level: Number(formData.grade_level),
@@ -417,6 +412,15 @@ async function updateStudent() {
  */
 function goBack() {
   router.push('/students')
+}
+
+/**
+ * Handle user selection from UserSelector
+ */
+function handleUserSelect(user: any) {
+  console.log('Selected user:', user)
+  // Optionally auto-populate fields from user data
+  // For example, you could pre-fill emergency contact if it's in the user profile
 }
 </script>
 
