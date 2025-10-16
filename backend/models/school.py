@@ -52,9 +52,12 @@ class School(BaseModel):
     settings = Column(JSONB, default={}, nullable=False, server_default='{}')
 
     # Relationships
-    # users = relationship("User", back_populates="school", foreign_keys="User.school_id")
-    # principal = relationship("User", foreign_keys=[principal_id])
-    # hod = relationship("User", foreign_keys=[hod_id])
+    users = relationship("User", back_populates="school", foreign_keys="User.school_id")
+    teachers = relationship("Teacher", back_populates="school")
+    students = relationship("Student", back_populates="school")
+    parents = relationship("Parent", back_populates="school")
+    principal = relationship("User", foreign_keys=[principal_id])
+    hod = relationship("User", foreign_keys=[hod_id])
 
     # Constraints
     __table_args__ = (

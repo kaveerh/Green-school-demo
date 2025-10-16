@@ -48,7 +48,10 @@ class User(BaseModel):
     user_metadata = Column('metadata', JSONB, default={}, nullable=False, server_default='{}')
 
     # Relationships
-    # school = relationship("School", back_populates="users")  # Uncomment when School model exists
+    school = relationship("School", back_populates="users")
+    teacher_profile = relationship("Teacher", back_populates="user", uselist=False)
+    student_profile = relationship("Student", back_populates="user", uselist=False)
+    parent_profile = relationship("Parent", back_populates="user", uselist=False)
 
     # Constraints
     __table_args__ = (
