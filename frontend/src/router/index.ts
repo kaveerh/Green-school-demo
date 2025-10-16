@@ -94,6 +94,31 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/components/TeacherForm.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator'] }
   },
+  // Student Management Routes
+  {
+    path: '/students',
+    name: 'students',
+    component: () => import('@/components/StudentList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/students/create',
+    name: 'student-create',
+    component: () => import('@/components/StudentForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/students/:id',
+    name: 'student-detail',
+    component: () => import('@/components/StudentList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/students/:id/edit',
+    name: 'student-edit',
+    component: () => import('@/components/StudentForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
 ]
 
 const router = createRouter({
