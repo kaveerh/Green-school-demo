@@ -6,6 +6,7 @@ from models.base import BaseModel
 from models.school import School
 from models.user import User
 from models.teacher import Teacher
+from models.student import Student, ParentStudentRelationship
 
 # Export all models
 __all__ = [
@@ -13,4 +14,6 @@ __all__ = [
     "School",
     "User",
     "Teacher",
+    "Student",
+    "ParentStudentRelationship",
 ]

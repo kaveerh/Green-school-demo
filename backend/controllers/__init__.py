@@ -5,10 +5,12 @@ API endpoint handlers
 from controllers.user_controller import router as user_router
 from controllers.school_controller import router as school_router
 from controllers.teacher_controller import router as teacher_router
+from controllers.student_controller import router as student_router
 
 # Export all routers
 __all__ = [
     "user_router",
     "school_router",
     "teacher_router",
+    "student_router",
 ]
