@@ -56,8 +56,8 @@ class Teacher(BaseModel):
     preferences = Column(JSONB, default={}, nullable=True, server_default='{}')
 
     # Relationships
-    # user = relationship("User", back_populates="teacher_profile")
-    # school = relationship("School", back_populates="teachers")
+    user = relationship("User", back_populates="teacher_profile")
+    school = relationship("School", back_populates="teachers")
     # classes = relationship("Class", back_populates="teacher")
 
     # Constraints

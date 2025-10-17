@@ -156,6 +156,37 @@
         </div>
       </li>
 
+      <!-- Parents Management -->
+      <li class="nav-item" v-if="canAccessParents">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('parents')"
+            :class="{ 'is-active': isDropdownOpen('parents') || isParentsRoute }"
+          >
+            <span class="nav-icon">👪</span>
+            <span class="nav-text">Parents</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('parents') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('parents')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/parents" class="nav-dropdown-link" @click="closeMobileMenu">
+                List Parents
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/parents/create" class="nav-dropdown-link" @click="closeMobileMenu">
+                Create Parent
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </li>
+
       <li class="nav-item nav-item-disabled">
         <span class="nav-link">
           <span class="nav-icon">📚</span>
@@ -255,6 +286,13 @@ const canAccessStudents = computed(() => {
 })
 
 /**
+ * Check if user can access parents module
+ */
+const canAccessParents = computed(() => {
+  return ['administrator', 'teacher'].includes(currentUserRole.value)
+})
+
+/**
  * Check if current route is users-related
  */
 const isUsersRoute = computed(() => {
@@ -280,6 +318,13 @@ const isTeachersRoute = computed(() => {
  */
 const isStudentsRoute = computed(() => {
   return route.path.startsWith('/students')
+})
+
+/**
+ * Check if current route is parents-related
+ */
+const isParentsRoute = computed(() => {
+  return route.path.startsWith('/parents')
 })
 
 /**

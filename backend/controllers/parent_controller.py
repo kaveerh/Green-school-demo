@@ -17,7 +17,7 @@ from schemas.parent_schema import (
     ParentStudentRelationshipResponseSchema,
     ParentStatisticsSchema
 )
-from database import get_db
+from config.database import get_db
 import uuid
 
 

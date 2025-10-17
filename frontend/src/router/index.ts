@@ -119,6 +119,31 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/components/StudentForm.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator'] }
   },
+  // Parent Management Routes
+  {
+    path: '/parents',
+    name: 'parents',
+    component: () => import('@/components/ParentList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/parents/create',
+    name: 'parent-create',
+    component: () => import('@/components/ParentForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/parents/:id',
+    name: 'parent-detail',
+    component: () => import('@/components/ParentList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/parents/:id/edit',
+    name: 'parent-edit',
+    component: () => import('@/components/ParentForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
 ]
 
 const router = createRouter({

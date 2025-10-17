@@ -38,9 +38,9 @@ class Student(BaseModel):
     status = Column(String(20), default="enrolled", nullable=True, index=True)
 
     # Relationships
-    # user = relationship("User", back_populates="student_profile")
-    # school = relationship("School", back_populates="students")
-    # parent_relationships = relationship("ParentStudentRelationship", back_populates="student")
+    user = relationship("User", back_populates="student_profile")
+    school = relationship("School", back_populates="students")
+    parent_relationships = relationship("ParentStudentRelationship", back_populates="student")
     # classes = relationship("ClassEnrollment", back_populates="student")
     # attendance = relationship("Attendance", back_populates="student")
     # assessments = relationship("Assessment", back_populates="student")
@@ -148,24 +148,27 @@ class ParentStudentRelationship(BaseModel):
     __tablename__ = "parent_student_relationships"
 
     # Foreign Keys
-    parent_id = Column(PG_UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    school_id = Column(PG_UUID(as_uuid=True), ForeignKey("schools.id", ondelete="CASCADE"), nullable=False)
+    parent_id = Column(PG_UUID(as_uuid=True), ForeignKey("parents.id", ondelete="CASCADE"), nullable=False)
     student_id = Column(PG_UUID(as_uuid=True), ForeignKey("students.id", ondelete="CASCADE"), nullable=False)
 
     # Relationship details
     relationship_type = Column(String(50), nullable=False)
     is_primary_contact = Column(Boolean, default=False, nullable=True)
-    has_pickup_permission = Column(Boolean, default=False, nullable=True)
+    has_legal_custody = Column(Boolean, default=True, nullable=True)
+    has_pickup_permission = Column(Boolean, default=True, nullable=True)
 
     # Relationships
-    # parent = relationship("User", foreign_keys=[parent_id])
-    # student = relationship("Student", back_populates="parent_relationships")
+    parent = relationship("Parent", foreign_keys=[parent_id], back_populates="student_relationships")
+    student = relationship("Student", foreign_keys=[student_id], back_populates="parent_relationships")
 
     # Constraints
     __table_args__ = (
         CheckConstraint(
-            "relationship_type IN ('mother', 'father', 'guardian', 'grandparent', 'other')",
+            "relationship_type IN ('mother', 'father', 'guardian', 'stepmother', 'stepfather', 'grandparent', 'foster_parent', 'other')",
             name="chk_parent_student_relationship_type"
         ),
+        Index('idx_parent_student_school_id', 'school_id'),
         Index('idx_parent_student_parent_id', 'parent_id'),
         Index('idx_parent_student_student_id', 'student_id'),
         Index('idx_parent_student_unique', 'parent_id', 'student_id', unique=True),
