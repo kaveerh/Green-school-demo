@@ -8,6 +8,7 @@ from models.user import User
 from models.teacher import Teacher
 from models.student import Student, ParentStudentRelationship
 from models.parent import Parent
+from models.subject import Subject
 
 # Export all models
 __all__ = [
@@ -18,4 +19,5 @@ __all__ = [
     "Student",
     "Parent",
     "ParentStudentRelationship",
+    "Subject",
 ]

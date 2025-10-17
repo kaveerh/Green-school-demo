@@ -56,6 +56,7 @@ class School(BaseModel):
     teachers = relationship("Teacher", back_populates="school")
     students = relationship("Student", back_populates="school")
     parents = relationship("Parent", back_populates="school")
+    subjects = relationship("Subject", back_populates="school")
     principal = relationship("User", foreign_keys=[principal_id])
     hod = relationship("User", foreign_keys=[hod_id])
 
