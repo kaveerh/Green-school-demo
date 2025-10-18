@@ -144,6 +144,31 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/components/ParentForm.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator'] }
   },
+  // Subject Management Routes
+  {
+    path: '/subjects',
+    name: 'subjects',
+    component: () => import('@/components/SubjectList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/subjects/create',
+    name: 'subject-create',
+    component: () => import('@/components/SubjectForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/subjects/:id',
+    name: 'subject-detail',
+    component: () => import('@/components/SubjectList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/subjects/:id/edit',
+    name: 'subject-edit',
+    component: () => import('@/components/SubjectForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
 ]
 
 const router = createRouter({

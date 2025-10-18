@@ -187,9 +187,40 @@
         </div>
       </li>
 
+      <!-- Subjects Management -->
+      <li class="nav-item" v-if="canAccessSubjects">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('subjects')"
+            :class="{ 'is-active': isDropdownOpen('subjects') || isSubjectsRoute }"
+          >
+            <span class="nav-icon">📚</span>
+            <span class="nav-text">Subjects</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('subjects') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('subjects')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/subjects" class="nav-dropdown-link" @click="closeMobileMenu">
+                List Subjects
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/subjects/create" class="nav-dropdown-link" @click="closeMobileMenu">
+                Create Subject
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </li>
+
       <li class="nav-item nav-item-disabled">
         <span class="nav-link">
-          <span class="nav-icon">📚</span>
+          <span class="nav-icon">🏫</span>
           <span class="nav-text">Classes</span>
           <span class="coming-soon">Coming Soon</span>
         </span>
@@ -293,6 +324,13 @@ const canAccessParents = computed(() => {
 })
 
 /**
+ * Check if user can access subjects module
+ */
+const canAccessSubjects = computed(() => {
+  return ['administrator', 'teacher'].includes(currentUserRole.value)
+})
+
+/**
  * Check if current route is users-related
  */
 const isUsersRoute = computed(() => {
@@ -325,6 +363,13 @@ const isStudentsRoute = computed(() => {
  */
 const isParentsRoute = computed(() => {
   return route.path.startsWith('/parents')
+})
+
+/**
+ * Check if current route is subjects-related
+ */
+const isSubjectsRoute = computed(() => {
+  return route.path.startsWith('/subjects')
 })
 
 /**
