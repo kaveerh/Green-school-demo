@@ -219,6 +219,31 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/components/ClassForm.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator'] }
   },
+  // Lesson Management Routes
+  {
+    path: '/lessons',
+    name: 'lessons',
+    component: () => import('@/views/LessonList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/lessons/create',
+    name: 'lesson-create',
+    component: () => import('@/views/LessonForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/lessons/:id',
+    name: 'lesson-detail',
+    component: () => import('@/views/LessonList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/lessons/:id/edit',
+    name: 'lesson-edit',
+    component: () => import('@/views/LessonForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
 ]
 
 const router = createRouter({
