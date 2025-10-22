@@ -9,6 +9,7 @@ from controllers.student_controller import router as student_router
 from controllers.parent_controller import router as parent_router
 from controllers.subject_controller import router as subject_router
 from controllers.room_controller import router as room_router
+from controllers.class_controller import router as class_router
 
 # Export all routers
 __all__ = [
@@ -19,4 +20,5 @@ __all__ = [
     "parent_router",
     "subject_router",
     "room_router",
+    "class_router",
 ]

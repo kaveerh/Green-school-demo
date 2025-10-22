@@ -10,6 +10,7 @@ from models.student import Student, ParentStudentRelationship
 from models.parent import Parent
 from models.subject import Subject
 from models.room import Room
+from models.class_model import Class, StudentClass
 
 # Export all models
 __all__ = [
@@ -22,4 +23,6 @@ __all__ = [
     "ParentStudentRelationship",
     "Subject",
     "Room",
+    "Class",
+    "StudentClass",
 ]
