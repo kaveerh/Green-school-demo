@@ -169,6 +169,31 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/components/SubjectForm.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator'] }
   },
+  // Room Management Routes
+  {
+    path: '/rooms',
+    name: 'rooms',
+    component: () => import('@/components/RoomList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/rooms/create',
+    name: 'room-create',
+    component: () => import('@/components/RoomForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/rooms/:id',
+    name: 'room-detail',
+    component: () => import('@/components/RoomList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/rooms/:id/edit',
+    name: 'room-edit',
+    component: () => import('@/components/RoomForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
 ]
 
 const router = createRouter({
