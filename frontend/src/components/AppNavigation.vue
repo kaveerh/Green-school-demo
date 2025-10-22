@@ -249,12 +249,35 @@
         </div>
       </li>
 
-      <li class="nav-item nav-item-disabled">
-        <span class="nav-link">
-          <span class="nav-icon">🏫</span>
-          <span class="nav-text">Classes</span>
-          <span class="coming-soon">Coming Soon</span>
-        </span>
+      <!-- Classes Management -->
+      <li class="nav-item" v-if="canAccessClasses">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('classes')"
+            :class="{ 'is-active': isDropdownOpen('classes') || isClassesRoute }"
+          >
+            <span class="nav-icon">🎒</span>
+            <span class="nav-text">Classes</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('classes') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('classes')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/classes" class="nav-dropdown-link" @click="closeMobileMenu">
+                List Classes
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/classes/create" class="nav-dropdown-link" @click="closeMobileMenu">
+                Create Class
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </li>
     </ul>
 
@@ -369,6 +392,13 @@ const canAccessRooms = computed(() => {
 })
 
 /**
+ * Check if user can access classes module
+ */
+const canAccessClasses = computed(() => {
+  return ['administrator', 'teacher'].includes(currentUserRole.value)
+})
+
+/**
  * Check if current route is users-related
  */
 const isUsersRoute = computed(() => {
@@ -415,6 +445,13 @@ const isSubjectsRoute = computed(() => {
  */
 const isRoomsRoute = computed(() => {
   return route.path.startsWith('/rooms')
+})
+
+/**
+ * Check if current route is classes-related
+ */
+const isClassesRoute = computed(() => {
+  return route.path.startsWith('/classes')
 })
 
 /**

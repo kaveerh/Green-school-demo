@@ -194,6 +194,31 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/components/RoomForm.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator'] }
   },
+  // Class Management Routes
+  {
+    path: '/classes',
+    name: 'classes',
+    component: () => import('@/components/ClassList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/classes/create',
+    name: 'class-create',
+    component: () => import('@/components/ClassForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/classes/:id',
+    name: 'class-detail',
+    component: () => import('@/components/ClassList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/classes/:id/edit',
+    name: 'class-edit',
+    component: () => import('@/components/ClassForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
 ]
 
 const router = createRouter({
