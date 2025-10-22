@@ -13,7 +13,7 @@ from config.database import engine, Base
 from config.settings import settings
 
 # Import controllers
-from controllers import user_router, school_router, teacher_router, student_router, parent_router, subject_router, room_router, class_router
+from controllers import user_router, school_router, teacher_router, student_router, parent_router, subject_router, room_router, class_router, lesson_router
 
 # Configure logging
 logging.basicConfig(
@@ -99,6 +99,7 @@ app.include_router(parent_router, prefix=settings.API_V1_PREFIX)
 app.include_router(subject_router, prefix=settings.API_V1_PREFIX)
 app.include_router(room_router, prefix=settings.API_V1_PREFIX)
 app.include_router(class_router, prefix=f"{settings.API_V1_PREFIX}/classes", tags=["Classes"])
+app.include_router(lesson_router)
 
 
 if __name__ == "__main__":
