@@ -438,11 +438,22 @@ class LessonRepository:
         total_result = await self.db.execute(total_query)
         total_lessons = total_result.scalar()
 
-        # By status
+        # By status - rebuild query with WHERE clauses
         status_query = select(
             Lesson.status,
             func.count(Lesson.id).label('count')
-        ).select_from(base_query.subquery()).group_by(Lesson.status)
+        ).where(Lesson.deleted_at.is_(None))
+
+        if school_id:
+            status_query = status_query.where(Lesson.school_id == school_id)
+        if teacher_id:
+            status_query = status_query.where(Lesson.teacher_id == teacher_id)
+        if start_date:
+            status_query = status_query.where(Lesson.scheduled_date >= start_date)
+        if end_date:
+            status_query = status_query.where(Lesson.scheduled_date <= end_date)
+
+        status_query = status_query.group_by(Lesson.status)
         status_result = await self.db.execute(status_query)
         by_status = {row[0]: row[1] for row in status_result}
 
@@ -471,12 +482,22 @@ class LessonRepository:
         subject_result = await self.db.execute(subject_query)
         by_subject = {row[0]: row[1] for row in subject_result}
 
-        # Duration statistics
+        # Duration statistics - rebuild query
         duration_query = select(
             func.avg(Lesson.duration_minutes).label('avg_duration'),
             func.sum(Lesson.duration_minutes).label('total_duration'),
             func.avg(Lesson.actual_duration_minutes).label('avg_actual_duration')
-        ).select_from(base_query.subquery())
+        ).where(Lesson.deleted_at.is_(None))
+
+        if school_id:
+            duration_query = duration_query.where(Lesson.school_id == school_id)
+        if teacher_id:
+            duration_query = duration_query.where(Lesson.teacher_id == teacher_id)
+        if start_date:
+            duration_query = duration_query.where(Lesson.scheduled_date >= start_date)
+        if end_date:
+            duration_query = duration_query.where(Lesson.scheduled_date <= end_date)
+
         duration_result = await self.db.execute(duration_query)
         duration_row = duration_result.first()
 
@@ -490,12 +511,25 @@ class LessonRepository:
         if total_lessons > 0:
             completion_rate = round((completed_count / total_lessons) * 100, 1)
 
-        # Average completion percentage
+        # Average completion percentage - rebuild query
         completion_query = select(
             func.avg(Lesson.completion_percentage).label('avg_completion')
-        ).select_from(
-            base_query.where(Lesson.status == 'completed').subquery()
+        ).where(
+            and_(
+                Lesson.deleted_at.is_(None),
+                Lesson.status == 'completed'
+            )
         )
+
+        if school_id:
+            completion_query = completion_query.where(Lesson.school_id == school_id)
+        if teacher_id:
+            completion_query = completion_query.where(Lesson.teacher_id == teacher_id)
+        if start_date:
+            completion_query = completion_query.where(Lesson.scheduled_date >= start_date)
+        if end_date:
+            completion_query = completion_query.where(Lesson.scheduled_date <= end_date)
+
         completion_result = await self.db.execute(completion_query)
         avg_completion_pct = completion_result.scalar() or 0.0
 

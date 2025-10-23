@@ -68,11 +68,14 @@ async def test_session(test_engine):
     )
 
     async with async_session() as session:
-        try:
-            yield session
-        finally:
-            await session.rollback()
-            await session.close()
+        yield session
+        # Clean up: delete all data after test
+        await session.rollback()
+
+        # Delete all lesson data to prevent test pollution
+        from sqlalchemy import text
+        await session.execute(text("DELETE FROM lessons"))
+        await session.commit()
 
 
 @pytest.fixture

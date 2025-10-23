@@ -331,13 +331,13 @@ class LessonService:
         limit: int = 50
     ) -> List[Lesson]:
         """Search lessons by title, description, or content"""
-        return await self.lesson_repository.search(
+        lessons, _ = await self.lesson_repository.search(
             school_id=school_id,
-            query=query,
+            search_query=query,
             teacher_id=teacher_id,
-            subject_id=subject_id,
             limit=limit
         )
+        return lessons
 
     async def get_templates(
         self,
