@@ -74,6 +74,7 @@ class Student(BaseModel):
     def __repr__(self):
         return f"<Student(id={self.id}, student_id={self.student_id}, grade={self.grade_level})>"
 
+    @property
     def is_currently_enrolled(self) -> bool:
         """Check if student is currently enrolled"""
         return (
@@ -82,6 +83,7 @@ class Student(BaseModel):
             (self.graduation_date is None or self.graduation_date > date.today())
         )
 
+    @property
     def age(self) -> int:
         """Calculate student's current age"""
         if not self.date_of_birth:
@@ -91,6 +93,7 @@ class Student(BaseModel):
             (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day)
         )
 
+    @property
     def years_enrolled(self) -> int:
         """Calculate years since enrollment"""
         if not self.enrollment_date:
@@ -98,17 +101,18 @@ class Student(BaseModel):
         end_date = self.graduation_date or date.today()
         return (end_date - self.enrollment_date).days // 365
 
+    @property
     def can_promote(self) -> bool:
         """Check if student can be promoted to next grade"""
         return (
-            self.is_currently_enrolled() and
+            self.is_currently_enrolled and
             self.grade_level < 7 and
             self.status == "enrolled"
         )
 
     def promote_to_next_grade(self) -> int:
         """Promote student to next grade level"""
-        if not self.can_promote():
+        if not self.can_promote:
             raise ValueError("Student cannot be promoted")
         self.grade_level += 1
         if self.grade_level == 7:
@@ -135,10 +139,10 @@ class Student(BaseModel):
             data.pop('deleted_by', None)
 
         # Add computed fields
-        data['is_currently_enrolled'] = self.is_currently_enrolled()
-        data['age'] = self.age()
-        data['years_enrolled'] = self.years_enrolled()
-        data['can_promote'] = self.can_promote()
+        data['is_currently_enrolled'] = self.is_currently_enrolled
+        data['age'] = self.age
+        data['years_enrolled'] = self.years_enrolled
+        data['can_promote'] = self.can_promote
 
         return data
 

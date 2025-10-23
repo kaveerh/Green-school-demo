@@ -4,7 +4,7 @@ Pydantic schemas for student request/response validation
 """
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List
-from datetime import date
+from datetime import date, datetime
 from enum import Enum
 import uuid
 
@@ -155,8 +155,8 @@ class StudentResponseSchema(BaseModel):
     age: Optional[int]
     years_enrolled: Optional[int]
     can_promote: Optional[bool]
-    created_at: str
-    updated_at: str
+    created_at: datetime
+    updated_at: datetime
     created_by: Optional[uuid.UUID]
     updated_by: Optional[uuid.UUID]
 
