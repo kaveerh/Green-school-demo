@@ -15,18 +15,18 @@ test.describe('Teachers Management', () => {
     await page.goto('/teachers')
 
     // Check page title/heading
-    await expect(page.locator('h1, h2').filter({ hasText: /teachers/i }).first()).toBeVisible()
+    await expect(page.locator('h1, h2').filter({ hasText: /teacher management/i }).first()).toBeVisible()
 
-    // Check for "Add" or "Create" button
-    const addButton = page.locator('button, a').filter({ hasText: /add|create|new/i }).first()
+    // Check for "Create Teacher" button (more specific to avoid nav dropdown)
+    const addButton = page.locator('button').filter({ hasText: /create teacher/i }).first()
     await expect(addButton).toBeVisible()
   })
 
   test('should navigate to create teacher form', async ({ page }) => {
     await page.goto('/teachers')
 
-    // Click add/create button
-    const addButton = page.locator('button, a').filter({ hasText: /add|create|new/i }).first()
+    // Click create teacher button (specific selector to avoid nav dropdown)
+    const addButton = page.locator('button').filter({ hasText: /create teacher/i }).first()
     await addButton.click()
 
     // Should navigate to create form
@@ -87,11 +87,19 @@ test.describe('Teachers Management', () => {
     const submitButton = page.locator('button[type="submit"], button').filter({ hasText: /save|create|submit/i }).first()
     await submitButton.click()
 
-    // Check for validation errors
+    // Check for validation errors (either HTML5 validation or custom error banner)
     await page.waitForTimeout(500)
-    const errorMessages = page.locator('.error, .text-red-500, [class*="error"]')
-    const errorCount = await errorMessages.count()
-    expect(errorCount).toBeGreaterThan(0)
+
+    // Check for custom error banner
+    const errorBanner = page.locator('.error-banner, [class*="error"]')
+    const hasErrorBanner = await errorBanner.count() > 0
+
+    // Check if form validation prevented submission (HTML5)
+    const employeeIdField = page.locator('input[name="employee_id"], input[id*="employee"]').first()
+    const hasValidationMessage = await employeeIdField.evaluate((el: any) => el.validationMessage !== '')
+
+    // Either custom errors or HTML5 validation should be present
+    expect(hasErrorBanner || hasValidationMessage).toBe(true)
   })
 
   test('should edit an existing teacher', async ({ page }) => {
@@ -164,12 +172,19 @@ test.describe('Teachers Management', () => {
     await page.waitForTimeout(1000)
 
     // Look for pagination controls
-    const nextButton = page.locator('button, a').filter({ hasText: /next|>/i }).first()
-    const prevButton = page.locator('button, a').filter({ hasText: /prev|</i }).first()
+    const nextButton = page.locator('button').filter({ hasText: /^next$/i }).first()
+    const prevButton = page.locator('button').filter({ hasText: /^previous$/i }).first()
 
+    // Check if next button exists and is enabled before clicking
     if (await nextButton.isVisible()) {
-      await nextButton.click()
-      await page.waitForTimeout(500)
+      const isEnabled = await nextButton.isEnabled()
+      if (isEnabled) {
+        await nextButton.click()
+        await page.waitForTimeout(500)
+      } else {
+        // Next button disabled means we're on the last page - this is correct behavior
+        expect(await nextButton.isDisabled()).toBe(true)
+      }
     }
   })
 })

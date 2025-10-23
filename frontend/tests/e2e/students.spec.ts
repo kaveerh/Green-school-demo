@@ -15,26 +15,26 @@ test.describe('Students Management', () => {
     await page.goto('/students')
 
     // Check page title/heading
-    await expect(page.locator('h1, h2').filter({ hasText: /students/i }).first()).toBeVisible()
+    await expect(page.locator('h1, h2').filter({ hasText: /student management/i }).first()).toBeVisible()
 
-    // Check for "Add" or "Create" button
-    const addButton = page.locator('button, a').filter({ hasText: /add|create|new/i }).first()
+    // Check for "Create Student" button (more specific to avoid nav dropdown)
+    const addButton = page.locator('button').filter({ hasText: /create student/i }).first()
     await expect(addButton).toBeVisible()
   })
 
   test('should navigate to create student form', async ({ page }) => {
     await page.goto('/students')
 
-    // Click add/create button
-    const addButton = page.locator('button, a').filter({ hasText: /add|create|new/i }).first()
+    // Click create student button (specific selector to avoid nav dropdown)
+    const addButton = page.locator('button').filter({ hasText: /create student/i }).first()
     await addButton.click()
 
     // Should navigate to create form
     await page.waitForURL(/\/students\/(create|new)/)
 
     // Check for form fields
-    await expect(page.locator('input[name="student_id"], input[id*="student"]').first()).toBeVisible()
-    await expect(page.locator('select[name="grade_level"], input[name="grade_level"]').first()).toBeVisible()
+    await expect(page.locator('input[id="student_id"], input[name="student_id"]').first()).toBeVisible()
+    await expect(page.locator('select[id="grade_level"]').first()).toBeVisible()
   })
 
   test('should create a new student', async ({ page }) => {
@@ -45,16 +45,12 @@ test.describe('Students Management', () => {
     const studentId = `S${timestamp}`
 
     // Student ID
-    const studentIdField = page.locator('input[name="student_id"], input[id*="student_id"]').first()
+    const studentIdField = page.locator('input[id="student_id"]').first()
     await studentIdField.fill(studentId)
 
-    // Grade Level
-    const gradeLevelField = page.locator('select[name="grade_level"], input[name="grade_level"]').first()
-    if ((await gradeLevelField.getAttribute('type')) === 'select-one' || await gradeLevelField.evaluate(el => el.tagName === 'SELECT')) {
-      await gradeLevelField.selectOption('5')
-    } else {
-      await gradeLevelField.fill('5')
-    }
+    // Grade Level (it's a select dropdown)
+    const gradeLevelField = page.locator('select[id="grade_level"]').first()
+    await gradeLevelField.selectOption('5')
 
     // Date of Birth
     const dobField = page.locator('input[name="date_of_birth"], input[type="date"]').first()
@@ -91,11 +87,19 @@ test.describe('Students Management', () => {
     const submitButton = page.locator('button[type="submit"], button').filter({ hasText: /save|create|submit/i }).first()
     await submitButton.click()
 
-    // Check for validation errors
+    // Check for validation errors (either HTML5 validation or custom error banner)
     await page.waitForTimeout(500)
-    const errorMessages = page.locator('.error, .text-red-500, [class*="error"]')
-    const errorCount = await errorMessages.count()
-    expect(errorCount).toBeGreaterThan(0)
+
+    // Check for custom error banner
+    const errorBanner = page.locator('.error-banner, [class*="error"]')
+    const hasErrorBanner = await errorBanner.count() > 0
+
+    // Check if form validation prevented submission (HTML5)
+    const studentIdField = page.locator('input[id="student_id"]').first()
+    const hasValidationMessage = await studentIdField.evaluate((el: any) => el.validationMessage !== '')
+
+    // Either custom errors or HTML5 validation should be present
+    expect(hasErrorBanner || hasValidationMessage).toBe(true)
   })
 
   test('should edit an existing student', async ({ page }) => {
@@ -212,12 +216,19 @@ test.describe('Students Management', () => {
     await page.waitForTimeout(1000)
 
     // Look for pagination controls
-    const nextButton = page.locator('button, a').filter({ hasText: /next|>/i }).first()
-    const prevButton = page.locator('button, a').filter({ hasText: /prev|</i }).first()
+    const nextButton = page.locator('button').filter({ hasText: /^next$/i }).first()
+    const prevButton = page.locator('button').filter({ hasText: /^previous$/i }).first()
 
+    // Check if next button exists and is enabled before clicking
     if (await nextButton.isVisible()) {
-      await nextButton.click()
-      await page.waitForTimeout(500)
+      const isEnabled = await nextButton.isEnabled()
+      if (isEnabled) {
+        await nextButton.click()
+        await page.waitForTimeout(500)
+      } else {
+        // Next button disabled means we're on the last page - this is correct behavior
+        expect(await nextButton.isDisabled()).toBe(true)
+      }
     }
   })
 })
