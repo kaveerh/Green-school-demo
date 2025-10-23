@@ -196,14 +196,14 @@ class TeacherResponseSchema(TeacherBaseSchema):
     id: uuid.UUID
     school_id: uuid.UUID
     user_id: uuid.UUID
-    termination_date: Optional[date]
-    salary: Optional[Decimal]
+    termination_date: Optional[date] = None
+    salary: Optional[Decimal] = None
     status: TeacherStatusEnum
     is_active: bool
     created_at: datetime
     updated_at: datetime
-    created_by: Optional[uuid.UUID]
-    updated_by: Optional[uuid.UUID]
+    created_by: Optional[uuid.UUID] = None
+    updated_by: Optional[uuid.UUID] = None
 
     # Computed fields
     is_currently_employed: Optional[bool] = None
