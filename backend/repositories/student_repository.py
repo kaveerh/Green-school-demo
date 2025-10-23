@@ -28,7 +28,7 @@ class StudentRepository(BaseRepository[Student]):
                 Student.deleted_at.is_(None)
             )
         )
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
     async def get_by_user_id(self, user_id: uuid.UUID) -> Optional[Student]:
@@ -39,7 +39,7 @@ class StudentRepository(BaseRepository[Student]):
                 Student.deleted_at.is_(None)
             )
         )
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
     async def get_by_grade_level(
@@ -60,7 +60,7 @@ class StudentRepository(BaseRepository[Student]):
                 Student.deleted_at.is_(None)
             )
         )
-        total = await self.db.scalar(count_query)
+        total = await self.session.scalar(count_query)
 
         # Data query
         query = select(Student).where(
@@ -71,7 +71,7 @@ class StudentRepository(BaseRepository[Student]):
             )
         ).offset(offset).limit(limit).order_by(Student.created_at.desc())
 
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         students = result.scalars().all()
 
         return students, {
@@ -98,7 +98,7 @@ class StudentRepository(BaseRepository[Student]):
                 Student.deleted_at.is_(None)
             )
         )
-        total = await self.db.scalar(count_query)
+        total = await self.session.scalar(count_query)
 
         # Data query
         query = select(Student).where(
@@ -109,7 +109,7 @@ class StudentRepository(BaseRepository[Student]):
             )
         ).offset(offset).limit(limit).order_by(Student.grade_level, Student.student_id)
 
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         students = result.scalars().all()
 
         return students, {
@@ -159,7 +159,7 @@ class StudentRepository(BaseRepository[Student]):
 
         # Count query
         count_query = select(func.count(Student.id)).where(and_(*conditions))
-        total = await self.db.scalar(count_query)
+        total = await self.session.scalar(count_query)
 
         # Data query with sorting
         query = select(Student).where(and_(*conditions))
@@ -176,7 +176,7 @@ class StudentRepository(BaseRepository[Student]):
 
         query = query.offset(offset).limit(limit)
 
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         students = result.scalars().all()
 
         return students, {
@@ -195,7 +195,7 @@ class StudentRepository(BaseRepository[Student]):
                 Student.deleted_at.is_(None)
             )
         )
-        total = await self.db.scalar(total_query)
+        total = await self.session.scalar(total_query)
 
         # By status
         status_query = select(
@@ -208,7 +208,7 @@ class StudentRepository(BaseRepository[Student]):
             )
         ).group_by(Student.status)
 
-        status_result = await self.db.execute(status_query)
+        status_result = await self.session.execute(status_query)
         by_status = {row[0]: row[1] for row in status_result}
 
         # By grade level
@@ -222,7 +222,7 @@ class StudentRepository(BaseRepository[Student]):
             )
         ).group_by(Student.grade_level)
 
-        grade_result = await self.db.execute(grade_query)
+        grade_result = await self.session.execute(grade_query)
         by_grade = {f"grade_{row[0]}": row[1] for row in grade_result}
 
         # By gender
@@ -236,7 +236,7 @@ class StudentRepository(BaseRepository[Student]):
             )
         ).group_by(Student.gender)
 
-        gender_result = await self.db.execute(gender_query)
+        gender_result = await self.session.execute(gender_query)
         by_gender = {row[0] or "not_specified": row[1] for row in gender_result}
 
         # Currently enrolled
@@ -247,7 +247,7 @@ class StudentRepository(BaseRepository[Student]):
                 Student.deleted_at.is_(None)
             )
         )
-        enrolled = await self.db.scalar(enrolled_query)
+        enrolled = await self.session.scalar(enrolled_query)
 
         return {
             "total": total,
@@ -273,7 +273,7 @@ class ParentStudentRelationshipRepository(BaseRepository[ParentStudentRelationsh
                 ParentStudentRelationship.deleted_at.is_(None)
             )
         )
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         return result.scalars().all()
 
     async def get_by_parent(self, parent_id: uuid.UUID) -> List[ParentStudentRelationship]:
@@ -284,7 +284,7 @@ class ParentStudentRelationshipRepository(BaseRepository[ParentStudentRelationsh
                 ParentStudentRelationship.deleted_at.is_(None)
             )
         )
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         return result.scalars().all()
 
     async def get_relationship(
@@ -300,7 +300,7 @@ class ParentStudentRelationshipRepository(BaseRepository[ParentStudentRelationsh
                 ParentStudentRelationship.deleted_at.is_(None)
             )
         )
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
     async def get_primary_contact(self, student_id: uuid.UUID) -> Optional[ParentStudentRelationship]:
@@ -312,7 +312,7 @@ class ParentStudentRelationshipRepository(BaseRepository[ParentStudentRelationsh
                 ParentStudentRelationship.deleted_at.is_(None)
             )
         )
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
     async def unlink_parent(self, parent_id: uuid.UUID, student_id: uuid.UUID) -> bool:
