@@ -202,7 +202,7 @@ async function loadUsers() {
     }
 
     const data = await response.json()
-    users.value = data.users || data || []
+    users.value = data.data || data.users || data || []
   } catch (error) {
     console.error('Error loading users:', error)
     users.value = []
