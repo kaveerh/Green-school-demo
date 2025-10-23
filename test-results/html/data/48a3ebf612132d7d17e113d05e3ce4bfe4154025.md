@@ -1,0 +1,107 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - navigation [ref=e5]:
+    - link "🌱 Green School" [ref=e7] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e8]: 🌱
+      - generic [ref=e9]: Green School
+    - list [ref=e10]:
+      - listitem [ref=e11]:
+        - link "📊 Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e13]: 📊
+          - generic [ref=e14]: Dashboard
+      - listitem [ref=e15]:
+        - button "👥 Users ▶" [ref=e17] [cursor=pointer]:
+          - generic [ref=e18]: 👥
+          - generic [ref=e19]: Users
+          - generic [ref=e20]: ▶
+      - listitem [ref=e21]:
+        - button "🏫 Schools ▶" [ref=e23] [cursor=pointer]:
+          - generic [ref=e24]: 🏫
+          - generic [ref=e25]: Schools
+          - generic [ref=e26]: ▶
+      - listitem [ref=e27]:
+        - button "👨‍🏫 Teachers ▶" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 👨‍🏫
+          - generic [ref=e31]: Teachers
+          - generic [ref=e32]: ▶
+      - listitem [ref=e33]:
+        - button "🎓 Students ▶" [ref=e35] [cursor=pointer]:
+          - generic [ref=e36]: 🎓
+          - generic [ref=e37]: Students
+          - generic [ref=e38]: ▶
+      - listitem [ref=e39]:
+        - button "👪 Parents ▶" [ref=e41] [cursor=pointer]:
+          - generic [ref=e42]: 👪
+          - generic [ref=e43]: Parents
+          - generic [ref=e44]: ▶
+      - listitem [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]: 📚
+          - generic [ref=e48]: Classes
+          - generic [ref=e49]: Coming Soon
+    - button "AU Admin User ▶" [ref=e52] [cursor=pointer]:
+      - generic [ref=e53]: AU
+      - generic [ref=e54]: Admin User
+      - generic [ref=e55]: ▶
+  - main [ref=e56]:
+    - navigation "Breadcrumb" [ref=e57]:
+      - list [ref=e58]:
+        - listitem [ref=e59]:
+          - link "Home" [ref=e60] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e61]: /
+        - listitem [ref=e62]:
+          - generic [ref=e63]: Parents
+    - generic [ref=e65]:
+      - generic [ref=e66]:
+        - heading "Parent Management" [level=2] [ref=e67]
+        - button "➕ Create Parent" [ref=e68] [cursor=pointer]:
+          - generic [ref=e69]: ➕
+          - text: Create Parent
+      - generic [ref=e70]:
+        - textbox "Search parents by name, email, phone, or occupation..." [ref=e72]
+        - generic [ref=e73]:
+          - generic [ref=e74] [cursor=pointer]:
+            - checkbox "Emergency Contacts Only" [ref=e75]
+            - text: Emergency Contacts Only
+          - generic [ref=e76] [cursor=pointer]:
+            - checkbox "Pickup Authorized Only" [ref=e77]
+            - text: Pickup Authorized Only
+          - generic [ref=e78] [cursor=pointer]:
+            - checkbox "Newsletter Subscribers Only" [ref=e79]
+            - text: Newsletter Subscribers Only
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - generic [ref=e82]: "0"
+          - generic [ref=e83]: Total Parents
+        - generic [ref=e84]:
+          - generic [ref=e85]: "0"
+          - generic [ref=e86]: Emergency Contacts
+        - generic [ref=e87]:
+          - generic [ref=e88]: "0"
+          - generic [ref=e89]: Pickup Authorized
+        - generic [ref=e90]:
+          - generic [ref=e91]: "0"
+          - generic [ref=e92]: With Children
+      - generic [ref=e93]:
+        - generic [ref=e94]: 👨‍👩‍👧‍👦
+        - heading "No Parents Found" [level=3] [ref=e95]
+        - paragraph [ref=e96]: Get started by creating your first parent profile.
+        - button "Create Parent" [ref=e97] [cursor=pointer]
+  - contentinfo [ref=e98]:
+    - generic [ref=e99]:
+      - paragraph [ref=e100]: © 2025 Green School Management System
+      - generic [ref=e101]:
+        - link "Privacy Policy" [ref=e102] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e103]: ·
+        - link "Terms of Service" [ref=e104] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e105]: ·
+        - link "Help" [ref=e106] [cursor=pointer]:
+          - /url: "#"
+```

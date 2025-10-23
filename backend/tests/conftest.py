@@ -4,16 +4,19 @@ Pytest configuration and shared fixtures for all tests
 """
 import pytest
 import asyncio
+import uuid
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.pool import NullPool
-import uuid
-
 from config.database import Base
 from models import User, School
+import os
 
 
-# Test database URL (in-memory SQLite for fast tests)
-TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
+# Test database URL - use PostgreSQL for compatibility with all types
+TEST_DATABASE_URL = os.getenv(
+    "TEST_DATABASE_URL",
+    "postgresql+asyncpg://postgres:postgres@database:5432/greenschool_test"
+)
 
 
 @pytest.fixture(scope="session")
@@ -39,9 +42,18 @@ async def test_engine():
 
     yield engine
 
-    # Drop all tables
+    # Drop all tables - handle circular dependencies
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
+        def drop_all_with_cascade(connection):
+            """Drop all tables with cascade to handle circular dependencies"""
+            from sqlalchemy import text
+            # Drop all tables with cascade
+            connection.execute(text("DROP SCHEMA public CASCADE"))
+            connection.execute(text("CREATE SCHEMA public"))
+            connection.execute(text("GRANT ALL ON SCHEMA public TO postgres"))
+            connection.execute(text("GRANT ALL ON SCHEMA public TO public"))
+
+        await conn.run_sync(drop_all_with_cascade)
 
     await engine.dispose()
 

@@ -1,0 +1,104 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - navigation [ref=e5]:
+    - link "🌱 Green School" [ref=e7] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e8]: 🌱
+      - generic [ref=e9]: Green School
+    - list [ref=e10]:
+      - listitem [ref=e11]:
+        - link "📊 Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e13]: 📊
+          - generic [ref=e14]: Dashboard
+      - listitem [ref=e15]:
+        - button "👥 Users ▶" [ref=e17] [cursor=pointer]:
+          - generic [ref=e18]: 👥
+          - generic [ref=e19]: Users
+          - generic [ref=e20]: ▶
+      - listitem [ref=e21]:
+        - button "🏫 Schools ▶" [ref=e23] [cursor=pointer]:
+          - generic [ref=e24]: 🏫
+          - generic [ref=e25]: Schools
+          - generic [ref=e26]: ▶
+      - listitem [ref=e27]:
+        - button "👨‍🏫 Teachers ▶" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 👨‍🏫
+          - generic [ref=e31]: Teachers
+          - generic [ref=e32]: ▶
+      - listitem [ref=e33]:
+        - button "🎓 Students ▶" [ref=e35] [cursor=pointer]:
+          - generic [ref=e36]: 🎓
+          - generic [ref=e37]: Students
+          - generic [ref=e38]: ▶
+      - listitem [ref=e39]:
+        - button "👪 Parents ▶" [ref=e41] [cursor=pointer]:
+          - generic [ref=e42]: 👪
+          - generic [ref=e43]: Parents
+          - generic [ref=e44]: ▶
+      - listitem [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]: 📚
+          - generic [ref=e48]: Classes
+          - generic [ref=e49]: Coming Soon
+    - button "AU Admin User ▶" [ref=e52] [cursor=pointer]:
+      - generic [ref=e53]: AU
+      - generic [ref=e54]: Admin User
+      - generic [ref=e55]: ▶
+  - main [ref=e56]:
+    - navigation "Breadcrumb" [ref=e57]:
+      - list [ref=e58]:
+        - listitem [ref=e59]:
+          - link "Home" [ref=e60] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e61]: /
+        - listitem [ref=e62]:
+          - generic [ref=e63]: Students
+    - generic [ref=e65]:
+      - generic [ref=e66]:
+        - heading "Student Management" [level=2] [ref=e67]
+        - button "+ Create Student" [ref=e68] [cursor=pointer]
+      - generic [ref=e69]:
+        - textbox "Search students by ID or name..." [ref=e71]
+        - generic [ref=e72]:
+          - combobox [ref=e73]:
+            - option "All Grades" [selected]
+            - option "Grade 1"
+            - option "Grade 2"
+            - option "Grade 3"
+            - option "Grade 4"
+            - option "Grade 5"
+            - option "Grade 6"
+            - option "Grade 7"
+          - combobox [ref=e74]:
+            - option "All Statuses" [selected]
+            - option "Enrolled"
+            - option "Graduated"
+            - option "Transferred"
+            - option "Withdrawn"
+            - option "Suspended"
+          - combobox [ref=e75]:
+            - option "All Genders" [selected]
+            - option "Male"
+            - option "Female"
+            - option "Other"
+            - option "Prefer not to say"
+          - button "Clear Filters" [ref=e76] [cursor=pointer]
+      - generic [ref=e77]:
+        - paragraph [ref=e78]: Failed to fetch
+        - button "Retry" [ref=e79] [cursor=pointer]
+  - contentinfo [ref=e80]:
+    - generic [ref=e81]:
+      - paragraph [ref=e82]: © 2025 Green School Management System
+      - generic [ref=e83]:
+        - link "Privacy Policy" [ref=e84] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e85]: ·
+        - link "Terms of Service" [ref=e86] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e87]: ·
+        - link "Help" [ref=e88] [cursor=pointer]:
+          - /url: "#"
+```

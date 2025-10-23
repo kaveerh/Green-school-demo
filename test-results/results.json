@@ -1,0 +1,932 @@
+{
+  "config": {
+    "configFile": "/Users/kaveerh/claude-projects/playwright.config.ts",
+    "rootDir": "/Users/kaveerh/claude-projects/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 4
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "test-results/html"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/kaveerh/claude-projects/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 4
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/kaveerh/claude-projects/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.0",
+    "workers": 4,
+    "webServer": {
+      "command": "cd frontend && npm run dev",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "comprehensive-crud.spec.ts",
+      "file": "comprehensive-crud.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Green School Management System - Comprehensive UX Testing",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 113,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "1. Users Management - Full CRUD",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 124,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "1.1 Users List - Navigation and Display",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 15822,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "🧑‍💼 Testing Users List functionality...\n"
+                            },
+                            {
+                              "text": "✅ Users list loaded successfully\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:41:21.277Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-2756dc472c331590bb6d",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 126,
+                  "column": 9
+                },
+                {
+                  "title": "1.2 Users Create - Form Validation and Submission",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 19363,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "🧑‍💼 Testing Users Create functionality...\n"
+                            },
+                            {
+                              "text": "✅ Filled #email, [name=\"email\"] with test.user@greenschool.edu\n"
+                            },
+                            {
+                              "text": "✅ Filled #first_name, [name=\"first_name\"] with Test\n"
+                            },
+                            {
+                              "text": "✅ Filled #last_name, [name=\"last_name\"] with User\n"
+                            },
+                            {
+                              "text": "✅ Filled #phone, [name=\"phone\"] with +1-555-0199\n"
+                            },
+                            {
+                              "text": "✅ Selected persona: teacher\n"
+                            },
+                            {
+                              "text": "✅ Users create test completed\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:41:21.325Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-994c5e7962d215fcfa2f",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 145,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "2. Schools Management - Full CRUD",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 217,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "2.1 Schools List and Create",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 2,
+                          "parallelIndex": 2,
+                          "status": "failed",
+                          "duration": 14985,
+                          "error": {
+                            "message": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/schools/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 2 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/schools/create\" class=\"nav-dropdown-link\"> Create School </a> aka getByText('Create School', { exact: true })\n    2) <button data-v-833b539f=\"\" class=\"btn-primary\"> + Create School </button> aka getByRole('button', { name: '+ Create School' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/schools/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n",
+                            "stack": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/schools/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 2 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/schools/create\" class=\"nav-dropdown-link\"> Create School </a> aka getByText('Create School', { exact: true })\n    2) <button data-v-833b539f=\"\" class=\"btn-primary\"> + Create School </button> aka getByRole('button', { name: '+ Create School' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/schools/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n\n    at /Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts:233:30",
+                            "location": {
+                              "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                              "column": 30,
+                              "line": 233
+                            },
+                            "snippet": "  231 |       // Navigate to create form\n  232 |       const createButton = page.locator('a[href=\"/schools/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")');\n> 233 |       if (await createButton.isVisible()) {\n      |                              ^\n  234 |         await createButton.click();\n  235 |         await page.waitForLoadState('networkidle');\n  236 |       } else {"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                                "column": 30,
+                                "line": 233
+                              },
+                              "message": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/schools/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 2 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/schools/create\" class=\"nav-dropdown-link\"> Create School </a> aka getByText('Create School', { exact: true })\n    2) <button data-v-833b539f=\"\" class=\"btn-primary\"> + Create School </button> aka getByRole('button', { name: '+ Create School' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/schools/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n\n\n  231 |       // Navigate to create form\n  232 |       const createButton = page.locator('a[href=\"/schools/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")');\n> 233 |       if (await createButton.isVisible()) {\n      |                              ^\n  234 |         await createButton.click();\n  235 |         await page.waitForLoadState('networkidle');\n  236 |       } else {\n    at /Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts:233:30"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "🏫 Testing Schools Management...\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:41:21.301Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-e2024-2-1-Schools-List-and-Create-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-e2024-2-1-Schools-List-and-Create-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-e2024-2-1-Schools-List-and-Create-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                            "column": 30,
+                            "line": 233
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-9bb7d4de29d5222a89f8",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 219,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "3. Teachers Management - Full CRUD",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 296,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "3.1 Teachers List and Navigation",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 3,
+                          "parallelIndex": 3,
+                          "status": "failed",
+                          "duration": 15262,
+                          "error": {
+                            "message": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/teachers/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 2 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/teachers/create\" class=\"nav-dropdown-link\"> Create Teacher </a> aka getByText('Create Teacher', { exact: true })\n    2) <button data-v-8ed5781d=\"\" class=\"btn-primary\"> + Create Teacher </button> aka getByRole('button', { name: '+ Create Teacher' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/teachers/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n",
+                            "stack": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/teachers/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 2 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/teachers/create\" class=\"nav-dropdown-link\"> Create Teacher </a> aka getByText('Create Teacher', { exact: true })\n    2) <button data-v-8ed5781d=\"\" class=\"btn-primary\"> + Create Teacher </button> aka getByRole('button', { name: '+ Create Teacher' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/teachers/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n\n    at /Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts:311:30",
+                            "location": {
+                              "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                              "column": 30,
+                              "line": 311
+                            },
+                            "snippet": "  309 |       // Navigate to create form\n  310 |       const createButton = page.locator('a[href=\"/teachers/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")');\n> 311 |       if (await createButton.isVisible()) {\n      |                              ^\n  312 |         await createButton.click();\n  313 |         await page.waitForLoadState('networkidle');\n  314 |       } else {"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                                "column": 30,
+                                "line": 311
+                              },
+                              "message": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/teachers/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 2 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/teachers/create\" class=\"nav-dropdown-link\"> Create Teacher </a> aka getByText('Create Teacher', { exact: true })\n    2) <button data-v-8ed5781d=\"\" class=\"btn-primary\"> + Create Teacher </button> aka getByRole('button', { name: '+ Create Teacher' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/teachers/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n\n\n  309 |       // Navigate to create form\n  310 |       const createButton = page.locator('a[href=\"/teachers/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")');\n> 311 |       if (await createButton.isVisible()) {\n      |                              ^\n  312 |         await createButton.click();\n  313 |         await page.waitForLoadState('networkidle');\n  314 |       } else {\n    at /Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts:311:30"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "👨‍🏫 Testing Teachers Management...\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:41:21.288Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-7cf94-eachers-List-and-Navigation-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-7cf94-eachers-List-and-Navigation-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-7cf94-eachers-List-and-Navigation-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                            "column": 30,
+                            "line": 311
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-c1486432463cf1add79a",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 298,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "4. Students Management - Full CRUD",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 328,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "4.1 Students List and Create Form",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 0,
+                          "parallelIndex": 0,
+                          "status": "failed",
+                          "duration": 4557,
+                          "error": {
+                            "message": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/students/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 2 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/students/create\" class=\"nav-dropdown-link\"> Create Student </a> aka getByText('Create Student', { exact: true })\n    2) <button data-v-830fdd52=\"\" class=\"btn-primary\"> + Create Student </button> aka getByRole('button', { name: '+ Create Student' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/students/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n",
+                            "stack": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/students/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 2 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/students/create\" class=\"nav-dropdown-link\"> Create Student </a> aka getByText('Create Student', { exact: true })\n    2) <button data-v-830fdd52=\"\" class=\"btn-primary\"> + Create Student </button> aka getByRole('button', { name: '+ Create Student' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/students/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n\n    at /Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts:343:30",
+                            "location": {
+                              "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                              "column": 30,
+                              "line": 343
+                            },
+                            "snippet": "  341 |       // Navigate to create form\n  342 |       const createButton = page.locator('a[href=\"/students/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")');\n> 343 |       if (await createButton.isVisible()) {\n      |                              ^\n  344 |         await createButton.click();\n  345 |         await page.waitForLoadState('networkidle');\n  346 |       } else {"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                                "column": 30,
+                                "line": 343
+                              },
+                              "message": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/students/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 2 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/students/create\" class=\"nav-dropdown-link\"> Create Student </a> aka getByText('Create Student', { exact: true })\n    2) <button data-v-830fdd52=\"\" class=\"btn-primary\"> + Create Student </button> aka getByRole('button', { name: '+ Create Student' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/students/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n\n\n  341 |       // Navigate to create form\n  342 |       const createButton = page.locator('a[href=\"/students/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")');\n> 343 |       if (await createButton.isVisible()) {\n      |                              ^\n  344 |         await createButton.click();\n  345 |         await page.waitForLoadState('networkidle');\n  346 |       } else {\n    at /Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts:343:30"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "👨‍🎓 Testing Students Management...\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:41:44.639Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-0d747-udents-List-and-Create-Form-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-0d747-udents-List-and-Create-Form-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-0d747-udents-List-and-Create-Form-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                            "column": 30,
+                            "line": 343
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-24eaac352582a50b5409",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 330,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "5. Parents Management - Full CRUD",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 409,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "5.1 Parents List and Create Form",
+                  "ok": false,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 4,
+                          "parallelIndex": 2,
+                          "status": "failed",
+                          "duration": 5750,
+                          "error": {
+                            "message": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/parents/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 3 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/parents/create\" class=\"nav-dropdown-link\"> Create Parent </a> aka locator('a').filter({ hasText: 'Create Parent' })\n    2) <button data-v-94003333=\"\" class=\"btn-primary\">…</button> aka getByRole('button', { name: '➕ Create Parent' })\n    3) <button data-v-94003333=\"\" class=\"btn-primary\"> Create Parent </button> aka getByRole('button', { name: 'Create Parent', exact: true })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/parents/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n",
+                            "stack": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/parents/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 3 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/parents/create\" class=\"nav-dropdown-link\"> Create Parent </a> aka locator('a').filter({ hasText: 'Create Parent' })\n    2) <button data-v-94003333=\"\" class=\"btn-primary\">…</button> aka getByRole('button', { name: '➕ Create Parent' })\n    3) <button data-v-94003333=\"\" class=\"btn-primary\"> Create Parent </button> aka getByRole('button', { name: 'Create Parent', exact: true })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/parents/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n\n    at /Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts:424:30",
+                            "location": {
+                              "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                              "column": 30,
+                              "line": 424
+                            },
+                            "snippet": "  422 |       // Navigate to create form\n  423 |       const createButton = page.locator('a[href=\"/parents/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")');\n> 424 |       if (await createButton.isVisible()) {\n      |                              ^\n  425 |         await createButton.click();\n  426 |         await page.waitForLoadState('networkidle');\n  427 |       } else {"
+                          },
+                          "errors": [
+                            {
+                              "location": {
+                                "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                                "column": 30,
+                                "line": 424
+                              },
+                              "message": "Error: locator.isVisible: Error: strict mode violation: locator('a[href=\"/parents/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")') resolved to 3 elements:\n    1) <a data-v-5e3203dd=\"\" href=\"/parents/create\" class=\"nav-dropdown-link\"> Create Parent </a> aka locator('a').filter({ hasText: 'Create Parent' })\n    2) <button data-v-94003333=\"\" class=\"btn-primary\">…</button> aka getByRole('button', { name: '➕ Create Parent' })\n    3) <button data-v-94003333=\"\" class=\"btn-primary\"> Create Parent </button> aka getByRole('button', { name: 'Create Parent', exact: true })\n\nCall log:\n\u001b[2m    - checking visibility of locator('a[href=\"/parents/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")')\u001b[22m\n\n\n  422 |       // Navigate to create form\n  423 |       const createButton = page.locator('a[href=\"/parents/create\"], button:has-text(\"Create\"), button:has-text(\"Add\")');\n> 424 |       if (await createButton.isVisible()) {\n      |                              ^\n  425 |         await createButton.click();\n  426 |         await page.waitForLoadState('networkidle');\n  427 |       } else {\n    at /Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts:424:30"
+                            }
+                          ],
+                          "stdout": [
+                            {
+                              "text": "👨‍👩‍👧‍👦 Testing Parents Management...\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:41:47.194Z",
+                          "annotations": [],
+                          "attachments": [
+                            {
+                              "name": "screenshot",
+                              "contentType": "image/png",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-91076-arents-List-and-Create-Form-chromium/test-failed-1.png"
+                            },
+                            {
+                              "name": "video",
+                              "contentType": "video/webm",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-91076-arents-List-and-Create-Form-chromium/video.webm"
+                            },
+                            {
+                              "name": "error-context",
+                              "contentType": "text/markdown",
+                              "path": "/Users/kaveerh/claude-projects/test-results/comprehensive-crud-Green-S-91076-arents-List-and-Create-Form-chromium/error-context.md"
+                            }
+                          ],
+                          "errorLocation": {
+                            "file": "/Users/kaveerh/claude-projects/tests/comprehensive-crud.spec.ts",
+                            "column": 30,
+                            "line": 424
+                          }
+                        }
+                      ],
+                      "status": "unexpected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-1f8e8591019cd2981813",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 411,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "6. Navigation and Layout Testing",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 502,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "6.1 Main Navigation and Dashboard",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 5,
+                          "parallelIndex": 3,
+                          "status": "passed",
+                          "duration": 19377,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "🧭 Testing Navigation and Layout...\n"
+                            },
+                            {
+                              "text": "🔗 Testing navigation to Users...\n"
+                            },
+                            {
+                              "text": "✅ Users page loaded successfully\n"
+                            },
+                            {
+                              "text": "🔗 Testing navigation to Schools...\n"
+                            },
+                            {
+                              "text": "✅ Schools page loaded successfully\n"
+                            },
+                            {
+                              "text": "🔗 Testing navigation to Teachers...\n"
+                            },
+                            {
+                              "text": "✅ Teachers page loaded successfully\n"
+                            },
+                            {
+                              "text": "🔗 Testing navigation to Students...\n"
+                            },
+                            {
+                              "text": "✅ Students page loaded successfully\n"
+                            },
+                            {
+                              "text": "🔗 Testing navigation to Parents...\n"
+                            },
+                            {
+                              "text": "✅ Parents page loaded successfully\n"
+                            },
+                            {
+                              "text": "✅ Navigation testing completed\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:41:47.210Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-26e690bc995d78b62b40",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 504,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "7. Responsive Design Testing",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 551,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "7.1 Mobile and Tablet Views",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "parallelIndex": 1,
+                          "status": "passed",
+                          "duration": 29467,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "📱 Testing Responsive Design...\n"
+                            },
+                            {
+                              "text": "📐 Testing mobile viewport (375x667)...\n"
+                            },
+                            {
+                              "text": "📐 Testing tablet viewport (768x1024)...\n"
+                            },
+                            {
+                              "text": "📐 Testing desktop viewport (1920x1080)...\n"
+                            },
+                            {
+                              "text": "✅ Responsive design testing completed\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:41:48.133Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-0f98a72997f41cd09ab9",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 553,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "8. Error Handling and Edge Cases",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 586,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "8.1 404 Pages and Invalid Routes",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 6,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 11004,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "🚫 Testing Error Handling...\n"
+                            },
+                            {
+                              "text": "🔍 Testing invalid route: /invalid-page\n"
+                            },
+                            {
+                              "text": "🔍 Testing invalid route: /users/invalid-id\n"
+                            },
+                            {
+                              "text": "🔍 Testing invalid route: /teachers/999999\n"
+                            },
+                            {
+                              "text": "🔍 Testing invalid route: /students/nonexistent\n"
+                            },
+                            {
+                              "text": "✅ Error handling testing completed\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:41:52.311Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-a7c3301fb6fe1ce78cb5",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 588,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "9. Performance and Loading States",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 615,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "9.1 Loading States and Performance",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 7,
+                          "parallelIndex": 2,
+                          "status": "passed",
+                          "duration": 13705,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "⚡ Testing Performance and Loading States...\n"
+                            },
+                            {
+                              "text": "⏱️  Testing loading performance for /users...\n"
+                            },
+                            {
+                              "text": "📊 /users loaded in 2756ms\n"
+                            },
+                            {
+                              "text": "⏱️  Testing loading performance for /schools...\n"
+                            },
+                            {
+                              "text": "📊 /schools loaded in 1804ms\n"
+                            },
+                            {
+                              "text": "⏱️  Testing loading performance for /teachers...\n"
+                            },
+                            {
+                              "text": "📊 /teachers loaded in 1762ms\n"
+                            },
+                            {
+                              "text": "⏱️  Testing loading performance for /students...\n"
+                            },
+                            {
+                              "text": "📊 /students loaded in 1560ms\n"
+                            },
+                            {
+                              "text": "⏱️  Testing loading performance for /parents...\n"
+                            },
+                            {
+                              "text": "📊 /parents loaded in 1484ms\n"
+                            },
+                            {
+                              "text": "✅ Performance testing completed\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:41:57.463Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-4f99ca2185404d5cfa79",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 617,
+                  "column": 9
+                }
+              ]
+            },
+            {
+              "title": "10. Final Summary and Report",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 651,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "10.1 Generate Test Summary Report",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [
+                        {
+                          "workerIndex": 6,
+                          "parallelIndex": 0,
+                          "status": "passed",
+                          "duration": 5666,
+                          "errors": [],
+                          "stdout": [
+                            {
+                              "text": "📋 Generating Final Test Summary...\n"
+                            },
+                            {
+                              "text": "\n🎉 COMPREHENSIVE UX TESTING COMPLETED!\n"
+                            },
+                            {
+                              "text": "\n📊 TESTED FEATURES:\n"
+                            },
+                            {
+                              "text": "✅ Users Management - List, Create, Form Validation\n"
+                            },
+                            {
+                              "text": "✅ Schools Management - List, Create, Form Validation\n"
+                            },
+                            {
+                              "text": "✅ Teachers Management - Navigation and List View\n"
+                            },
+                            {
+                              "text": "✅ Students Management - List, Create, Form Validation\n"
+                            },
+                            {
+                              "text": "✅ Parents Management - List, Create, Form Validation\n"
+                            },
+                            {
+                              "text": "✅ Navigation and Layout - All main routes tested\n"
+                            },
+                            {
+                              "text": "✅ Responsive Design - Mobile, Tablet, Desktop viewports\n"
+                            },
+                            {
+                              "text": "✅ Error Handling - Invalid routes and 404 pages\n"
+                            },
+                            {
+                              "text": "✅ Performance Testing - Loading states and timing\n"
+                            },
+                            {
+                              "text": "✅ Screenshot Documentation - All steps captured\n"
+                            },
+                            {
+                              "text": "\n📸 SCREENSHOTS CAPTURED:\n"
+                            },
+                            {
+                              "text": "- All major user flows documented\n"
+                            },
+                            {
+                              "text": "- Form validation states captured\n"
+                            },
+                            {
+                              "text": "- Responsive design variations\n"
+                            },
+                            {
+                              "text": "- Error states and edge cases\n"
+                            },
+                            {
+                              "text": "- Performance and loading states\n"
+                            },
+                            {
+                              "text": "\n📁 Results saved to: test-results/screenshots/\n"
+                            },
+                            {
+                              "text": "✅ Test suite execution completed successfully!\n"
+                            }
+                          ],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-10-17T11:42:04.831Z",
+                          "annotations": [],
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
+                    }
+                  ],
+                  "id": "59873d68576aff739198-79653a73cde1b98e522c",
+                  "file": "comprehensive-crud.spec.ts",
+                  "line": 653,
+                  "column": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-10-17T11:41:19.807Z",
+    "duration": 58275.261,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}

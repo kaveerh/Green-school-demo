@@ -1,0 +1,124 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - navigation [ref=e5]:
+    - link "🌱 Green School" [ref=e7] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e8]: 🌱
+      - generic [ref=e9]: Green School
+    - list [ref=e10]:
+      - listitem [ref=e11]:
+        - link "📊 Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e13]: 📊
+          - generic [ref=e14]: Dashboard
+      - listitem [ref=e15]:
+        - button "👥 Users ▶" [ref=e17] [cursor=pointer]:
+          - generic [ref=e18]: 👥
+          - generic [ref=e19]: Users
+          - generic [ref=e20]: ▶
+      - listitem [ref=e21]:
+        - button "🏫 Schools ▶" [ref=e23] [cursor=pointer]:
+          - generic [ref=e24]: 🏫
+          - generic [ref=e25]: Schools
+          - generic [ref=e26]: ▶
+      - listitem [ref=e27]:
+        - button "👨‍🏫 Teachers ▶" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 👨‍🏫
+          - generic [ref=e31]: Teachers
+          - generic [ref=e32]: ▶
+      - listitem [ref=e33]:
+        - button "🎓 Students ▶" [ref=e35] [cursor=pointer]:
+          - generic [ref=e36]: 🎓
+          - generic [ref=e37]: Students
+          - generic [ref=e38]: ▶
+      - listitem [ref=e39]:
+        - button "👪 Parents ▶" [ref=e41] [cursor=pointer]:
+          - generic [ref=e42]: 👪
+          - generic [ref=e43]: Parents
+          - generic [ref=e44]: ▶
+      - listitem [ref=e45]:
+        - generic [ref=e46]:
+          - generic [ref=e47]: 📚
+          - generic [ref=e48]: Classes
+          - generic [ref=e49]: Coming Soon
+    - button "AU Admin User ▶" [ref=e52] [cursor=pointer]:
+      - generic [ref=e53]: AU
+      - generic [ref=e54]: Admin User
+      - generic [ref=e55]: ▶
+  - main [ref=e56]:
+    - navigation "Breadcrumb" [ref=e57]:
+      - list [ref=e58]:
+        - listitem [ref=e59]:
+          - link "Home" [ref=e60] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e61]: /
+        - listitem [ref=e62]:
+          - generic [ref=e63]: Schools
+    - generic [ref=e65]:
+      - generic [ref=e66]:
+        - heading "School Management" [level=2] [ref=e67]
+        - button "+ Create School" [ref=e68] [cursor=pointer]
+      - generic [ref=e69]:
+        - textbox "Search schools by name, city, or email..." [ref=e71]
+        - generic [ref=e72]:
+          - combobox [ref=e73]:
+            - option "All Statuses" [selected]
+            - option "Active"
+            - option "Inactive"
+            - option "Suspended"
+          - textbox "Filter by city" [ref=e74]
+          - textbox "Filter by state" [ref=e75]
+          - button "Clear Filters" [ref=e76] [cursor=pointer]
+      - generic [ref=e77]:
+        - table [ref=e78]:
+          - rowgroup [ref=e79]:
+            - row "Name Location Contact Status Created Actions" [ref=e80]:
+              - cell "Name" [ref=e81]
+              - cell "Location" [ref=e82]
+              - cell "Contact" [ref=e83]
+              - cell "Status" [ref=e84]
+              - cell "Created" [ref=e85]
+              - cell "Actions" [ref=e86]
+          - rowgroup [ref=e87]:
+            - row "GV Green Valley Elementary green-valley Springfield, CA USA 📧 admin@greenschool.edu 📞 +1-555-0100 Active Oct 14, 2025 👁️ ✏️ 🗑️" [ref=e88]:
+              - cell "GV Green Valley Elementary green-valley" [ref=e89]:
+                - generic [ref=e90]:
+                  - generic [ref=e91]: GV
+                  - generic [ref=e92]:
+                    - generic [ref=e93]: Green Valley Elementary
+                    - generic [ref=e94]: green-valley
+              - cell "Springfield, CA USA" [ref=e95]:
+                - generic [ref=e96]:
+                  - generic [ref=e97]: Springfield, CA
+                  - generic [ref=e98]: USA
+              - cell "📧 admin@greenschool.edu 📞 +1-555-0100" [ref=e99]:
+                - generic [ref=e100]:
+                  - generic [ref=e101]: 📧 admin@greenschool.edu
+                  - generic [ref=e102]: 📞 +1-555-0100
+              - cell "Active" [ref=e103]:
+                - generic [ref=e104]: Active
+              - cell "Oct 14, 2025" [ref=e105]
+              - cell "👁️ ✏️ 🗑️" [ref=e106]:
+                - generic [ref=e107]:
+                  - button "👁️" [ref=e108] [cursor=pointer]
+                  - button "✏️" [ref=e109] [cursor=pointer]
+                  - button "🗑️" [ref=e110] [cursor=pointer]
+        - generic [ref=e111]:
+          - button "Previous" [disabled] [ref=e112]
+          - generic [ref=e113]: Page 1 of 1 (1 total schools)
+          - button "Next" [disabled] [ref=e114]
+  - contentinfo [ref=e115]:
+    - generic [ref=e116]:
+      - paragraph [ref=e117]: © 2025 Green School Management System
+      - generic [ref=e118]:
+        - link "Privacy Policy" [ref=e119] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e120]: ·
+        - link "Terms of Service" [ref=e121] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e122]: ·
+        - link "Help" [ref=e123] [cursor=pointer]:
+          - /url: "#"
+```
