@@ -188,7 +188,7 @@ async function loadUsers() {
   try {
     const schoolId = localStorage.getItem('current_school_id')
     const params = new URLSearchParams({
-      limit: '1000'
+      limit: '100' // API max limit is 100
     })
 
     if (schoolId) {
