@@ -251,26 +251,22 @@ class ParentRepository(BaseRepository[Parent]):
 
     async def create_relationship(
         self,
-        school_id: uuid.UUID,
         parent_id: uuid.UUID,
         student_id: uuid.UUID,
         relationship_type: str,
         is_primary_contact: bool = False,
-        has_legal_custody: bool = True,
         has_pickup_permission: bool = True,
         created_by_id: Optional[uuid.UUID] = None
     ) -> ParentStudentRelationship:
         """Create a parent-student relationship"""
         relationship = ParentStudentRelationship(
-            school_id=school_id,
             parent_id=parent_id,
             student_id=student_id,
             relationship_type=relationship_type,
             is_primary_contact=is_primary_contact,
-            has_legal_custody=has_legal_custody,
             has_pickup_permission=has_pickup_permission,
-            created_by_id=created_by_id,
-            updated_by_id=created_by_id
+            created_by=created_by_id,
+            updated_by=created_by_id
         )
 
         self.session.add(relationship)

@@ -152,14 +152,12 @@ class ParentStudentRelationship(BaseModel):
     __tablename__ = "parent_student_relationships"
 
     # Foreign Keys
-    school_id = Column(PG_UUID(as_uuid=True), ForeignKey("schools.id", ondelete="CASCADE"), nullable=False)
     parent_id = Column(PG_UUID(as_uuid=True), ForeignKey("parents.id", ondelete="CASCADE"), nullable=False)
     student_id = Column(PG_UUID(as_uuid=True), ForeignKey("students.id", ondelete="CASCADE"), nullable=False)
 
     # Relationship details
     relationship_type = Column(String(50), nullable=False)
     is_primary_contact = Column(Boolean, default=False, nullable=True)
-    has_legal_custody = Column(Boolean, default=True, nullable=True)
     has_pickup_permission = Column(Boolean, default=True, nullable=True)
 
     # Relationships
@@ -172,7 +170,6 @@ class ParentStudentRelationship(BaseModel):
             "relationship_type IN ('mother', 'father', 'guardian', 'stepmother', 'stepfather', 'grandparent', 'foster_parent', 'other')",
             name="chk_parent_student_relationship_type"
         ),
-        Index('idx_parent_student_school_id', 'school_id'),
         Index('idx_parent_student_parent_id', 'parent_id'),
         Index('idx_parent_student_student_id', 'student_id'),
         Index('idx_parent_student_unique', 'parent_id', 'student_id', unique=True),

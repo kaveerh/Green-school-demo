@@ -97,7 +97,6 @@ class ParentStudentRelationshipSchema(BaseModel):
     student_id: str
     relationship_type: str
     is_primary_contact: bool
-    has_legal_custody: bool
     has_pickup_permission: bool
     student: Optional[StudentBasicSchema] = None
 
@@ -144,7 +143,6 @@ class ParentStudentLinkSchema(BaseModel):
     student_id: uuid.UUID = Field(..., description="Student UUID to link")
     relationship_type: str = Field(..., description="Type of relationship")
     is_primary_contact: Optional[bool] = Field(False, description="Is this the primary contact?")
-    has_legal_custody: Optional[bool] = Field(True, description="Does parent have legal custody?")
     has_pickup_permission: Optional[bool] = Field(True, description="Can parent pick up student?")
 
     @field_validator('relationship_type')
@@ -159,12 +157,10 @@ class ParentStudentLinkSchema(BaseModel):
 class ParentStudentRelationshipResponseSchema(BaseModel):
     """Full parent-student relationship response"""
     id: str
-    school_id: str
     parent_id: str
     student_id: str
     relationship_type: str
     is_primary_contact: bool
-    has_legal_custody: bool
     has_pickup_permission: bool
     created_at: datetime
     updated_at: datetime

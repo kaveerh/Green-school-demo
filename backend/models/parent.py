@@ -89,7 +89,6 @@ class Parent(BaseModel):
                         "student_id": str(rel.student_id),
                         "relationship_type": rel.relationship_type,
                         "is_primary_contact": rel.is_primary_contact,
-                        "has_legal_custody": rel.has_legal_custody,
                         "has_pickup_permission": rel.has_pickup_permission,
                         "student": {
                             "id": str(rel.student.id),
@@ -106,13 +105,6 @@ class Parent(BaseModel):
                 ]
 
         return data
-
-    def has_custody_of(self, student_id: uuid.UUID) -> bool:
-        """Check if parent has legal custody of a student."""
-        for rel in self.student_relationships:
-            if rel.student_id == student_id and rel.has_legal_custody and rel.deleted_at is None:
-                return True
-        return False
 
     def can_pickup(self, student_id: uuid.UUID) -> bool:
         """Check if parent is authorized to pick up a student."""

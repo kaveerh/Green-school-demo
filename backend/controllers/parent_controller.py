@@ -271,7 +271,6 @@ async def link_parent_to_student(
 
     **Optional:**
     - is_primary_contact (default: false)
-    - has_legal_custody (default: true)
     - has_pickup_permission (default: true)
 
     **Permissions:** Administrator only
@@ -285,19 +284,16 @@ async def link_parent_to_student(
             student_id=link_data.student_id,
             relationship_type=link_data.relationship_type,
             is_primary_contact=link_data.is_primary_contact or False,
-            has_legal_custody=link_data.has_legal_custody if link_data.has_legal_custody is not None else True,
             has_pickup_permission=link_data.has_pickup_permission if link_data.has_pickup_permission is not None else True,
             created_by_id=current_user_id
         )
 
         return ParentStudentRelationshipResponseSchema(
             id=str(relationship.id),
-            school_id=str(relationship.school_id),
             parent_id=str(relationship.parent_id),
             student_id=str(relationship.student_id),
             relationship_type=relationship.relationship_type,
             is_primary_contact=relationship.is_primary_contact,
-            has_legal_custody=relationship.has_legal_custody,
             has_pickup_permission=relationship.has_pickup_permission,
             created_at=relationship.created_at,
             updated_at=relationship.updated_at

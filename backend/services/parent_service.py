@@ -53,7 +53,7 @@ class ParentService:
             ValueError: If user doesn't exist or doesn't have parent persona
         """
         # Validate user exists and has parent persona
-        user = await self.user_repository.get_by_id(user_id)
+        user = await self.user_repository.find_by_id(user_id)
         if not user:
             raise ValueError("User not found")
 
@@ -73,22 +73,20 @@ class ParentService:
             raise ValueError(f"Invalid preferred_contact_method: {preferred_contact_method}")
 
         # Create parent
-        parent = Parent(
-            school_id=school_id,
-            user_id=user_id,
-            occupation=occupation,
-            workplace=workplace,
-            phone_mobile=phone_mobile,
-            phone_work=phone_work,
-            preferred_contact_method=preferred_contact_method,
-            emergency_contact=emergency_contact,
-            pickup_authorized=pickup_authorized,
-            receives_newsletter=receives_newsletter,
-            created_by_id=created_by_id,
-            updated_by_id=created_by_id
-        )
+        parent_data = {
+            'school_id': school_id,
+            'user_id': user_id,
+            'occupation': occupation,
+            'workplace': workplace,
+            'phone_mobile': phone_mobile,
+            'phone_work': phone_work,
+            'preferred_contact_method': preferred_contact_method,
+            'emergency_contact': emergency_contact,
+            'pickup_authorized': pickup_authorized,
+            'receives_newsletter': receives_newsletter
+        }
 
-        return await self.repository.create(parent)
+        return await self.repository.create(parent_data, created_by_id)
 
     async def get_parent_by_id(self, parent_id: uuid.UUID) -> Optional[Parent]:
         """Get parent by ID with relationships"""
@@ -170,7 +168,7 @@ class ParentService:
         if receives_newsletter is not None:
             parent.receives_newsletter = receives_newsletter
 
-        parent.updated_by_id = updated_by_id
+        parent.updated_by = updated_by_id
 
         return await self.repository.update(parent)
 
@@ -197,7 +195,6 @@ class ParentService:
         relationship_type: str,
         created_by_id: uuid.UUID,
         is_primary_contact: bool = False,
-        has_legal_custody: bool = True,
         has_pickup_permission: bool = True
     ) -> ParentStudentRelationship:
         """
@@ -209,7 +206,6 @@ class ParentService:
             relationship_type: Type of relationship (mother, father, guardian, etc.)
             created_by_id: UUID of user creating the link
             is_primary_contact: Whether this parent is the primary contact
-            has_legal_custody: Whether parent has legal custody
             has_pickup_permission: Whether parent can pick up student
 
         Returns:
@@ -245,12 +241,10 @@ class ParentService:
 
         # Create relationship
         return await self.repository.create_relationship(
-            school_id=parent.school_id,
             parent_id=parent_id,
             student_id=student_id,
             relationship_type=relationship_type,
             is_primary_contact=is_primary_contact,
-            has_legal_custody=has_legal_custody,
             has_pickup_permission=has_pickup_permission,
             created_by_id=created_by_id
         )
