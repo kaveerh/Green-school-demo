@@ -41,9 +41,9 @@ class Student(BaseModel):
     user = relationship("User", back_populates="student_profile")
     school = relationship("School", back_populates="students")
     parent_relationships = relationship("ParentStudentRelationship", back_populates="student")
+    assessments = relationship("Assessment", back_populates="student")
     # classes = relationship("ClassEnrollment", back_populates="student")
     # attendance = relationship("Attendance", back_populates="student")
-    # assessments = relationship("Assessment", back_populates="student")
 
     # Constraints
     __table_args__ = (

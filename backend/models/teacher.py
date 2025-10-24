@@ -58,6 +58,7 @@ class Teacher(BaseModel):
     # Relationships
     user = relationship("User", back_populates="teacher_profile")
     school = relationship("School", back_populates="teachers")
+    assessments = relationship("Assessment", back_populates="teacher")
     # classes = relationship("Class", back_populates="teacher")
 
     # Constraints

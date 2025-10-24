@@ -54,6 +54,7 @@ class Class(BaseModel):
     teacher = relationship("Teacher")
     room = relationship("Room")
     student_enrollments = relationship("StudentClass", back_populates="class_obj", cascade="all, delete-orphan")
+    assessments = relationship("Assessment", back_populates="class_obj")
 
     # Constraints
     __table_args__ = (

@@ -49,8 +49,8 @@ class Subject(BaseModel):
 
     # Relationships
     school = relationship("School", back_populates="subjects")
+    assessments = relationship("Assessment", back_populates="subject")
     # classes = relationship("Class", back_populates="subject")  # To be added when Class model exists
-    # assessments = relationship("Assessment", back_populates="subject")  # Future
     # lessons = relationship("Lesson", back_populates="subject")  # Future
 
     # Constraints
