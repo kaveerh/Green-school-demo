@@ -186,31 +186,45 @@ class Assessment(BaseModel):
         data['grade_display'] = self.grade_display
 
         if include_relationships:
-            if self.student and self.student.user:
-                data["student"] = {
-                    "id": str(self.student.id),
-                    "student_id": self.student.student_id,
-                    "name": f"{self.student.user.first_name} {self.student.user.last_name}",
-                    "grade_level": self.student.grade_level
-                }
+            # Only include relationships if already loaded (avoid lazy loading)
+            try:
+                if self.student and self.student.user:
+                    data["student"] = {
+                        "id": str(self.student.id),
+                        "student_id": self.student.student_id,
+                        "name": f"{self.student.user.first_name} {self.student.user.last_name}",
+                        "grade_level": self.student.grade_level
+                    }
+            except:
+                pass
 
-            if self.teacher and self.teacher.user:
-                data["teacher"] = {
-                    "id": str(self.teacher.id),
-                    "name": f"{self.teacher.user.first_name} {self.teacher.user.last_name}"
-                }
+            try:
+                if self.teacher and self.teacher.user:
+                    data["teacher"] = {
+                        "id": str(self.teacher.id),
+                        "name": f"{self.teacher.user.first_name} {self.teacher.user.last_name}"
+                    }
+            except:
+                pass
 
-            if self.subject:
-                data["subject"] = {
-                    "id": str(self.subject.id),
-                    "name": self.subject.name,
-                    "code": self.subject.code
-                }
+            try:
+                if self.subject:
+                    data["subject"] = {
+                        "id": str(self.subject.id),
+                        "name": self.subject.name,
+                        "code": self.subject.code
+                    }
+            except:
+                pass
 
-            if self.class_obj:
-                data["class"] = {
-                    "id": str(self.class_obj.id),
-                    "name": self.class_obj.name
-                }
+            try:
+                if self.class_obj:
+                    data["class"] = {
+                        "id": str(self.class_obj.id),
+                        "name": self.class_obj.name,
+                        "code": self.class_obj.code
+                    }
+            except:
+                pass
 
         return data

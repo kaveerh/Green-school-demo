@@ -296,7 +296,7 @@ async def update_assessment(
         # TODO: Get current_user_id from auth
         current_user_id = uuid.uuid4()  # Placeholder
 
-        assessment = await service.repository.get_by_id(assessment_id)
+        assessment = await service.repository.find_by_id(assessment_id)
         if not assessment:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,

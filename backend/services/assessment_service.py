@@ -50,7 +50,7 @@ class AssessmentService:
         """Create a new assessment"""
 
         # Validate entities exist
-        student = await self.student_repository.get_by_id(student_id)
+        student = await self.student_repository.find_by_id(student_id)
         if not student:
             raise ValueError("Student not found")
 
@@ -98,19 +98,55 @@ class AssessmentService:
         updated_by_id: uuid.UUID
     ) -> Optional[Assessment]:
         """Grade an assessment"""
-        assessment = await self.repository.get_by_id(assessment_id)
+        assessment = await self.repository.find_by_id(assessment_id)
         if not assessment:
             return None
 
-        assessment.points_earned = points_earned
-        assessment.calculate_percentage()
-        assessment.letter_grade = assessment.assign_letter_grade()
-        assessment.feedback = feedback
-        assessment.status = "graded"
-        assessment.graded_at = datetime.now()
-        assessment.updated_by = updated_by_id
+        # Calculate values
+        percentage = None
+        if points_earned is not None:
+            percentage = (float(points_earned) / float(assessment.total_points)) * 100
 
-        return await self.repository.update(assessment)
+        letter_grade = None
+        if percentage is not None:
+            if percentage >= 97:
+                letter_grade = "A+"
+            elif percentage >= 93:
+                letter_grade = "A"
+            elif percentage >= 90:
+                letter_grade = "A-"
+            elif percentage >= 87:
+                letter_grade = "B+"
+            elif percentage >= 83:
+                letter_grade = "B"
+            elif percentage >= 80:
+                letter_grade = "B-"
+            elif percentage >= 77:
+                letter_grade = "C+"
+            elif percentage >= 73:
+                letter_grade = "C"
+            elif percentage >= 70:
+                letter_grade = "C-"
+            elif percentage >= 67:
+                letter_grade = "D+"
+            elif percentage >= 63:
+                letter_grade = "D"
+            elif percentage >= 60:
+                letter_grade = "D-"
+            else:
+                letter_grade = "F"
+
+        # Prepare update data
+        update_data = {
+            'points_earned': points_earned,
+            'percentage': percentage,
+            'letter_grade': letter_grade,
+            'feedback': feedback,
+            'status': "graded",
+            'graded_at': datetime.now()
+        }
+
+        return await self.repository.update(assessment_id, update_data, updated_by_id)
 
     async def get_student_assessments(
         self,
