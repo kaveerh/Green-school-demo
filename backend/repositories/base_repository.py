@@ -48,13 +48,13 @@ class BaseRepository(Generic[ModelType]):
         await self.session.refresh(instance)
         return instance
 
-    async def find_by_id(
+    async def get_by_id(
         self,
         id: uuid.UUID,
         include_deleted: bool = False
     ) -> Optional[ModelType]:
         """
-        Find a record by ID
+        Get a record by ID
 
         Args:
             id: Record UUID
@@ -147,7 +147,7 @@ class BaseRepository(Generic[ModelType]):
         Returns:
             Updated model instance or None
         """
-        instance = await self.find_by_id(id)
+        instance = await self.get_by_id(id)
         if not instance:
             return None
 
@@ -182,7 +182,7 @@ class BaseRepository(Generic[ModelType]):
         Returns:
             True if deleted, False if not found
         """
-        instance = await self.find_by_id(id)
+        instance = await self.get_by_id(id)
         if not instance:
             return False
 
@@ -204,7 +204,7 @@ class BaseRepository(Generic[ModelType]):
         Returns:
             True if exists, False otherwise
         """
-        result = await self.find_by_id(id)
+        result = await self.get_by_id(id)
         return result is not None
 
     def _apply_filters(self, query: Select, filters: Dict[str, Any]) -> Select:

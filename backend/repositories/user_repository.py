@@ -316,7 +316,7 @@ class UserRepository(BaseRepository[User]):
         """
         from datetime import datetime
 
-        user = await self.find_by_id(user_id)
+        user = await self.get_by_id(user_id)
         if not user:
             return None
 

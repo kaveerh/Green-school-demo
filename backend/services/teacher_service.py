@@ -55,7 +55,7 @@ class TeacherService:
         teacher_dict = teacher_data.model_dump()
 
         # Validate user exists and has teacher persona
-        user = await self.user_repository.find_by_id(teacher_data.user_id)
+        user = await self.user_repository.get_by_id(teacher_data.user_id)
         if not user:
             raise ValueError("User not found")
         if user.persona != "teacher":
@@ -94,7 +94,7 @@ class TeacherService:
         Returns:
             Teacher response schema or None
         """
-        teacher = await self.repository.find_by_id(teacher_id)
+        teacher = await self.repository.get_by_id(teacher_id)
         if not teacher:
             return None
 
@@ -238,7 +238,7 @@ class TeacherService:
             ValueError: If validation fails
         """
         # Check if teacher exists
-        existing_teacher = await self.repository.find_by_id(teacher_id)
+        existing_teacher = await self.repository.get_by_id(teacher_id)
         if not existing_teacher:
             return None
 

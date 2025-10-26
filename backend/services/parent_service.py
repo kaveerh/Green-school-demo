@@ -53,7 +53,7 @@ class ParentService:
             ValueError: If user doesn't exist or doesn't have parent persona
         """
         # Validate user exists and has parent persona
-        user = await self.user_repository.find_by_id(user_id)
+        user = await self.user_repository.get_by_id(user_id)
         if not user:
             raise ValueError("User not found")
 

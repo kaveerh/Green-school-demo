@@ -109,7 +109,7 @@ class LessonService:
             raise ValueError("Color must be in format #RRGGBB")
 
         # Validate teacher exists and belongs to school
-        teacher = await self.teacher_repository.find_by_id(teacher_id)
+        teacher = await self.teacher_repository.get_by_id(teacher_id)
         if not teacher:
             raise ValueError(f"Teacher {teacher_id} not found")
         if teacher.school_id != school_id:
@@ -430,7 +430,7 @@ class LessonService:
 
         # Validate relationships if being updated
         if 'teacher_id' in updates:
-            teacher = await self.teacher_repository.find_by_id(updates['teacher_id'])
+            teacher = await self.teacher_repository.get_by_id(updates['teacher_id'])
             if not teacher:
                 raise ValueError(f"Teacher {updates['teacher_id']} not found")
             if teacher.school_id != lesson.school_id:

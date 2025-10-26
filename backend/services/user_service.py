@@ -93,7 +93,7 @@ class UserService:
         Raises:
             PermissionError: If user not authorized to view
         """
-        user = await self.repository.find_by_id(user_id)
+        user = await self.repository.get_by_id(user_id)
         if not user:
             return None
 
@@ -196,7 +196,7 @@ class UserService:
             PermissionError: If user not authorized to update
         """
         # Check if user exists
-        existing_user = await self.repository.find_by_id(user_id)
+        existing_user = await self.repository.get_by_id(user_id)
         if not existing_user:
             return None
 
@@ -353,7 +353,7 @@ class UserService:
         Returns:
             True if password matches, False otherwise
         """
-        user = await self.repository.find_by_id(user_id)
+        user = await self.repository.get_by_id(user_id)
         if not user or not user.password_hash:
             return False
 

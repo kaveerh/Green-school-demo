@@ -296,40 +296,47 @@ async def update_assessment(
         # TODO: Get current_user_id from auth
         current_user_id = uuid.uuid4()  # Placeholder
 
-        assessment = await service.repository.find_by_id(assessment_id)
-        if not assessment:
+        # Build update data dictionary
+        update_data = {}
+
+        if assessment_data.title is not None:
+            update_data['title'] = assessment_data.title
+        if assessment_data.description is not None:
+            update_data['description'] = assessment_data.description
+        if assessment_data.assessment_type is not None:
+            update_data['assessment_type'] = assessment_data.assessment_type.value
+        if assessment_data.assessment_date is not None:
+            update_data['assessment_date'] = assessment_data.assessment_date
+        if assessment_data.due_date is not None:
+            update_data['due_date'] = assessment_data.due_date
+        if assessment_data.total_points is not None:
+            update_data['total_points'] = assessment_data.total_points
+        if assessment_data.weight is not None:
+            update_data['weight'] = assessment_data.weight
+        if assessment_data.status is not None:
+            update_data['status'] = assessment_data.status.value
+        if assessment_data.is_extra_credit is not None:
+            update_data['is_extra_credit'] = assessment_data.is_extra_credit
+        if assessment_data.is_makeup is not None:
+            update_data['is_makeup'] = assessment_data.is_makeup
+
+        # Update assessment using repository
+        updated_assessment = await service.repository.update(
+            assessment_id,
+            update_data,
+            current_user_id
+        )
+
+        if not updated_assessment:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Assessment not found"
             )
 
-        # Update fields
-        if assessment_data.title is not None:
-            assessment.title = assessment_data.title
-        if assessment_data.description is not None:
-            assessment.description = assessment_data.description
-        if assessment_data.assessment_type is not None:
-            assessment.assessment_type = assessment_data.assessment_type.value
-        if assessment_data.assessment_date is not None:
-            assessment.assessment_date = assessment_data.assessment_date
-        if assessment_data.due_date is not None:
-            assessment.due_date = assessment_data.due_date
-        if assessment_data.total_points is not None:
-            assessment.total_points = assessment_data.total_points
-        if assessment_data.weight is not None:
-            assessment.weight = assessment_data.weight
-        if assessment_data.status is not None:
-            assessment.status = assessment_data.status.value
-        if assessment_data.is_extra_credit is not None:
-            assessment.is_extra_credit = assessment_data.is_extra_credit
-        if assessment_data.is_makeup is not None:
-            assessment.is_makeup = assessment_data.is_makeup
+        # Load relationships for response
+        assessment_with_relationships = await service.repository.get_with_relationships(assessment_id)
 
-        assessment.updated_by = current_user_id
-
-        updated_assessment = await service.repository.update(assessment)
-
-        return AssessmentResponseSchema(**updated_assessment.to_dict(include_relationships=True))
+        return AssessmentResponseSchema(**assessment_with_relationships.to_dict(include_relationships=True))
 
     except HTTPException:
         raise

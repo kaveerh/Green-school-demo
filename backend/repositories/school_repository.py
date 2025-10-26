@@ -162,7 +162,7 @@ class SchoolRepository(BaseRepository[School]):
         Returns:
             Updated school or None
         """
-        school = await self.find_by_id(school_id)
+        school = await self.get_by_id(school_id)
         if not school:
             return None
 

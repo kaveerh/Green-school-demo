@@ -50,15 +50,15 @@ class AssessmentService:
         """Create a new assessment"""
 
         # Validate entities exist
-        student = await self.student_repository.find_by_id(student_id)
+        student = await self.student_repository.get_by_id(student_id)
         if not student:
             raise ValueError("Student not found")
 
-        teacher = await self.teacher_repository.find_by_id(teacher_id)
+        teacher = await self.teacher_repository.get_by_id(teacher_id)
         if not teacher:
             raise ValueError("Teacher not found")
 
-        subject = await self.subject_repository.find_by_id(subject_id)
+        subject = await self.subject_repository.get_by_id(subject_id)
         if not subject:
             raise ValueError("Subject not found")
 
@@ -98,7 +98,7 @@ class AssessmentService:
         updated_by_id: uuid.UUID
     ) -> Optional[Assessment]:
         """Grade an assessment"""
-        assessment = await self.repository.find_by_id(assessment_id)
+        assessment = await self.repository.get_by_id(assessment_id)
         if not assessment:
             return None
 

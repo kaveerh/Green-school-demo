@@ -83,7 +83,7 @@ class SchoolService:
 
         # Validate principal_id if provided
         if school_dict.get('principal_id'):
-            principal = await self.user_repository.find_by_id(school_dict['principal_id'])
+            principal = await self.user_repository.get_by_id(school_dict['principal_id'])
             if not principal:
                 raise ValueError("Principal user not found")
             if principal.persona != "administrator":
@@ -91,7 +91,7 @@ class SchoolService:
 
         # Validate hod_id if provided
         if school_dict.get('hod_id'):
-            hod = await self.user_repository.find_by_id(school_dict['hod_id'])
+            hod = await self.user_repository.get_by_id(school_dict['hod_id'])
             if not hod:
                 raise ValueError("HOD user not found")
             if hod.persona not in ["teacher", "administrator"]:
@@ -118,7 +118,7 @@ class SchoolService:
         Returns:
             School response schema or None
         """
-        school = await self.repository.find_by_id(school_id)
+        school = await self.repository.get_by_id(school_id)
         if not school:
             return None
 
@@ -215,7 +215,7 @@ class SchoolService:
             ValueError: If validation fails
         """
         # Check if school exists
-        existing_school = await self.repository.find_by_id(school_id)
+        existing_school = await self.repository.get_by_id(school_id)
         if not existing_school:
             return None
 
@@ -234,7 +234,7 @@ class SchoolService:
 
         # Validate principal_id if provided
         if 'principal_id' in update_dict and update_dict['principal_id']:
-            principal = await self.user_repository.find_by_id(update_dict['principal_id'])
+            principal = await self.user_repository.get_by_id(update_dict['principal_id'])
             if not principal:
                 raise ValueError("Principal user not found")
             if principal.persona != "administrator":
@@ -242,7 +242,7 @@ class SchoolService:
 
         # Validate hod_id if provided
         if 'hod_id' in update_dict and update_dict['hod_id']:
-            hod = await self.user_repository.find_by_id(update_dict['hod_id'])
+            hod = await self.user_repository.get_by_id(update_dict['hod_id'])
             if not hod:
                 raise ValueError("HOD user not found")
             if hod.persona not in ["teacher", "administrator"]:
@@ -348,7 +348,7 @@ class SchoolService:
             ValueError: If principal validation fails
         """
         # Validate principal
-        principal = await self.user_repository.find_by_id(principal_id)
+        principal = await self.user_repository.get_by_id(principal_id)
         if not principal:
             raise ValueError("Principal user not found")
         if principal.persona != "administrator":
@@ -382,7 +382,7 @@ class SchoolService:
             ValueError: If HOD validation fails
         """
         # Validate HOD
-        hod = await self.user_repository.find_by_id(hod_id)
+        hod = await self.user_repository.get_by_id(hod_id)
         if not hod:
             raise ValueError("HOD user not found")
         if hod.persona not in ["teacher", "administrator"]:
