@@ -15,6 +15,7 @@ from models.lesson import Lesson
 from models.assessment import Assessment
 from models.attendance import Attendance
 from models.event import Event
+from models.activity import Activity, ActivityEnrollment
 
 # Export all models
 __all__ = [
@@ -33,4 +34,6 @@ __all__ = [
     "Assessment",
     "Attendance",
     "Event",
+    "Activity",
+    "ActivityEnrollment",
 ]

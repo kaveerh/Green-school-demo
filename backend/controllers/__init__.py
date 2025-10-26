@@ -14,6 +14,7 @@ from controllers.lesson_controller import router as lesson_router
 from controllers.assessment_controller import router as assessment_router
 from controllers.attendance_controller import router as attendance_router
 from controllers.event_controller import router as event_router
+from controllers.activity_controller import router as activity_router
 
 # Export all routers
 __all__ = [
@@ -29,4 +30,5 @@ __all__ = [
     "assessment_router",
     "attendance_router",
     "event_router",
+    "activity_router",
 ]
