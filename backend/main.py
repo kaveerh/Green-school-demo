@@ -13,7 +13,7 @@ from config.database import engine, Base
 from config.settings import settings
 
 # Import controllers
-from controllers import user_router, school_router, teacher_router, student_router, parent_router, subject_router, room_router, class_router, lesson_router, assessment_router, attendance_router, event_router, activity_router
+from controllers import user_router, school_router, teacher_router, student_router, parent_router, subject_router, room_router, class_router, lesson_router, assessment_router, attendance_router, event_router, activity_router, vendor_router
 
 # Configure logging
 logging.basicConfig(
@@ -104,6 +104,7 @@ app.include_router(assessment_router, prefix=settings.API_V1_PREFIX)
 app.include_router(attendance_router, prefix=settings.API_V1_PREFIX)
 app.include_router(event_router, prefix=settings.API_V1_PREFIX)
 app.include_router(activity_router, prefix=settings.API_V1_PREFIX)
+app.include_router(vendor_router, prefix=settings.API_V1_PREFIX)
 
 
 if __name__ == "__main__":
