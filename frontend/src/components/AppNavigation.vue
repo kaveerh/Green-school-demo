@@ -279,6 +279,130 @@
           </ul>
         </div>
       </li>
+
+      <!-- Lessons Management -->
+      <li class="nav-item" v-if="canAccessLessons">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('lessons')"
+            :class="{ 'is-active': isDropdownOpen('lessons') || isLessonsRoute }"
+          >
+            <span class="nav-icon">📝</span>
+            <span class="nav-text">Lessons</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('lessons') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('lessons')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/lessons" class="nav-dropdown-link" @click="closeMobileMenu">
+                List Lessons
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/lessons/create" class="nav-dropdown-link" @click="closeMobileMenu">
+                Create Lesson
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- Assessments Management -->
+      <li class="nav-item" v-if="canAccessAssessments">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('assessments')"
+            :class="{ 'is-active': isDropdownOpen('assessments') || isAssessmentsRoute }"
+          >
+            <span class="nav-icon">📊</span>
+            <span class="nav-text">Assessments</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('assessments') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('assessments')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/assessments" class="nav-dropdown-link" @click="closeMobileMenu">
+                List Assessments
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/assessments/create" class="nav-dropdown-link" @click="closeMobileMenu">
+                Create Assessment
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- Attendance Management -->
+      <li class="nav-item" v-if="canAccessAttendance">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('attendance')"
+            :class="{ 'is-active': isDropdownOpen('attendance') || isAttendanceRoute }"
+          >
+            <span class="nav-icon">✓</span>
+            <span class="nav-text">Attendance</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('attendance') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('attendance')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/attendance" class="nav-dropdown-link" @click="closeMobileMenu">
+                View Attendance
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/attendance/mark" class="nav-dropdown-link" @click="closeMobileMenu">
+                Mark Attendance
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- Events Management -->
+      <li class="nav-item" v-if="canAccessEvents">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('events')"
+            :class="{ 'is-active': isDropdownOpen('events') || isEventsRoute }"
+          >
+            <span class="nav-icon">📅</span>
+            <span class="nav-text">Events</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('events') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('events')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/events" class="nav-dropdown-link" @click="closeMobileMenu">
+                View Events
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/events/create" class="nav-dropdown-link" @click="closeMobileMenu">
+                Create Event
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </li>
     </ul>
 
     <!-- User Menu -->
@@ -399,6 +523,34 @@ const canAccessClasses = computed(() => {
 })
 
 /**
+ * Check if user can access lessons module
+ */
+const canAccessLessons = computed(() => {
+  return ['administrator', 'teacher'].includes(currentUserRole.value)
+})
+
+/**
+ * Check if user can access assessments module
+ */
+const canAccessAssessments = computed(() => {
+  return ['administrator', 'teacher'].includes(currentUserRole.value)
+})
+
+/**
+ * Check if user can access attendance module
+ */
+const canAccessAttendance = computed(() => {
+  return ['administrator', 'teacher'].includes(currentUserRole.value)
+})
+
+/**
+ * Check if user can access events module
+ */
+const canAccessEvents = computed(() => {
+  return ['administrator', 'teacher'].includes(currentUserRole.value)
+})
+
+/**
  * Check if current route is users-related
  */
 const isUsersRoute = computed(() => {
@@ -452,6 +604,34 @@ const isRoomsRoute = computed(() => {
  */
 const isClassesRoute = computed(() => {
   return route.path.startsWith('/classes')
+})
+
+/**
+ * Check if current route is lessons-related
+ */
+const isLessonsRoute = computed(() => {
+  return route.path.startsWith('/lessons')
+})
+
+/**
+ * Check if current route is assessments-related
+ */
+const isAssessmentsRoute = computed(() => {
+  return route.path.startsWith('/assessments')
+})
+
+/**
+ * Check if current route is attendance-related
+ */
+const isAttendanceRoute = computed(() => {
+  return route.path.startsWith('/attendance')
+})
+
+/**
+ * Check if current route is events-related
+ */
+const isEventsRoute = computed(() => {
+  return route.path.startsWith('/events')
 })
 
 /**

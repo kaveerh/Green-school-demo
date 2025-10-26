@@ -244,6 +244,76 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/LessonForm.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
   },
+  // Assessment Management Routes
+  {
+    path: '/assessments',
+    name: 'assessments',
+    component: () => import('@/views/AssessmentList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/assessments/create',
+    name: 'assessment-create',
+    component: () => import('@/views/AssessmentForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/assessments/:id',
+    name: 'assessment-detail',
+    component: () => import('@/views/AssessmentDetail.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/assessments/:id/edit',
+    name: 'assessment-edit',
+    component: () => import('@/views/AssessmentForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/assessments/:id/grade',
+    name: 'assessment-grade',
+    component: () => import('@/views/AssessmentDetail.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  // Attendance Management Routes
+  {
+    path: '/attendance',
+    name: 'attendance',
+    component: () => import('@/views/AttendanceList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/attendance/mark',
+    name: 'attendance-mark',
+    component: () => import('@/views/AttendanceForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/attendance/:id/edit',
+    name: 'attendance-edit',
+    component: () => import('@/views/AttendanceForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+
+  // Events
+  {
+    path: '/events',
+    name: 'events',
+    component: () => import('@/views/EventList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/events/create',
+    name: 'event-create',
+    component: () => import('@/views/EventForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/events/:id/edit',
+    name: 'event-edit',
+    component: () => import('@/views/EventForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
 ]
 
 const router = createRouter({
