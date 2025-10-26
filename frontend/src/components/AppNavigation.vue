@@ -403,6 +403,37 @@
           </ul>
         </div>
       </li>
+
+      <!-- Activities Management -->
+      <li class="nav-item" v-if="canAccessActivities">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('activities')"
+            :class="{ 'is-active': isDropdownOpen('activities') || isActivitiesRoute }"
+          >
+            <span class="nav-icon">⚽</span>
+            <span class="nav-text">Activities</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('activities') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('activities')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/activities" class="nav-dropdown-link" @click="closeMobileMenu">
+                View Activities
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/activities/create" class="nav-dropdown-link" @click="closeMobileMenu">
+                Create Activity
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </li>
     </ul>
 
     <!-- User Menu -->
@@ -551,6 +582,13 @@ const canAccessEvents = computed(() => {
 })
 
 /**
+ * Check if user can access activities module
+ */
+const canAccessActivities = computed(() => {
+  return ['administrator', 'teacher'].includes(currentUserRole.value)
+})
+
+/**
  * Check if current route is users-related
  */
 const isUsersRoute = computed(() => {
@@ -632,6 +670,13 @@ const isAttendanceRoute = computed(() => {
  */
 const isEventsRoute = computed(() => {
   return route.path.startsWith('/events')
+})
+
+/**
+ * Check if current route is activities-related
+ */
+const isActivitiesRoute = computed(() => {
+  return route.path.startsWith('/activities')
 })
 
 /**

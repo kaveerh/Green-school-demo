@@ -314,6 +314,38 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/EventForm.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
   },
+
+  // Activity Management Routes (Extracurricular)
+  {
+    path: '/activities',
+    name: 'activities',
+    component: () => import('@/views/ActivityList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/activities/create',
+    name: 'activity-create',
+    component: () => import('@/views/ActivityForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/activities/:id',
+    name: 'activity-detail',
+    component: () => import('@/views/ActivityList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/activities/:id/edit',
+    name: 'activity-edit',
+    component: () => import('@/views/ActivityForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/activities/:id/roster',
+    name: 'activity-roster',
+    component: () => import('@/views/ActivityRoster.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
 ]
 
 const router = createRouter({
