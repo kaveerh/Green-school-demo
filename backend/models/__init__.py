@@ -13,6 +13,8 @@ from models.room import Room
 from models.class_model import Class, StudentClass
 from models.lesson import Lesson
 from models.assessment import Assessment
+from models.attendance import Attendance
+from models.event import Event
 
 # Export all models
 __all__ = [
@@ -29,4 +31,6 @@ __all__ = [
     "StudentClass",
     "Lesson",
     "Assessment",
+    "Attendance",
+    "Event",
 ]
