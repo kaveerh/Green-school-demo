@@ -73,10 +73,7 @@ class ActivityRepository(BaseRepository[Activity]):
         total = count_result.scalar()
 
         # Data query
-        query = select(Activity).where(and_(*conditions)).options(
-            selectinload(Activity.coordinator),
-            selectinload(Activity.room)
-        ).offset(offset).limit(limit).order_by(desc(Activity.is_featured), asc(Activity.name))
+        query = select(Activity).where(and_(*conditions)).offset(offset).limit(limit).order_by(desc(Activity.is_featured), asc(Activity.name))
 
         result = await self.session.execute(query)
         activities = result.scalars().all()
@@ -105,10 +102,7 @@ class ActivityRepository(BaseRepository[Activity]):
         total = count_result.scalar()
 
         # Data query
-        query = select(Activity).where(and_(*conditions)).options(
-            selectinload(Activity.coordinator),
-            selectinload(Activity.room)
-        ).offset(offset).limit(limit).order_by(asc(Activity.name))
+        query = select(Activity).where(and_(*conditions)).offset(offset).limit(limit).order_by(asc(Activity.name))
 
         result = await self.session.execute(query)
         activities = result.scalars().all()
@@ -137,10 +131,7 @@ class ActivityRepository(BaseRepository[Activity]):
         total = count_result.scalar()
 
         # Data query
-        query = select(Activity).where(and_(*conditions)).options(
-            selectinload(Activity.room),
-            selectinload(Activity.enrollments)
-        ).offset(offset).limit(limit).order_by(desc(Activity.created_at))
+        query = select(Activity).where(and_(*conditions)).offset(offset).limit(limit).order_by(desc(Activity.created_at))
 
         result = await self.session.execute(query)
         activities = result.scalars().all()
@@ -170,10 +161,7 @@ class ActivityRepository(BaseRepository[Activity]):
         total = count_result.scalar()
 
         # Data query
-        query = select(Activity).where(and_(*conditions)).options(
-            selectinload(Activity.coordinator),
-            selectinload(Activity.room)
-        ).offset(offset).limit(limit).order_by(desc(Activity.is_featured), asc(Activity.name))
+        query = select(Activity).where(and_(*conditions)).offset(offset).limit(limit).order_by(desc(Activity.is_featured), asc(Activity.name))
 
         result = await self.session.execute(query)
         activities = result.scalars().all()
@@ -193,10 +181,7 @@ class ActivityRepository(BaseRepository[Activity]):
             Activity.deleted_at.is_(None)
         ]
 
-        query = select(Activity).where(and_(*conditions)).options(
-            selectinload(Activity.coordinator),
-            selectinload(Activity.room)
-        ).limit(limit).order_by(asc(Activity.name))
+        query = select(Activity).where(and_(*conditions)).limit(limit).order_by(asc(Activity.name))
 
         result = await self.session.execute(query)
         return list(result.scalars().all())
@@ -228,10 +213,7 @@ class ActivityRepository(BaseRepository[Activity]):
         total = count_result.scalar()
 
         # Data query
-        query = select(Activity).where(and_(*conditions)).options(
-            selectinload(Activity.coordinator),
-            selectinload(Activity.room)
-        ).offset(offset).limit(limit).order_by(asc(Activity.name))
+        query = select(Activity).where(and_(*conditions)).offset(offset).limit(limit).order_by(asc(Activity.name))
 
         result = await self.session.execute(query)
         activities = result.scalars().all()

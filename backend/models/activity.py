@@ -194,14 +194,28 @@ class Activity(BaseModel):
         if self.equipment_fee:
             data['equipment_fee'] = float(self.equipment_fee)
 
-        # Add computed properties
+        # Add computed properties that don't require relationships
         data['total_cost'] = self.total_cost
-        data['enrollment_count'] = self.enrollment_count
-        data['available_slots'] = self.available_slots
-        data['is_full'] = self.is_full
         data['is_active'] = self.is_active
         data['is_upcoming'] = self.is_upcoming
         data['is_completed'] = self.is_completed
+
+        # Add computed properties that require relationships only if they're loaded
+        if include_relationships:
+            try:
+                data['enrollment_count'] = self.enrollment_count
+                data['available_slots'] = self.available_slots
+                data['is_full'] = self.is_full
+            except:
+                # Relationships not loaded, skip these fields
+                data['enrollment_count'] = 0
+                data['available_slots'] = self.max_participants if self.max_participants else 999
+                data['is_full'] = False
+        else:
+            # Don't access relationships when include_relationships is False
+            data['enrollment_count'] = 0
+            data['available_slots'] = self.max_participants if self.max_participants else 999
+            data['is_full'] = False
 
         # Convert arrays to lists
         if self.grade_levels:
