@@ -346,6 +346,32 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/ActivityRoster.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
   },
+
+  // Vendor Management Routes
+  {
+    path: '/vendors',
+    name: 'vendors',
+    component: () => import('@/views/VendorList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/vendors/create',
+    name: 'vendor-create',
+    component: () => import('@/views/VendorList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/vendors/:id',
+    name: 'vendor-detail',
+    component: () => import('@/views/VendorList.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/vendors/:id/edit',
+    name: 'vendor-edit',
+    component: () => import('@/views/VendorList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
 ]
 
 const router = createRouter({
