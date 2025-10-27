@@ -434,6 +434,73 @@
           </ul>
         </div>
       </li>
+
+      <!-- Vendors Management -->
+      <li class="nav-item" v-if="canAccessVendors">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('vendors')"
+            :class="{ 'is-active': isDropdownOpen('vendors') || isVendorsRoute }"
+          >
+            <span class="nav-icon">🏢</span>
+            <span class="nav-text">Vendors</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('vendors') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('vendors')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/vendors" class="nav-dropdown-link" @click="closeMobileMenu">
+                View Vendors
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/vendors/create" class="nav-dropdown-link" @click="closeMobileMenu">
+                Create Vendor
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- Merits Management -->
+      <li class="nav-item" v-if="canAccessMerits">
+        <div class="nav-dropdown">
+          <button
+            class="nav-link nav-dropdown-toggle"
+            @click="toggleDropdown('merits')"
+            :class="{ 'is-active': isDropdownOpen('merits') || isMeritsRoute }"
+          >
+            <span class="nav-icon">⭐</span>
+            <span class="nav-text">Merits</span>
+            <span class="dropdown-arrow">{{ isDropdownOpen('merits') ? '▼' : '▶' }}</span>
+          </button>
+
+          <ul
+            v-show="isDropdownOpen('merits')"
+            class="nav-dropdown-menu"
+          >
+            <li>
+              <router-link to="/merits" class="nav-dropdown-link" @click="closeMobileMenu">
+                View Merits
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/merits/leaderboard" class="nav-dropdown-link" @click="closeMobileMenu">
+                Leaderboard
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/merits/award" class="nav-dropdown-link" @click="closeMobileMenu">
+                Award Merit
+              </router-link>
+            </li>
+          </ul>
+        </div>
+      </li>
     </ul>
 
     <!-- User Menu -->
@@ -589,6 +656,20 @@ const canAccessActivities = computed(() => {
 })
 
 /**
+ * Check if user can access vendors module
+ */
+const canAccessVendors = computed(() => {
+  return currentUserRole.value === 'administrator'
+})
+
+/**
+ * Check if user can access merits module
+ */
+const canAccessMerits = computed(() => {
+  return ['administrator', 'teacher'].includes(currentUserRole.value)
+})
+
+/**
  * Check if current route is users-related
  */
 const isUsersRoute = computed(() => {
@@ -677,6 +758,20 @@ const isEventsRoute = computed(() => {
  */
 const isActivitiesRoute = computed(() => {
   return route.path.startsWith('/activities')
+})
+
+/**
+ * Check if current route is vendors-related
+ */
+const isVendorsRoute = computed(() => {
+  return route.path.startsWith('/vendors')
+})
+
+/**
+ * Check if current route is merits-related
+ */
+const isMeritsRoute = computed(() => {
+  return route.path.startsWith('/merits')
 })
 
 /**
