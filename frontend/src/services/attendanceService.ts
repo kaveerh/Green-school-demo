@@ -20,14 +20,14 @@ import type {
   UnnotifiedAbsencesResponse
 } from '@/types/attendance'
 
-const API_BASE = '/api/v1'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
 
 class AttendanceService {
   /**
    * Create a single attendance record
    */
   async createAttendance(data: AttendanceCreateRequest): Promise<Attendance> {
-    const response = await fetch(`${API_BASE}/attendance`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/attendance`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ class AttendanceService {
    * Bulk create attendance records for a class
    */
   async bulkCreateAttendance(data: AttendanceBulkCreateRequest): Promise<Attendance[]> {
-    const response = await fetch(`${API_BASE}/attendance/bulk`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/attendance/bulk`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ class AttendanceService {
    * Get attendance record by ID
    */
   async getAttendanceById(id: string): Promise<Attendance> {
-    const response = await fetch(`${API_BASE}/attendance/${id}`)
+    const response = await fetch(`${API_BASE_URL}/api/v1/attendance/${id}`)
 
     if (!response.ok) {
       const error = await response.json()
@@ -81,7 +81,7 @@ class AttendanceService {
    * Update attendance record
    */
   async updateAttendance(id: string, data: AttendanceUpdateRequest): Promise<Attendance> {
-    const response = await fetch(`${API_BASE}/attendance/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/attendance/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -101,7 +101,7 @@ class AttendanceService {
    * Delete attendance record
    */
   async deleteAttendance(id: string): Promise<void> {
-    const response = await fetch(`${API_BASE}/attendance/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/attendance/${id}`, {
       method: 'DELETE'
     })
 
@@ -126,7 +126,7 @@ class AttendanceService {
     if (end_date) queryParams.append('end_date', end_date)
     if (status) queryParams.append('status', status)
 
-    const response = await fetch(`${API_BASE}/attendance/student/${student_id}?${queryParams}`)
+    const response = await fetch(`${API_BASE_URL}/api/v1/attendance/student/${student_id}?${queryParams}`)
 
     if (!response.ok) {
       const error = await response.json()
@@ -148,7 +148,7 @@ class AttendanceService {
     })
 
     const response = await fetch(
-      `${API_BASE}/attendance/class/${class_id}/date/${attendance_date}?${queryParams}`
+      `${API_BASE_URL}/api/v1/attendance/class/${class_id}/date/${attendance_date}?${queryParams}`
     )
 
     if (!response.ok) {
@@ -173,7 +173,7 @@ class AttendanceService {
     if (status) queryParams.append('status', status)
 
     const response = await fetch(
-      `${API_BASE}/attendance/school/${school_id}/date/${attendance_date}?${queryParams}`
+      `${API_BASE_URL}/api/v1/attendance/school/${school_id}/date/${attendance_date}?${queryParams}`
     )
 
     if (!response.ok) {
@@ -200,7 +200,7 @@ class AttendanceService {
     if (student_id) queryParams.append('student_id', student_id)
     if (status) queryParams.append('status', status)
 
-    const response = await fetch(`${API_BASE}/attendance/date-range?${queryParams}`)
+    const response = await fetch(`${API_BASE_URL}/api/v1/attendance/date-range?${queryParams}`)
 
     if (!response.ok) {
       const error = await response.json()
@@ -222,7 +222,7 @@ class AttendanceService {
     if (attendance_date) queryParams.append('attendance_date', attendance_date)
 
     const response = await fetch(
-      `${API_BASE}/attendance/unnotified-absences/school/${school_id}?${queryParams}`
+      `${API_BASE_URL}/api/v1/attendance/unnotified-absences/school/${school_id}?${queryParams}`
     )
 
     if (!response.ok) {
@@ -237,7 +237,7 @@ class AttendanceService {
    * Mark attendance records as parent notified
    */
   async markParentNotified(attendanceIds: string[]): Promise<{ message: string; count: number }> {
-    const response = await fetch(`${API_BASE}/attendance/mark-notified`, {
+    const response = await fetch(`${API_BASE_URL}/api/v1/attendance/mark-notified`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -267,7 +267,7 @@ class AttendanceService {
 
     if (class_id) queryParams.append('class_id', class_id)
 
-    const response = await fetch(`${API_BASE}/attendance/statistics/summary?${queryParams}`)
+    const response = await fetch(`${API_BASE_URL}/api/v1/attendance/statistics/summary?${queryParams}`)
 
     if (!response.ok) {
       const error = await response.json()
