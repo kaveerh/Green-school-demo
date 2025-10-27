@@ -1,0 +1,151 @@
+version: "1.0"
+
+# Small dataset for quick testing (~1 minute generation)
+
+api:
+  base_url: "http://localhost:8000"
+  timeout: 30
+
+school:
+  name: "Test Elementary School"
+  slug: "test-elementary"
+  city: "Test City"
+  state: "California"
+  country: "USA"
+  postal_code: "90001"
+  timezone: "America/Los_Angeles"
+  locale: "en_US"
+  domain: "test.edu"
+
+data_volumes:
+  administrators: 1
+  teachers: 3
+  students: 10
+  parents: 10
+  subjects: 4  # Just core subjects
+  rooms: 8
+  classes: 6
+  lessons_per_class: 10
+  assessments_per_student: 5
+  attendance_days: 30
+  events: 5
+  activities: 2
+  vendors: 5
+  merits_per_student: 2
+
+generation_rules:
+  grade_distribution:
+    1: 2
+    2: 2
+    3: 2
+    4: 2
+    5: 1
+    6: 1
+    7: 0
+
+  subjects:
+    - code: "MATH"
+      name: "Mathematics"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#FF5733"
+      icon: "➕"
+      is_required: true
+    - code: "ELA"
+      name: "English Language Arts"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#33C1FF"
+      icon: "📚"
+      is_required: true
+    - code: "SCI"
+      name: "Science"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#4CAF50"
+      icon: "🔬"
+      is_required: true
+    - code: "PE"
+      name: "Physical Education"
+      category: "elective"
+      subject_type: "physical"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#F44336"
+      icon: "⚽"
+      is_required: false
+
+  room_types:
+    classroom: 6
+    lab: 1
+    gym: 1
+
+  dates:
+    academic_year_start: "2024-09-01"
+    academic_year_end: "2025-06-30"
+    current_quarter: "Q2"
+    current_date: "2025-10-27"
+
+  attendance:
+    present_rate: 0.90
+    absent_rate: 0.05
+    tardy_rate: 0.03
+    excused_rate: 0.015
+    sick_rate: 0.005
+
+  assessment_types:
+    test: 0.30
+    quiz: 0.40
+    project: 0.20
+    assignment: 0.10
+
+  grading:
+    excellent: [90, 100]
+    good: [80, 89]
+    average: [70, 79]
+    below_average: [60, 69]
+    failing: [40, 59]
+
+  grade_distribution_weights:
+    excellent: 0.30
+    good: 0.35
+    average: 0.20
+    below_average: 0.10
+    failing: 0.05
+
+  merit_categories:
+    academic: 0.35
+    behavior: 0.30
+    participation: 0.20
+    leadership: 0.15
+
+  merit_points:
+    bronze: [1, 2]
+    silver: [3, 5]
+    gold: [6, 8]
+    platinum: [9, 10]
+
+  vendor_types:
+    food_service: 1
+    supplies: 2
+    maintenance: 1
+    it_services: 1
+
+  event_types:
+    assembly: 1
+    exam: 2
+    holiday: 1
+    meeting: 1
+
+  activity_types:
+    sports: 1
+    academic: 1
+
+output:
+  log_level: "INFO"
+  progress_bar: true
+  export_cache: true
+  cache_file: "generated_data_cache_small.json"
+  verbose: false

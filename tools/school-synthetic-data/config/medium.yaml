@@ -1,0 +1,177 @@
+version: "1.0"
+
+# Medium dataset for demos and staging (~5 minutes generation)
+
+api:
+  base_url: "http://localhost:8000"
+  timeout: 30
+
+school:
+  name: "Green Valley Elementary School"
+  slug: "green-valley-elementary"
+  city: "Springfield"
+  state: "California"
+  country: "USA"
+  postal_code: "90210"
+  timezone: "America/Los_Angeles"
+  locale: "en_US"
+  domain: "greenvalley.edu"
+
+data_volumes:
+  administrators: 2
+  teachers: 10
+  students: 50
+  parents: 50
+  subjects: 6
+  rooms: 15
+  classes: 20
+  lessons_per_class: 30
+  assessments_per_student: 20
+  attendance_days: 90
+  events: 15
+  activities: 5
+  vendors: 10
+  merits_per_student: 5
+
+generation_rules:
+  grade_distribution:
+    1: 7
+    2: 8
+    3: 8
+    4: 8
+    5: 8
+    6: 8
+    7: 7
+
+  subjects:
+    - code: "MATH"
+      name: "Mathematics"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#FF5733"
+      icon: "➕"
+      is_required: true
+    - code: "ELA"
+      name: "English Language Arts"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#33C1FF"
+      icon: "📚"
+      is_required: true
+    - code: "SCI"
+      name: "Science"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#4CAF50"
+      icon: "🔬"
+      is_required: true
+    - code: "SS"
+      name: "Social Studies"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#9C27B0"
+      icon: "🌍"
+      is_required: true
+    - code: "ART"
+      name: "Art"
+      category: "elective"
+      subject_type: "arts"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#FF9800"
+      icon: "🎨"
+      is_required: false
+    - code: "PE"
+      name: "Physical Education"
+      category: "elective"
+      subject_type: "physical"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#F44336"
+      icon: "⚽"
+      is_required: false
+
+  room_types:
+    classroom: 10
+    lab: 2
+    gym: 1
+    library: 1
+    office: 1
+
+  dates:
+    academic_year_start: "2024-09-01"
+    academic_year_end: "2025-06-30"
+    current_quarter: "Q2"
+    current_date: "2025-10-27"
+
+  attendance:
+    present_rate: 0.90
+    absent_rate: 0.05
+    tardy_rate: 0.03
+    excused_rate: 0.015
+    sick_rate: 0.005
+
+  assessment_types:
+    test: 0.30
+    quiz: 0.30
+    project: 0.20
+    assignment: 0.15
+    exam: 0.05
+
+  grading:
+    excellent: [90, 100]
+    good: [80, 89]
+    average: [70, 79]
+    below_average: [60, 69]
+    failing: [40, 59]
+
+  grade_distribution_weights:
+    excellent: 0.25
+    good: 0.35
+    average: 0.25
+    below_average: 0.10
+    failing: 0.05
+
+  merit_categories:
+    academic: 0.30
+    behavior: 0.25
+    participation: 0.20
+    leadership: 0.15
+    attendance: 0.10
+
+  merit_points:
+    bronze: [1, 2]
+    silver: [3, 5]
+    gold: [6, 8]
+    platinum: [9, 10]
+
+  vendor_types:
+    food_service: 2
+    supplies: 3
+    maintenance: 2
+    it_services: 1
+    transportation: 1
+    events: 1
+
+  event_types:
+    assembly: 3
+    exam: 4
+    holiday: 2
+    meeting: 2
+    parent_conference: 2
+    field_trip: 2
+
+  activity_types:
+    sports: 2
+    arts: 1
+    academic: 1
+    community: 1
+
+output:
+  log_level: "INFO"
+  progress_bar: true
+  export_cache: true
+  cache_file: "generated_data_cache_medium.json"
+  verbose: false
