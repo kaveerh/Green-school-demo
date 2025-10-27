@@ -372,6 +372,26 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/VendorList.vue'),
     meta: { requiresAuth: true, requiresRole: ['administrator'] }
   },
+
+  // Merit Management Routes
+  {
+    path: '/merits',
+    name: 'merits',
+    component: () => import('@/views/MeritList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/merits/award',
+    name: 'merit-award',
+    component: () => import('@/views/MeritList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+  },
+  {
+    path: '/merits/leaderboard',
+    name: 'merit-leaderboard',
+    component: () => import('@/views/MeritList.vue'),
+    meta: { requiresAuth: true }
+  },
 ]
 
 const router = createRouter({
