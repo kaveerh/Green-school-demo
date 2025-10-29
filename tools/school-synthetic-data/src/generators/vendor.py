@@ -40,6 +40,12 @@ class VendorGenerator(BaseGenerator):
 
         total_vendors = sum(vendor_types_config.values())
 
+        # Get admin user for created_by
+        admin_users = [u for u in self.cache.users.values() if u.get("persona") == "administrator"]
+        if not admin_users:
+            raise ValueError("No administrator users found. Generate admin users first.")
+        created_by_id = admin_users[0]["id"]
+
         self._log_progress(f"Creating {total_vendors} vendors")
 
         for vendor_type, count in vendor_types_config.items():
@@ -111,7 +117,7 @@ class VendorGenerator(BaseGenerator):
                 # Status
                 status = self.faker.random_element([
                     "active", "active", "active",  # Most should be active
-                    "pending", "inactive"
+                    "inactive", "suspended"
                 ])
 
                 vendor_data = {
@@ -121,14 +127,14 @@ class VendorGenerator(BaseGenerator):
                     "status": status,
                     "contact_person": self.faker.name(),
                     "contact_email": self.faker.company_email(),
-                    "contact_phone": self.faker.phone_number(),
+                    "contact_phone": self._generate_phone(),
                     "address_line1": self.faker.street_address(),
                     "city": self.faker.city(),
                     "state": self.faker.state_abbr(),
                     "postal_code": self.faker.postcode(),
                     "country": "USA",
                     "website_url": f"https://www.{company_name.lower().replace(' ', '')}.com",
-                    "tax_id": self.faker.random_number(digits=9, fix_len=True),
+                    "tax_id": str(self.faker.random_number(digits=9, fix_len=True)),
                     "contract_start_date": contract_start.isoformat(),
                     "contract_end_date": contract_end.isoformat(),
                     "contract_value": float(contract_value),
@@ -142,6 +148,7 @@ class VendorGenerator(BaseGenerator):
                     "performance_rating": round(self.faker.random.uniform(3.5, 5.0), 2),
                     "preferred": self.faker.boolean(chance_of_getting_true=30),
                     "insurance_expiry": (date.today() + timedelta(days=365)).isoformat(),
+                    "created_by_id": created_by_id,  # Add for query parameter
                 }
 
                 vendor = self.client.create_vendor(vendor_data)

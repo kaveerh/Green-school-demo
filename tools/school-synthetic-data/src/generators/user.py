@@ -57,13 +57,11 @@ class UserGenerator(BaseGenerator):
         for i in range(count):
             first_name = self.faker.first_name()
             last_name = self.faker.last_name()
-            email = self._generate_email(first_name, last_name, domain)
-
-            # Ensure unique email
-            attempt = 1
-            while self.cache.find_user_by_email(email):
-                email = self._generate_email(f"{first_name}{attempt}", last_name, domain)
-                attempt += 1
+            
+            # Add random suffix to ensure uniqueness across runs
+            import time
+            suffix = int(time.time() * 1000) % 10000 + i
+            email = f"{first_name.lower()}.{last_name.lower()}.{suffix}@{domain}"
 
             user_data = {
                 "school_id": school_id,

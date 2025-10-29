@@ -54,7 +54,9 @@ class StudentGenerator(BaseGenerator):
 
         self._log_progress(f"Creating {len(student_users)} student profiles")
 
-        student_id_counter = 1001
+        # Use timestamp to ensure unique student IDs across runs
+        import time
+        student_id_counter = int(time.time() % 100000)
         academic_year_start = self.config.get("generation_rules", {}).get("dates", {}).get("academic_year_start", "2024-09-01")
 
         for i, user in enumerate(student_users):
@@ -70,6 +72,12 @@ class StudentGenerator(BaseGenerator):
                 maximum_age=typical_age + 2
             )
 
+            allergies_list = self.faker.random_elements(
+                elements=["Peanuts", "Tree nuts", "Milk", "Eggs", "Wheat", "Soy", "Fish", "Shellfish"],
+                length=self.faker.random_int(min=0, max=2),
+                unique=True
+            ) if self.faker.boolean(chance_of_getting_true=20) else []
+            
             student_data = {
                 "school_id": school_id,
                 "user_id": user["id"],
@@ -79,11 +87,7 @@ class StudentGenerator(BaseGenerator):
                 "gender": self.faker.random_element(["male", "female", "other"]),
                 "enrollment_date": academic_year_start,
                 "status": "enrolled",
-                "allergies": self.faker.random_elements(
-                    elements=["Peanuts", "Tree nuts", "Milk", "Eggs", "Wheat", "Soy", "Fish", "Shellfish"],
-                    length=self.faker.random_int(min=0, max=2),
-                    unique=True
-                ) if self.faker.boolean(chance_of_getting_true=20) else [],
+                "allergies": ", ".join(allergies_list) if allergies_list else None,
                 "medical_notes": self.faker.text(max_nb_chars=100) if self.faker.boolean(chance_of_getting_true=10) else None,
             }
 

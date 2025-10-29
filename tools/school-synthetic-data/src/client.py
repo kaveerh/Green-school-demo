@@ -98,7 +98,14 @@ class SchoolAPIClient:
 
         except requests.exceptions.HTTPError as e:
             logger.error(f"HTTP Error: {e}")
-            logger.error(f"Response: {e.response.text if e.response else 'No response'}")
+            if e.response is not None:
+                try:
+                    error_detail = e.response.json()
+                    logger.error(f"Response: {error_detail}")
+                except:
+                    logger.error(f"Response: {e.response.text}")
+            else:
+                logger.error(f"Response: No response")
             raise
         except requests.exceptions.RequestException as e:
             logger.error(f"Request Error: {e}")
@@ -256,7 +263,14 @@ class SchoolAPIClient:
     # Event API
     def create_event(self, data: Dict) -> Dict:
         """Create event"""
-        return self.create("/api/v1/events", data)
+        # Extract created_by_id for query parameter
+        created_by_id = data.pop("created_by_id", None)
+        if not created_by_id:
+            # Use organizer_id as fallback
+            created_by_id = data.get("organizer_id")
+        
+        params = {"created_by_id": created_by_id} if created_by_id else {}
+        return self._request("POST", "/api/v1/events", data=data, params=params)
 
     def list_events(self, school_id: str) -> List[Dict]:
         """List events"""
@@ -278,7 +292,15 @@ class SchoolAPIClient:
     # Vendor API
     def create_vendor(self, data: Dict) -> Dict:
         """Create vendor"""
-        return self.create("/api/v1/vendors", data)
+        # Extract created_by_id for query parameter
+        created_by_id = data.pop("created_by_id", None)
+        if not created_by_id:
+            # Use first admin user as fallback
+            # This should be set by the generator
+            raise ValueError("created_by_id is required for vendor creation")
+        
+        params = {"created_by_id": created_by_id}
+        return self._request("POST", "/api/v1/vendors", data=data, params=params)
 
     def list_vendors(self, school_id: str) -> List[Dict]:
         """List vendors"""

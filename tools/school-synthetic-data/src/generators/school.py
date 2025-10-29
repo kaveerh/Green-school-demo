@@ -44,6 +44,21 @@ class SchoolGenerator(BaseGenerator):
         locale = school_config.get("locale", "en_US")
         domain = school_config.get("domain", "greenvalley.edu")
 
+        # Check if school already exists
+        try:
+            response = self.client.get("/api/v1/schools")
+            existing_schools = response.get("data", [])
+            
+            # Look for school with matching slug
+            for existing_school in existing_schools:
+                if existing_school.get("slug") == slug:
+                    self._log_progress(f"Using existing school: {school_name} (ID: {existing_school['id']})")
+                    self.cache.add_entity("school", existing_school["id"], existing_school)
+                    schools.append(existing_school)
+                    return schools
+        except Exception as e:
+            self._log_progress(f"Could not check for existing schools: {e}")
+
         school_data = {
             "name": school_name,
             "slug": slug,
@@ -59,8 +74,6 @@ class SchoolGenerator(BaseGenerator):
             "timezone": timezone,
             "locale": locale,
             "status": "active",
-            "student_capacity": 500,
-            "current_enrollment": 0,
         }
 
         self._log_progress(f"Creating school: {school_name}")

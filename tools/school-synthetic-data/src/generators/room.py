@@ -40,7 +40,9 @@ class RoomGenerator(BaseGenerator):
         total_rooms = sum(room_types_config.values())
         self._log_progress(f"Creating {total_rooms} rooms")
 
-        room_number_counter = 101
+        # Use timestamp to ensure unique room numbers across runs
+        import time
+        room_number_counter = int(time.time() % 10000)
 
         for room_type, count in room_types_config.items():
             for i in range(count):

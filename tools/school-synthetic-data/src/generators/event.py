@@ -153,6 +153,7 @@ class EventGenerator(BaseGenerator):
                     "status": "scheduled",
                     "requires_rsvp": event_type in ["parent_conference", "meeting"],
                     "color": self._get_event_color(event_type),
+                    "created_by_id": organizer_id,  # Add for query parameter
                 }
 
                 event = self.client.create_event(event_data)

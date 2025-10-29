@@ -40,7 +40,9 @@ class TeacherGenerator(BaseGenerator):
 
         self._log_progress(f"Creating {len(teacher_users)} teacher profiles")
 
-        employee_id_counter = 1001
+        # Use timestamp to ensure unique employee IDs across runs
+        import time
+        employee_id_counter = int(time.time() % 100000)
 
         for user in teacher_users:
             # Assign grade levels (each teacher can teach multiple grades)

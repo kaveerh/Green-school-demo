@@ -63,8 +63,12 @@ class BaseGenerator(ABC):
         }
 
     def _generate_phone(self) -> str:
-        """Generate phone number"""
-        return self.faker.phone_number()
+        """Generate phone number (max 20 chars, valid format)"""
+        # Generate simple US phone format: +1-XXX-XXX-XXXX
+        area_code = self.faker.random_int(min=200, max=999)
+        exchange = self.faker.random_int(min=200, max=999)
+        number = self.faker.random_int(min=1000, max=9999)
+        return f"+1-{area_code}-{exchange}-{number}"
 
     def _generate_email(self, first_name: str, last_name: str, domain: str) -> str:
         """
