@@ -1,0 +1,194 @@
+version: "1.0"
+
+# Large dataset for testing with significant data (~15-20 minutes generation)
+
+api:
+  base_url: "http://localhost:8000"
+  timeout: 30
+
+school:
+  name: "Green Valley Elementary"
+  slug: "green-valley"
+  city: "Springfield"
+  state: "CA"
+  country: "USA"
+  postal_code: "90210"
+  timezone: "America/New_York"
+  locale: "en_US"
+  domain: "greenschool.edu"
+
+data_volumes:
+  administrators: 3
+  teachers: 30
+  students: 200
+  parents: 200
+  subjects: 8
+  rooms: 30
+  classes: 60
+  lessons_per_class: 50
+  assessments_per_student: 30
+  attendance_days: 150
+  events: 30
+  activities: 12
+  vendors: 20
+  merits_per_student: 10
+
+generation_rules:
+  # Grade distribution (1-7) - must sum to data_volumes.students
+  grade_distribution:
+    1: 29
+    2: 29
+    3: 29
+    4: 28
+    5: 28
+    6: 28
+    7: 29
+
+  subjects:
+    - code: "MATH"
+      name: "Mathematics"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#FF5733"
+      icon: "➕"
+      is_required: true
+    - code: "ELA"
+      name: "English Language Arts"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#33C1FF"
+      icon: "📚"
+      is_required: true
+    - code: "SCI"
+      name: "Science"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#4CAF50"
+      icon: "🔬"
+      is_required: true
+    - code: "SS"
+      name: "Social Studies"
+      category: "core"
+      subject_type: "academic"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#9C27B0"
+      icon: "🌍"
+      is_required: true
+    - code: "ART"
+      name: "Art"
+      category: "elective"
+      subject_type: "arts"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#FF9800"
+      icon: "🎨"
+      is_required: false
+    - code: "PE"
+      name: "Physical Education"
+      category: "elective"
+      subject_type: "physical"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#F44336"
+      icon: "⚽"
+      is_required: false
+    - code: "MUS"
+      name: "Music"
+      category: "elective"
+      subject_type: "arts"
+      grade_levels: [1, 2, 3, 4, 5, 6, 7]
+      color: "#E91E63"
+      icon: "🎵"
+      is_required: false
+    - code: "COMP"
+      name: "Computer Science"
+      category: "elective"
+      subject_type: "academic"
+      grade_levels: [3, 4, 5, 6, 7]
+      color: "#00BCD4"
+      icon: "💻"
+      is_required: false
+
+  room_types:
+    classroom: 20
+    lab: 4
+    gym: 2
+    library: 2
+    office: 2
+
+  dates:
+    academic_year_start: "2024-09-01"
+    academic_year_end: "2025-06-30"
+    current_quarter: "Q2"
+    current_date: "2025-10-29"
+
+  attendance:
+    present_rate: 0.90
+    absent_rate: 0.05
+    tardy_rate: 0.03
+    excused_rate: 0.015
+    sick_rate: 0.005
+
+  assessment_types:
+    test: 0.30
+    quiz: 0.30
+    project: 0.20
+    assignment: 0.15
+    exam: 0.05
+
+  grading:
+    excellent: [90, 100]
+    good: [80, 89]
+    average: [70, 79]
+    below_average: [60, 69]
+    failing: [40, 59]
+
+  grade_distribution_weights:
+    excellent: 0.25
+    good: 0.35
+    average: 0.25
+    below_average: 0.10
+    failing: 0.05
+
+  merit_categories:
+    academic: 0.30
+    behavior: 0.25
+    participation: 0.20
+    leadership: 0.15
+    attendance: 0.10
+
+  merit_points:
+    bronze: [1, 2]
+    silver: [3, 5]
+    gold: [6, 8]
+    platinum: [9, 10]
+
+  vendor_types:
+    food_service: 4
+    supplies: 6
+    maintenance: 4
+    it_services: 2
+    transportation: 2
+    events: 2
+
+  event_types:
+    assembly: 5
+    exam: 8
+    holiday: 4
+    meeting: 5
+    parent_conference: 4
+    field_trip: 4
+
+  activity_types:
+    sports: 5
+    arts: 3
+    academic: 2
+    community: 2
+
+output:
+  log_level: "INFO"
+  progress_bar: true
+  export_cache: true
+  cache_file: "generated_data_cache_large.json"
+  verbose: false

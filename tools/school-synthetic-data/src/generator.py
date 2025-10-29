@@ -120,6 +120,9 @@ class DataGenerator:
                 # Special handling for user generators (need persona parameter)
                 if feature_key.startswith("user_"):
                     persona = feature_key.split("_")[1]
+                    # Map admin to administrator for correct persona
+                    if persona == "admin":
+                        persona = "administrator"
                     entities = generator.generate(count=0, persona=persona)
                 else:
                     entities = generator.generate(count=0)
