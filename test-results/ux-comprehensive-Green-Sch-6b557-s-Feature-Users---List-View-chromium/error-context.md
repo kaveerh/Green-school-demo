@@ -1,0 +1,471 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - navigation [ref=e5]:
+    - link "🌱 Green School" [ref=e7] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e8]: 🌱
+      - generic [ref=e9]: Green School
+    - list [ref=e10]:
+      - listitem [ref=e11]:
+        - link "📊 Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /dashboard
+          - generic [ref=e13]: 📊
+          - generic [ref=e14]: Dashboard
+      - listitem [ref=e15]:
+        - button "👥 Users ▶" [ref=e17] [cursor=pointer]:
+          - generic [ref=e18]: 👥
+          - generic [ref=e19]: Users
+          - generic [ref=e20]: ▶
+      - listitem [ref=e21]:
+        - button "🏫 Schools ▶" [ref=e23] [cursor=pointer]:
+          - generic [ref=e24]: 🏫
+          - generic [ref=e25]: Schools
+          - generic [ref=e26]: ▶
+      - listitem [ref=e27]:
+        - button "👨‍🏫 Teachers ▶" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: 👨‍🏫
+          - generic [ref=e31]: Teachers
+          - generic [ref=e32]: ▶
+      - listitem [ref=e33]:
+        - button "🎓 Students ▶" [ref=e35] [cursor=pointer]:
+          - generic [ref=e36]: 🎓
+          - generic [ref=e37]: Students
+          - generic [ref=e38]: ▶
+      - listitem [ref=e39]:
+        - button "👪 Parents ▶" [ref=e41] [cursor=pointer]:
+          - generic [ref=e42]: 👪
+          - generic [ref=e43]: Parents
+          - generic [ref=e44]: ▶
+      - listitem [ref=e45]:
+        - button "📚 Subjects ▶" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: 📚
+          - generic [ref=e49]: Subjects
+          - generic [ref=e50]: ▶
+      - listitem [ref=e51]:
+        - button "🏢 Rooms ▶" [ref=e53] [cursor=pointer]:
+          - generic [ref=e54]: 🏢
+          - generic [ref=e55]: Rooms
+          - generic [ref=e56]: ▶
+      - listitem [ref=e57]:
+        - button "🎒 Classes ▶" [ref=e59] [cursor=pointer]:
+          - generic [ref=e60]: 🎒
+          - generic [ref=e61]: Classes
+          - generic [ref=e62]: ▶
+      - listitem [ref=e63]:
+        - button "📝 Lessons ▶" [ref=e65] [cursor=pointer]:
+          - generic [ref=e66]: 📝
+          - generic [ref=e67]: Lessons
+          - generic [ref=e68]: ▶
+      - listitem [ref=e69]:
+        - button "📊 Assessments ▶" [ref=e71] [cursor=pointer]:
+          - generic [ref=e72]: 📊
+          - generic [ref=e73]: Assessments
+          - generic [ref=e74]: ▶
+      - listitem [ref=e75]:
+        - button "✓ Attendance ▶" [ref=e77] [cursor=pointer]:
+          - generic [ref=e78]: ✓
+          - generic [ref=e79]: Attendance
+          - generic [ref=e80]: ▶
+      - listitem [ref=e81]:
+        - button "📅 Events ▶" [ref=e83] [cursor=pointer]:
+          - generic [ref=e84]: 📅
+          - generic [ref=e85]: Events
+          - generic [ref=e86]: ▶
+      - listitem [ref=e87]:
+        - button "⚽ Activities ▶" [ref=e89] [cursor=pointer]:
+          - generic [ref=e90]: ⚽
+          - generic [ref=e91]: Activities
+          - generic [ref=e92]: ▶
+      - listitem [ref=e93]:
+        - button "🏢 Vendors ▶" [ref=e95] [cursor=pointer]:
+          - generic [ref=e96]: 🏢
+          - generic [ref=e97]: Vendors
+          - generic [ref=e98]: ▶
+      - listitem [ref=e99]:
+        - button "⭐ Merits ▶" [ref=e101] [cursor=pointer]:
+          - generic [ref=e102]: ⭐
+          - generic [ref=e103]: Merits
+          - generic [ref=e104]: ▶
+    - button "AU Admin User ▶" [ref=e107] [cursor=pointer]:
+      - generic [ref=e108]: AU
+      - generic [ref=e109]: Admin User
+      - generic [ref=e110]: ▶
+  - main [ref=e111]:
+    - navigation "Breadcrumb" [ref=e112]:
+      - list [ref=e113]:
+        - listitem [ref=e114]:
+          - link "Home" [ref=e115] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e116]: /
+        - listitem [ref=e117]:
+          - generic [ref=e118]: Users
+    - generic [ref=e120]:
+      - generic [ref=e121]:
+        - heading "User Management" [level=2] [ref=e122]
+        - button "+ Create User" [ref=e123] [cursor=pointer]
+      - generic [ref=e124]:
+        - textbox "Search users by name or email..." [ref=e126]
+        - generic [ref=e127]:
+          - combobox [ref=e128]:
+            - option "All Personas" [selected]
+            - option "Administrator"
+            - option "Teacher"
+            - option "Student"
+            - option "Parent"
+            - option "Vendor"
+          - combobox [ref=e129]:
+            - option "All Statuses" [selected]
+            - option "Active"
+            - option "Inactive"
+            - option "Suspended"
+          - button "Clear Filters" [ref=e130] [cursor=pointer]
+      - generic [ref=e131]:
+        - table [ref=e132]:
+          - rowgroup [ref=e133]:
+            - row "Name Email Persona Status Created Actions" [ref=e134]:
+              - cell "Name" [ref=e135]
+              - cell "Email" [ref=e136]
+              - cell "Persona" [ref=e137]
+              - cell "Status" [ref=e138]
+              - cell "Created" [ref=e139]
+              - cell "Actions" [ref=e140]
+          - rowgroup [ref=e141]:
+            - row "MB Melissa Blackwell melissa.blackwell.7830@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e142]:
+              - cell "MB Melissa Blackwell" [ref=e143]:
+                - generic [ref=e144]:
+                  - generic [ref=e145]: MB
+                  - generic [ref=e146]: Melissa Blackwell
+              - cell "melissa.blackwell.7830@greenschool.edu" [ref=e147]
+              - cell "Parent" [ref=e148]:
+                - generic [ref=e149]: Parent
+              - cell "Active" [ref=e150]:
+                - generic [ref=e151]: Active
+              - cell "Oct 29, 2025" [ref=e152]
+              - cell "👁️ ✏️ 🗑️" [ref=e153]:
+                - generic [ref=e154]:
+                  - button "👁️" [ref=e155] [cursor=pointer]
+                  - button "✏️" [ref=e156] [cursor=pointer]
+                  - button "🗑️" [ref=e157] [cursor=pointer]
+            - row "CC Carlos Cooper carlos.cooper.7554@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e158]:
+              - cell "CC Carlos Cooper" [ref=e159]:
+                - generic [ref=e160]:
+                  - generic [ref=e161]: CC
+                  - generic [ref=e162]: Carlos Cooper
+              - cell "carlos.cooper.7554@greenschool.edu" [ref=e163]
+              - cell "Parent" [ref=e164]:
+                - generic [ref=e165]: Parent
+              - cell "Active" [ref=e166]:
+                - generic [ref=e167]: Active
+              - cell "Oct 29, 2025" [ref=e168]
+              - cell "👁️ ✏️ 🗑️" [ref=e169]:
+                - generic [ref=e170]:
+                  - button "👁️" [ref=e171] [cursor=pointer]
+                  - button "✏️" [ref=e172] [cursor=pointer]
+                  - button "🗑️" [ref=e173] [cursor=pointer]
+            - row "MM Michelle Martinez michelle.martinez.7292@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e174]:
+              - cell "MM Michelle Martinez" [ref=e175]:
+                - generic [ref=e176]:
+                  - generic [ref=e177]: MM
+                  - generic [ref=e178]: Michelle Martinez
+              - cell "michelle.martinez.7292@greenschool.edu" [ref=e179]
+              - cell "Parent" [ref=e180]:
+                - generic [ref=e181]: Parent
+              - cell "Active" [ref=e182]:
+                - generic [ref=e183]: Active
+              - cell "Oct 29, 2025" [ref=e184]
+              - cell "👁️ ✏️ 🗑️" [ref=e185]:
+                - generic [ref=e186]:
+                  - button "👁️" [ref=e187] [cursor=pointer]
+                  - button "✏️" [ref=e188] [cursor=pointer]
+                  - button "🗑️" [ref=e189] [cursor=pointer]
+            - row "EH Erin Herman erin.herman.7029@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e190]:
+              - cell "EH Erin Herman" [ref=e191]:
+                - generic [ref=e192]:
+                  - generic [ref=e193]: EH
+                  - generic [ref=e194]: Erin Herman
+              - cell "erin.herman.7029@greenschool.edu" [ref=e195]
+              - cell "Parent" [ref=e196]:
+                - generic [ref=e197]: Parent
+              - cell "Active" [ref=e198]:
+                - generic [ref=e199]: Active
+              - cell "Oct 29, 2025" [ref=e200]
+              - cell "👁️ ✏️ 🗑️" [ref=e201]:
+                - generic [ref=e202]:
+                  - button "👁️" [ref=e203] [cursor=pointer]
+                  - button "✏️" [ref=e204] [cursor=pointer]
+                  - button "🗑️" [ref=e205] [cursor=pointer]
+            - row "AD Aaron Davis aaron.davis.6765@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e206]:
+              - cell "AD Aaron Davis" [ref=e207]:
+                - generic [ref=e208]:
+                  - generic [ref=e209]: AD
+                  - generic [ref=e210]: Aaron Davis
+              - cell "aaron.davis.6765@greenschool.edu" [ref=e211]
+              - cell "Parent" [ref=e212]:
+                - generic [ref=e213]: Parent
+              - cell "Active" [ref=e214]:
+                - generic [ref=e215]: Active
+              - cell "Oct 29, 2025" [ref=e216]
+              - cell "👁️ ✏️ 🗑️" [ref=e217]:
+                - generic [ref=e218]:
+                  - button "👁️" [ref=e219] [cursor=pointer]
+                  - button "✏️" [ref=e220] [cursor=pointer]
+                  - button "🗑️" [ref=e221] [cursor=pointer]
+            - row "MS Matthew Salas matthew.salas.6500@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e222]:
+              - cell "MS Matthew Salas" [ref=e223]:
+                - generic [ref=e224]:
+                  - generic [ref=e225]: MS
+                  - generic [ref=e226]: Matthew Salas
+              - cell "matthew.salas.6500@greenschool.edu" [ref=e227]
+              - cell "Parent" [ref=e228]:
+                - generic [ref=e229]: Parent
+              - cell "Active" [ref=e230]:
+                - generic [ref=e231]: Active
+              - cell "Oct 29, 2025" [ref=e232]
+              - cell "👁️ ✏️ 🗑️" [ref=e233]:
+                - generic [ref=e234]:
+                  - button "👁️" [ref=e235] [cursor=pointer]
+                  - button "✏️" [ref=e236] [cursor=pointer]
+                  - button "🗑️" [ref=e237] [cursor=pointer]
+            - row "MC Michelle Carpenter michelle.carpenter.6237@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e238]:
+              - cell "MC Michelle Carpenter" [ref=e239]:
+                - generic [ref=e240]:
+                  - generic [ref=e241]: MC
+                  - generic [ref=e242]: Michelle Carpenter
+              - cell "michelle.carpenter.6237@greenschool.edu" [ref=e243]
+              - cell "Parent" [ref=e244]:
+                - generic [ref=e245]: Parent
+              - cell "Active" [ref=e246]:
+                - generic [ref=e247]: Active
+              - cell "Oct 29, 2025" [ref=e248]
+              - cell "👁️ ✏️ 🗑️" [ref=e249]:
+                - generic [ref=e250]:
+                  - button "👁️" [ref=e251] [cursor=pointer]
+                  - button "✏️" [ref=e252] [cursor=pointer]
+                  - button "🗑️" [ref=e253] [cursor=pointer]
+            - row "DW Deborah Willis deborah.willis.5973@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e254]:
+              - cell "DW Deborah Willis" [ref=e255]:
+                - generic [ref=e256]:
+                  - generic [ref=e257]: DW
+                  - generic [ref=e258]: Deborah Willis
+              - cell "deborah.willis.5973@greenschool.edu" [ref=e259]
+              - cell "Parent" [ref=e260]:
+                - generic [ref=e261]: Parent
+              - cell "Active" [ref=e262]:
+                - generic [ref=e263]: Active
+              - cell "Oct 29, 2025" [ref=e264]
+              - cell "👁️ ✏️ 🗑️" [ref=e265]:
+                - generic [ref=e266]:
+                  - button "👁️" [ref=e267] [cursor=pointer]
+                  - button "✏️" [ref=e268] [cursor=pointer]
+                  - button "🗑️" [ref=e269] [cursor=pointer]
+            - row "JW Jesse White jesse.white.5710@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e270]:
+              - cell "JW Jesse White" [ref=e271]:
+                - generic [ref=e272]:
+                  - generic [ref=e273]: JW
+                  - generic [ref=e274]: Jesse White
+              - cell "jesse.white.5710@greenschool.edu" [ref=e275]
+              - cell "Parent" [ref=e276]:
+                - generic [ref=e277]: Parent
+              - cell "Active" [ref=e278]:
+                - generic [ref=e279]: Active
+              - cell "Oct 29, 2025" [ref=e280]
+              - cell "👁️ ✏️ 🗑️" [ref=e281]:
+                - generic [ref=e282]:
+                  - button "👁️" [ref=e283] [cursor=pointer]
+                  - button "✏️" [ref=e284] [cursor=pointer]
+                  - button "🗑️" [ref=e285] [cursor=pointer]
+            - row "JJ John Jensen john.jensen.5446@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e286]:
+              - cell "JJ John Jensen" [ref=e287]:
+                - generic [ref=e288]:
+                  - generic [ref=e289]: JJ
+                  - generic [ref=e290]: John Jensen
+              - cell "john.jensen.5446@greenschool.edu" [ref=e291]
+              - cell "Parent" [ref=e292]:
+                - generic [ref=e293]: Parent
+              - cell "Active" [ref=e294]:
+                - generic [ref=e295]: Active
+              - cell "Oct 29, 2025" [ref=e296]
+              - cell "👁️ ✏️ 🗑️" [ref=e297]:
+                - generic [ref=e298]:
+                  - button "👁️" [ref=e299] [cursor=pointer]
+                  - button "✏️" [ref=e300] [cursor=pointer]
+                  - button "🗑️" [ref=e301] [cursor=pointer]
+            - row "RJ Ryan Jennings ryan.jennings.5182@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e302]:
+              - cell "RJ Ryan Jennings" [ref=e303]:
+                - generic [ref=e304]:
+                  - generic [ref=e305]: RJ
+                  - generic [ref=e306]: Ryan Jennings
+              - cell "ryan.jennings.5182@greenschool.edu" [ref=e307]
+              - cell "Parent" [ref=e308]:
+                - generic [ref=e309]: Parent
+              - cell "Active" [ref=e310]:
+                - generic [ref=e311]: Active
+              - cell "Oct 29, 2025" [ref=e312]
+              - cell "👁️ ✏️ 🗑️" [ref=e313]:
+                - generic [ref=e314]:
+                  - button "👁️" [ref=e315] [cursor=pointer]
+                  - button "✏️" [ref=e316] [cursor=pointer]
+                  - button "🗑️" [ref=e317] [cursor=pointer]
+            - row "MS Molly Sparks molly.sparks.4913@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e318]:
+              - cell "MS Molly Sparks" [ref=e319]:
+                - generic [ref=e320]:
+                  - generic [ref=e321]: MS
+                  - generic [ref=e322]: Molly Sparks
+              - cell "molly.sparks.4913@greenschool.edu" [ref=e323]
+              - cell "Parent" [ref=e324]:
+                - generic [ref=e325]: Parent
+              - cell "Active" [ref=e326]:
+                - generic [ref=e327]: Active
+              - cell "Oct 29, 2025" [ref=e328]
+              - cell "👁️ ✏️ 🗑️" [ref=e329]:
+                - generic [ref=e330]:
+                  - button "👁️" [ref=e331] [cursor=pointer]
+                  - button "✏️" [ref=e332] [cursor=pointer]
+                  - button "🗑️" [ref=e333] [cursor=pointer]
+            - row "PM Patricia Martinez patricia.martinez.4647@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e334]:
+              - cell "PM Patricia Martinez" [ref=e335]:
+                - generic [ref=e336]:
+                  - generic [ref=e337]: PM
+                  - generic [ref=e338]: Patricia Martinez
+              - cell "patricia.martinez.4647@greenschool.edu" [ref=e339]
+              - cell "Parent" [ref=e340]:
+                - generic [ref=e341]: Parent
+              - cell "Active" [ref=e342]:
+                - generic [ref=e343]: Active
+              - cell "Oct 29, 2025" [ref=e344]
+              - cell "👁️ ✏️ 🗑️" [ref=e345]:
+                - generic [ref=e346]:
+                  - button "👁️" [ref=e347] [cursor=pointer]
+                  - button "✏️" [ref=e348] [cursor=pointer]
+                  - button "🗑️" [ref=e349] [cursor=pointer]
+            - row "JG John Greene john.greene.4383@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e350]:
+              - cell "JG John Greene" [ref=e351]:
+                - generic [ref=e352]:
+                  - generic [ref=e353]: JG
+                  - generic [ref=e354]: John Greene
+              - cell "john.greene.4383@greenschool.edu" [ref=e355]
+              - cell "Parent" [ref=e356]:
+                - generic [ref=e357]: Parent
+              - cell "Active" [ref=e358]:
+                - generic [ref=e359]: Active
+              - cell "Oct 29, 2025" [ref=e360]
+              - cell "👁️ ✏️ 🗑️" [ref=e361]:
+                - generic [ref=e362]:
+                  - button "👁️" [ref=e363] [cursor=pointer]
+                  - button "✏️" [ref=e364] [cursor=pointer]
+                  - button "🗑️" [ref=e365] [cursor=pointer]
+            - row "JN Jennifer Norman jennifer.norman.4120@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e366]:
+              - cell "JN Jennifer Norman" [ref=e367]:
+                - generic [ref=e368]:
+                  - generic [ref=e369]: JN
+                  - generic [ref=e370]: Jennifer Norman
+              - cell "jennifer.norman.4120@greenschool.edu" [ref=e371]
+              - cell "Parent" [ref=e372]:
+                - generic [ref=e373]: Parent
+              - cell "Active" [ref=e374]:
+                - generic [ref=e375]: Active
+              - cell "Oct 29, 2025" [ref=e376]
+              - cell "👁️ ✏️ 🗑️" [ref=e377]:
+                - generic [ref=e378]:
+                  - button "👁️" [ref=e379] [cursor=pointer]
+                  - button "✏️" [ref=e380] [cursor=pointer]
+                  - button "🗑️" [ref=e381] [cursor=pointer]
+            - row "BH Bryan Hernandez bryan.hernandez.3857@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e382]:
+              - cell "BH Bryan Hernandez" [ref=e383]:
+                - generic [ref=e384]:
+                  - generic [ref=e385]: BH
+                  - generic [ref=e386]: Bryan Hernandez
+              - cell "bryan.hernandez.3857@greenschool.edu" [ref=e387]
+              - cell "Parent" [ref=e388]:
+                - generic [ref=e389]: Parent
+              - cell "Active" [ref=e390]:
+                - generic [ref=e391]: Active
+              - cell "Oct 29, 2025" [ref=e392]
+              - cell "👁️ ✏️ 🗑️" [ref=e393]:
+                - generic [ref=e394]:
+                  - button "👁️" [ref=e395] [cursor=pointer]
+                  - button "✏️" [ref=e396] [cursor=pointer]
+                  - button "🗑️" [ref=e397] [cursor=pointer]
+            - row "MH Mitchell Hardy mitchell.hardy.3593@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e398]:
+              - cell "MH Mitchell Hardy" [ref=e399]:
+                - generic [ref=e400]:
+                  - generic [ref=e401]: MH
+                  - generic [ref=e402]: Mitchell Hardy
+              - cell "mitchell.hardy.3593@greenschool.edu" [ref=e403]
+              - cell "Parent" [ref=e404]:
+                - generic [ref=e405]: Parent
+              - cell "Active" [ref=e406]:
+                - generic [ref=e407]: Active
+              - cell "Oct 29, 2025" [ref=e408]
+              - cell "👁️ ✏️ 🗑️" [ref=e409]:
+                - generic [ref=e410]:
+                  - button "👁️" [ref=e411] [cursor=pointer]
+                  - button "✏️" [ref=e412] [cursor=pointer]
+                  - button "🗑️" [ref=e413] [cursor=pointer]
+            - row "CL Crystal Lucas crystal.lucas.3327@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e414]:
+              - cell "CL Crystal Lucas" [ref=e415]:
+                - generic [ref=e416]:
+                  - generic [ref=e417]: CL
+                  - generic [ref=e418]: Crystal Lucas
+              - cell "crystal.lucas.3327@greenschool.edu" [ref=e419]
+              - cell "Parent" [ref=e420]:
+                - generic [ref=e421]: Parent
+              - cell "Active" [ref=e422]:
+                - generic [ref=e423]: Active
+              - cell "Oct 29, 2025" [ref=e424]
+              - cell "👁️ ✏️ 🗑️" [ref=e425]:
+                - generic [ref=e426]:
+                  - button "👁️" [ref=e427] [cursor=pointer]
+                  - button "✏️" [ref=e428] [cursor=pointer]
+                  - button "🗑️" [ref=e429] [cursor=pointer]
+            - row "AA Angela Austin angela.austin.3065@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e430]:
+              - cell "AA Angela Austin" [ref=e431]:
+                - generic [ref=e432]:
+                  - generic [ref=e433]: AA
+                  - generic [ref=e434]: Angela Austin
+              - cell "angela.austin.3065@greenschool.edu" [ref=e435]
+              - cell "Parent" [ref=e436]:
+                - generic [ref=e437]: Parent
+              - cell "Active" [ref=e438]:
+                - generic [ref=e439]: Active
+              - cell "Oct 29, 2025" [ref=e440]
+              - cell "👁️ ✏️ 🗑️" [ref=e441]:
+                - generic [ref=e442]:
+                  - button "👁️" [ref=e443] [cursor=pointer]
+                  - button "✏️" [ref=e444] [cursor=pointer]
+                  - button "🗑️" [ref=e445] [cursor=pointer]
+            - row "CA Claudia Allen claudia.allen.2796@greenschool.edu Parent Active Oct 29, 2025 👁️ ✏️ 🗑️" [ref=e446]:
+              - cell "CA Claudia Allen" [ref=e447]:
+                - generic [ref=e448]:
+                  - generic [ref=e449]: CA
+                  - generic [ref=e450]: Claudia Allen
+              - cell "claudia.allen.2796@greenschool.edu" [ref=e451]
+              - cell "Parent" [ref=e452]:
+                - generic [ref=e453]: Parent
+              - cell "Active" [ref=e454]:
+                - generic [ref=e455]: Active
+              - cell "Oct 29, 2025" [ref=e456]
+              - cell "👁️ ✏️ 🗑️" [ref=e457]:
+                - generic [ref=e458]:
+                  - button "👁️" [ref=e459] [cursor=pointer]
+                  - button "✏️" [ref=e460] [cursor=pointer]
+                  - button "🗑️" [ref=e461] [cursor=pointer]
+        - generic [ref=e462]:
+          - button "Previous" [disabled] [ref=e463]
+          - generic [ref=e464]: Page 1 of 75 (1486 total users)
+          - button "Next" [ref=e465] [cursor=pointer]
+  - contentinfo [ref=e466]:
+    - generic [ref=e467]:
+      - paragraph [ref=e468]: © 2025 Green School Management System
+      - generic [ref=e469]:
+        - link "Privacy Policy" [ref=e470] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e471]: ·
+        - link "Terms of Service" [ref=e472] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e473]: ·
+        - link "Help" [ref=e474] [cursor=pointer]:
+          - /url: "#"
+```
