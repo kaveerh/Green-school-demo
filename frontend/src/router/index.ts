@@ -1,11 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
     component: () => import('@/views/HomeView.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/LoginView.vue'),
+    meta: { public: true }
+  },
+  {
+    path: '/demo',
+    name: 'demo',
+    component: () => import('@/views/DemoView.vue'),
+    meta: { public: true }
+  },
+  {
+    path: '/debug',
+    name: 'debug',
+    component: () => import('@/views/DebugView.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/dashboard',
@@ -199,7 +218,7 @@ const routes: RouteRecordRaw[] = [
     path: '/classes',
     name: 'classes',
     component: () => import('@/components/ClassList.vue'),
-    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher', 'student', 'parent'] }
   },
   {
     path: '/classes/create',
@@ -249,7 +268,7 @@ const routes: RouteRecordRaw[] = [
     path: '/assessments',
     name: 'assessments',
     component: () => import('@/views/AssessmentList.vue'),
-    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher', 'student', 'parent'] }
   },
   {
     path: '/assessments/create',
@@ -280,7 +299,7 @@ const routes: RouteRecordRaw[] = [
     path: '/attendance',
     name: 'attendance',
     component: () => import('@/views/AttendanceList.vue'),
-    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher', 'student', 'parent'] }
   },
   {
     path: '/attendance/mark',
@@ -300,7 +319,7 @@ const routes: RouteRecordRaw[] = [
     path: '/events',
     name: 'events',
     component: () => import('@/views/EventList.vue'),
-    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher', 'student', 'parent'] }
   },
   {
     path: '/events/create',
@@ -320,7 +339,7 @@ const routes: RouteRecordRaw[] = [
     path: '/activities',
     name: 'activities',
     component: () => import('@/views/ActivityList.vue'),
-    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher', 'student', 'parent'] }
   },
   {
     path: '/activities/create',
@@ -378,7 +397,7 @@ const routes: RouteRecordRaw[] = [
     path: '/merits',
     name: 'merits',
     component: () => import('@/views/MeritList.vue'),
-    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher'] }
+    meta: { requiresAuth: true, requiresRole: ['administrator', 'teacher', 'student', 'parent'] }
   },
   {
     path: '/merits/award',
@@ -400,16 +419,62 @@ const router = createRouter({
 })
 
 // Navigation guard for authentication
-router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore()
 
-  if (requiresAuth) {
-    // TODO: Check Keycloak authentication
-    // For now, allow all routes
-    next()
-  } else {
-    next()
+  // Wait for authentication to initialize before proceeding
+  if (!authStore.isInitialized) {
+    console.log('⏳ Waiting for auth initialization...')
+    // Wait up to 5 seconds for initialization
+    let attempts = 0
+    while (!authStore.isInitialized && attempts < 50) {
+      await new Promise(resolve => setTimeout(resolve, 100))
+      attempts++
+    }
+
+    if (!authStore.isInitialized) {
+      console.error('❌ Auth initialization timeout')
+      next({ name: 'login' })
+      return
+    }
+    console.log('✓ Auth initialized, proceeding with navigation')
   }
+
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const isPublicRoute = to.matched.some(record => record.meta.public)
+  const requiresRole = to.meta.requiresRole as string[] | undefined
+
+  console.log(`🧭 Navigating to: ${to.path}, Requires Auth: ${requiresAuth}, Is Authenticated: ${authStore.isAuthenticated}`)
+
+  // If route requires authentication
+  if (requiresAuth) {
+    if (!authStore.isAuthenticated) {
+      // Not authenticated, redirect to login
+      console.log('🔒 Route requires authentication, redirecting to login')
+      next({ name: 'login', query: { redirect: to.fullPath } })
+      return
+    }
+
+    // Check role requirements if specified
+    if (requiresRole && requiresRole.length > 0) {
+      const hasRequiredRole = authStore.hasAnyRole(requiresRole)
+      if (!hasRequiredRole) {
+        console.log('⛔ User does not have required role:', requiresRole)
+        next({ name: 'dashboard' }) // Redirect to dashboard if no permission
+        return
+      }
+    }
+  }
+
+  // If user is authenticated and trying to access login page, redirect to dashboard
+  if (to.name === 'login' && authStore.isAuthenticated) {
+    console.log('✅ Already authenticated, redirecting to dashboard')
+    next({ name: 'dashboard' })
+    return
+  }
+
+  // Allow navigation
+  next()
 })
 
 export default router

@@ -1,9 +1,10 @@
 /**
  * Authentication Store
- * Manages user authentication state and school context
+ * Manages user authentication state using Keycloak and school context
  */
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import * as KeycloakService from '@/services/keycloak'
 
 interface School {
   id: string
@@ -28,15 +29,19 @@ interface User {
 interface CurrentUser extends User {
   school_id: string
   school?: School
+  username?: string
+  roles?: string[]
 }
 
 export const useAuthStore = defineStore('auth', () => {
   // State
   const isAuthenticated = ref(false)
+  const isInitialized = ref(false)
   const currentUser = ref<CurrentUser | null>(null)
   const selectedSchool = ref<School | null>(null)
   const availableSchools = ref<School[]>([])
   const token = ref<string | null>(null)
+  const authError = ref<string | null>(null)
 
   // Computed
   const currentSchoolId = computed(() => selectedSchool.value?.id || null)
@@ -45,62 +50,81 @@ export const useAuthStore = defineStore('auth', () => {
   const userRole = computed(() => currentUser.value?.persona || 'guest')
 
   /**
-   * Initialize auth state from localStorage
+   * Initialize Keycloak authentication
    */
-  function initializeAuth() {
-    // Load from localStorage
-    const savedSchool = localStorage.getItem('selectedSchool')
-    const savedUser = localStorage.getItem('currentUser')
-    const savedToken = localStorage.getItem('authToken')
+  async function initializeKeycloak() {
+    try {
+      console.log('🔄 Initializing Keycloak...')
+      const authenticated = await KeycloakService.initializeAuth()
 
-    if (savedSchool) {
-      try {
-        selectedSchool.value = JSON.parse(savedSchool)
-      } catch (e) {
-        console.error('Failed to parse saved school:', e)
-        localStorage.removeItem('selectedSchool')
+      if (authenticated) {
+        // Get user profile from Keycloak token
+        const profile = KeycloakService.getUserProfile()
+
+        if (profile) {
+          console.log('👤 User profile loaded:', profile.email, profile.persona)
+
+          // Load saved school from localStorage
+          const savedSchool = localStorage.getItem('selectedSchool')
+          if (savedSchool) {
+            try {
+              selectedSchool.value = JSON.parse(savedSchool)
+            } catch (e) {
+              console.error('Failed to parse saved school:', e)
+            }
+          }
+
+          // Create user object from Keycloak profile
+          currentUser.value = {
+            id: profile.id,
+            email: profile.email,
+            first_name: profile.firstName,
+            last_name: profile.lastName,
+            full_name: profile.fullName,
+            username: profile.username,
+            persona: profile.persona,
+            status: 'active',
+            roles: profile.roles,
+            school_id: selectedSchool.value?.id || '',
+            school: selectedSchool.value || undefined
+          }
+
+          // Set authentication state BEFORE fetching schools
+          isAuthenticated.value = true
+          token.value = KeycloakService.getToken() || null
+
+          // Save to localStorage
+          localStorage.setItem('currentUser', JSON.stringify(currentUser.value))
+
+          // Fetch schools if not already loaded
+          if (availableSchools.value.length === 0) {
+            try {
+              await fetchSchools()
+            } catch (error) {
+              console.error('Failed to fetch schools:', error)
+              // Don't fail auth if schools fetch fails
+            }
+          }
+
+          console.log('✅ Keycloak authentication successful:', profile.fullName, `(${profile.persona})`)
+          console.log('🏫 Available schools:', availableSchools.value.length)
+        }
+      } else {
+        console.log('ℹ️ User is not authenticated')
+        isAuthenticated.value = false
+        currentUser.value = null
+        token.value = null
       }
-    }
 
-    if (savedUser) {
-      try {
-        currentUser.value = JSON.parse(savedUser)
-        isAuthenticated.value = true
-      } catch (e) {
-        console.error('Failed to parse saved user:', e)
-        localStorage.removeItem('currentUser')
-      }
-    } else {
-      // Create a default mock user if none exists (for development)
-      // This will be replaced when Keycloak is integrated
-      currentUser.value = {
-        id: 'bed3ada7-ab32-4a74-84a0-75602181f553',
-        email: 'admin@greenschool.edu',
-        first_name: 'Admin',
-        last_name: 'User',
-        full_name: 'Admin User',
-        persona: 'administrator',
-        status: 'active',
-        school_id: selectedSchool.value?.id || '',
-        school: selectedSchool.value || undefined
-      }
-      isAuthenticated.value = true
-      token.value = 'mock-token-dev'
-
-      localStorage.setItem('currentUser', JSON.stringify(currentUser.value))
-      localStorage.setItem('authToken', token.value)
-    }
-
-    if (savedToken) {
-      token.value = savedToken
-    }
-
-    // Fetch schools asynchronously (non-blocking)
-    // This will also auto-select first school if none selected
-    if (availableSchools.value.length === 0) {
-      fetchSchools().catch(error => {
-        console.error('Failed to fetch schools on init:', error)
-      })
+      isInitialized.value = true
+      console.log('✓ Auth initialization complete. Authenticated:', isAuthenticated.value)
+      return authenticated
+    } catch (error) {
+      console.error('❌ Failed to initialize Keycloak:', error)
+      authError.value = 'Authentication initialization failed'
+      isAuthenticated.value = false
+      isInitialized.value = true
+      return false
     }
   }
 
@@ -109,7 +133,20 @@ export const useAuthStore = defineStore('auth', () => {
    */
   async function fetchSchools() {
     try {
-      const response = await fetch('http://localhost:8000/api/v1/schools?page=1&limit=100')
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json'
+      }
+
+      // Add auth token if available
+      const authToken = KeycloakService.getToken()
+      if (authToken) {
+        headers['Authorization'] = `Bearer ${authToken}`
+      }
+
+      const response = await fetch(`${apiBaseUrl}/api/v1/schools?page=1&limit=100`, {
+        headers
+      })
 
       if (!response.ok) {
         throw new Error(`Failed to fetch schools: ${response.statusText}`)
@@ -119,13 +156,10 @@ export const useAuthStore = defineStore('auth', () => {
 
       // Handle different response formats
       if (responseData.data && Array.isArray(responseData.data)) {
-        // Format: { data: [...], pagination: {...} }
         availableSchools.value = responseData.data
       } else if (responseData.schools && Array.isArray(responseData.schools)) {
-        // Format: { schools: [...] }
         availableSchools.value = responseData.schools
       } else if (Array.isArray(responseData)) {
-        // Format: [...]
         availableSchools.value = responseData
       } else {
         console.error('Unexpected schools response format:', responseData)
@@ -158,7 +192,7 @@ export const useAuthStore = defineStore('auth', () => {
       localStorage.setItem('currentUser', JSON.stringify(currentUser.value))
     }
 
-    console.log('School selected:', school.name, school.id)
+    console.log('🏫 School selected:', school.name, school.id)
   }
 
   /**
@@ -170,83 +204,96 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   /**
-   * Mock login (TODO: Replace with Keycloak integration)
+   * Login with Keycloak
    */
-  async function login(email: string, password: string) {
-    // TODO: Implement Keycloak authentication
-    // For now, create a mock user
-
-    // Ensure we have schools loaded and one selected
-    if (availableSchools.value.length === 0) {
-      await fetchSchools()
-    }
-
-    const mockUser: CurrentUser = {
-      id: 'bed3ada7-ab32-4a74-84a0-75602181f553',
-      email: email,
-      first_name: 'Admin',
-      last_name: 'User',
-      full_name: 'Admin User',
-      persona: 'administrator',
-      status: 'active',
-      school_id: selectedSchool.value?.id || '',
-      school: selectedSchool.value || undefined
-    }
-
-    currentUser.value = mockUser
-    isAuthenticated.value = true
-    token.value = 'mock-token-' + Date.now()
-
-    localStorage.setItem('currentUser', JSON.stringify(mockUser))
-    localStorage.setItem('authToken', token.value)
+  function login() {
+    KeycloakService.login()
   }
 
   /**
-   * Logout
+   * Logout from Keycloak and clear local state
    */
   function logout() {
+    // Clear local state
     currentUser.value = null
     isAuthenticated.value = false
     token.value = null
     selectedSchool.value = null
     availableSchools.value = []
 
+    // Clear localStorage
     localStorage.removeItem('currentUser')
     localStorage.removeItem('authToken')
     localStorage.removeItem('selectedSchool')
+
+    // Logout from Keycloak
+    KeycloakService.logout()
   }
 
   /**
    * Get authentication token
    */
   function getToken(): string | null {
-    return token.value
+    return token.value || KeycloakService.getToken() || null
   }
 
   /**
-   * Check if user has specific role
+   * Check if user has specific role (Keycloak-aware)
    */
   function hasRole(role: string): boolean {
+    // Check Keycloak roles first
+    if (KeycloakService.hasRole(role)) {
+      return true
+    }
+
+    // Fallback to user persona
     return userRole.value === role
   }
 
   /**
-   * Check if user has any of the specified roles
+   * Check if user has any of the specified roles (Keycloak-aware)
    */
   function hasAnyRole(roles: string[]): boolean {
+    // Check Keycloak roles first
+    if (KeycloakService.hasAnyRole(roles)) {
+      return true
+    }
+
+    // Fallback to user persona
     return roles.includes(userRole.value)
   }
 
-  // Initialize on store creation
-  initializeAuth()
+  /**
+   * Refresh authentication state
+   */
+  async function refreshAuth() {
+    const keycloak = KeycloakService.getKeycloak()
+    if (!keycloak) {
+      return false
+    }
+
+    try {
+      const refreshed = await keycloak.updateToken(5)
+      if (refreshed) {
+        token.value = keycloak.token || null
+        console.log('🔄 Token refreshed')
+      }
+      return true
+    } catch (error) {
+      console.error('Failed to refresh token:', error)
+      return false
+    }
+  }
 
   return {
     // State
     isAuthenticated,
+    isInitialized,
     currentUser,
     selectedSchool,
     availableSchools,
     token,
+    authError,
 
     // Computed
     currentSchoolId,
@@ -255,7 +302,7 @@ export const useAuthStore = defineStore('auth', () => {
     userRole,
 
     // Actions
-    initializeAuth,
+    initializeKeycloak,
     fetchSchools,
     selectSchool,
     clearSchool,
@@ -263,6 +310,7 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     getToken,
     hasRole,
-    hasAnyRole
+    hasAnyRole,
+    refreshAuth
   }
 })

@@ -513,9 +513,10 @@ const canAccessRooms = computed(() => {
 
 /**
  * Check if user can access classes module
+ * Students and parents can view classes (schedule)
  */
 const canAccessClasses = computed(() => {
-  return authStore.hasAnyRole(['administrator', 'teacher'])
+  return authStore.hasAnyRole(['administrator', 'teacher', 'student', 'parent'])
 })
 
 /**
@@ -527,30 +528,34 @@ const canAccessLessons = computed(() => {
 
 /**
  * Check if user can access assessments module
+ * Students and parents can view assessments (read-only)
  */
 const canAccessAssessments = computed(() => {
-  return authStore.hasAnyRole(['administrator', 'teacher'])
+  return authStore.hasAnyRole(['administrator', 'teacher', 'student', 'parent'])
 })
 
 /**
  * Check if user can access attendance module
+ * Students and parents can view attendance (read-only)
  */
 const canAccessAttendance = computed(() => {
-  return authStore.hasAnyRole(['administrator', 'teacher'])
+  return authStore.hasAnyRole(['administrator', 'teacher', 'student', 'parent'])
 })
 
 /**
  * Check if user can access events module
+ * All authenticated users can view events
  */
 const canAccessEvents = computed(() => {
-  return authStore.hasAnyRole(['administrator', 'teacher'])
+  return authStore.isAuthenticated
 })
 
 /**
  * Check if user can access activities module
+ * Students and parents can view activities
  */
 const canAccessActivities = computed(() => {
-  return authStore.hasAnyRole(['administrator', 'teacher'])
+  return authStore.hasAnyRole(['administrator', 'teacher', 'student', 'parent'])
 })
 
 /**
@@ -562,9 +567,10 @@ const canAccessVendors = computed(() => {
 
 /**
  * Check if user can access merits module
+ * Students and parents can view merits
  */
 const canAccessMerits = computed(() => {
-  return authStore.hasAnyRole(['administrator', 'teacher'])
+  return authStore.hasAnyRole(['administrator', 'teacher', 'student', 'parent'])
 })
 
 /**

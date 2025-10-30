@@ -1,6 +1,9 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100">
     <div class="text-center">
+      <div class="mb-6">
+        <span class="text-8xl">🌱</span>
+      </div>
       <h1 class="text-6xl font-bold text-primary-700 mb-4">
         Green School Management System
       </h1>
@@ -9,10 +12,25 @@
       </p>
       <div class="space-x-4">
         <router-link
+          v-if="authStore.isAuthenticated"
           to="/dashboard"
           class="inline-block px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition"
         >
           Go to Dashboard
+        </router-link>
+        <router-link
+          v-else
+          to="/login"
+          class="inline-block px-6 py-3 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition"
+        >
+          Sign In
+        </router-link>
+        <router-link
+          v-if="!authStore.isAuthenticated"
+          to="/demo"
+          class="inline-block px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg border-2 border-primary-600 hover:bg-primary-50 transition"
+        >
+          View Demo Accounts
         </router-link>
         <a
           href="http://localhost:8000/docs"
@@ -34,5 +52,7 @@
 </template>
 
 <script setup lang="ts">
-// Home view - landing page
+import { useAuthStore } from '@/stores/authStore'
+
+const authStore = useAuthStore()
 </script>
