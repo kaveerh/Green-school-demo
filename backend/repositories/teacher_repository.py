@@ -5,6 +5,7 @@ Data access layer for teacher operations
 from typing import Optional, List, Dict, Any
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, or_, and_
+from sqlalchemy.orm import selectinload
 from repositories.base_repository import BaseRepository
 from models.teacher import Teacher
 import uuid
@@ -38,6 +39,7 @@ class TeacherRepository(BaseRepository[Teacher]):
             Teacher instance or None
         """
         query = select(self.model).where(self.model.user_id == user_id)
+        query = query.options(selectinload(self.model.user))  # Eagerly load user relationship
 
         if not include_deleted:
             query = query.where(self.model.deleted_at.is_(None))
@@ -68,6 +70,7 @@ class TeacherRepository(BaseRepository[Teacher]):
                 self.model.employee_id == employee_id
             )
         )
+        query = query.options(selectinload(self.model.user))  # Eagerly load user relationship
 
         if not include_deleted:
             query = query.where(self.model.deleted_at.is_(None))
@@ -111,8 +114,9 @@ class TeacherRepository(BaseRepository[Teacher]):
         total_result = await self.session.execute(count_query)
         total = total_result.scalar()
 
-        # Apply pagination
+        # Apply pagination and eager loading
         offset = (page - 1) * limit
+        query = query.options(selectinload(self.model.user))  # Eagerly load user relationship
         query = query.order_by(self.model.created_at.desc())
         query = query.offset(offset).limit(limit)
 

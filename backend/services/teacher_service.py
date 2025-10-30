@@ -490,4 +490,18 @@ class TeacherService:
         teacher_dict['is_certification_valid'] = teacher.is_certification_valid()
         teacher_dict['is_full_time'] = teacher.is_full_time()
 
+        # Add user relationship data if loaded
+        if teacher.user:
+            teacher_dict['user'] = {
+                'id': str(teacher.user.id),
+                'email': teacher.user.email,
+                'first_name': teacher.user.first_name,
+                'last_name': teacher.user.last_name,
+                'full_name': f"{teacher.user.first_name} {teacher.user.last_name}",
+                'persona': teacher.user.persona,
+                'status': teacher.user.status,
+                'phone': teacher.user.phone,
+                'avatar_url': teacher.user.avatar_url
+            }
+
         return TeacherResponseSchema(**teacher_dict)

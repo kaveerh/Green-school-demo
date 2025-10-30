@@ -76,8 +76,18 @@ export const useTeacherStore = defineStore('teacher', () => {
       const { teacherService } = await import('@/services/teacherService')
       const response = await teacherService.getTeachers(params)
 
-      teachers.value = response.data
-      pagination.value = response.pagination
+      // API returns {data: Teacher[], pagination: {...}}
+      teachers.value = (response as any).data || response.teachers || response.items || []
+      const paginationData = (response as any).pagination
+
+      if (paginationData) {
+        pagination.value = {
+          page: paginationData.page,
+          limit: paginationData.limit,
+          total: paginationData.total,
+          pages: paginationData.pages || paginationData.total_pages
+        }
+      }
 
       return response
     } catch (err: any) {
@@ -150,8 +160,18 @@ export const useTeacherStore = defineStore('teacher', () => {
       const { teacherService } = await import('@/services/teacherService')
       const response = await teacherService.getActiveTeachers(page, limit)
 
-      teachers.value = response.data
-      pagination.value = response.pagination
+      // API returns {data: Teacher[], pagination: {...}}
+      teachers.value = (response as any).data || response.teachers || response.items || []
+      const paginationData = (response as any).pagination
+
+      if (paginationData) {
+        pagination.value = {
+          page: paginationData.page,
+          limit: paginationData.limit,
+          total: paginationData.total,
+          pages: paginationData.pages || paginationData.total_pages
+        }
+      }
 
       return response
     } catch (err: any) {
@@ -376,8 +396,18 @@ export const useTeacherStore = defineStore('teacher', () => {
       const { teacherService } = await import('@/services/teacherService')
       const response = await teacherService.searchTeachers(query, params)
 
-      teachers.value = response.data
-      pagination.value = response.pagination
+      // API returns {data: Teacher[], pagination: {...}}
+      teachers.value = (response as any).data || response.teachers || response.items || []
+      const paginationData = (response as any).pagination
+
+      if (paginationData) {
+        pagination.value = {
+          page: paginationData.page,
+          limit: paginationData.limit,
+          total: paginationData.total,
+          pages: paginationData.pages || paginationData.total_pages
+        }
+      }
 
       return response
     } catch (err: any) {

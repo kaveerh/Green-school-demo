@@ -28,6 +28,27 @@ from utils.auth import CurrentUser, require_admin
 router = APIRouter(prefix="/students", tags=["Students"])
 
 
+def _student_to_response(student) -> StudentResponseSchema:
+    """Convert Student model to response schema with user data"""
+    student_dict = student.to_dict(include_sensitive=True)  # Include all fields
+
+    # Add user relationship data if loaded
+    if hasattr(student, 'user') and student.user:
+        student_dict['user'] = {
+            'id': str(student.user.id),
+            'email': student.user.email,
+            'first_name': student.user.first_name,
+            'last_name': student.user.last_name,
+            'full_name': f"{student.user.first_name} {student.user.last_name}",
+            'persona': student.user.persona,
+            'status': student.user.status,
+            'phone': student.user.phone,
+            'avatar_url': student.user.avatar_url
+        }
+
+    return StudentResponseSchema(**student_dict)
+
+
 @router.post(
     "",
     response_model=StudentResponseSchema,
@@ -102,8 +123,11 @@ async def list_students(
         search_params=search_params
     )
 
+    # Convert students to response schemas with user data
+    student_responses = [_student_to_response(student) for student in students]
+
     return {
-        "data": students,
+        "data": student_responses,
         "pagination": pagination
     }
 

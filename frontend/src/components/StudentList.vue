@@ -86,11 +86,11 @@
             </td>
             <td>
               <div class="student-name">
-                <img v-if="student.photo_url" :src="student.photo_url" :alt="student.student_id" class="student-avatar" />
+                <img v-if="student.photo_url" :src="student.photo_url" :alt="student.user?.full_name || student.student_id" class="student-avatar" />
                 <div v-else class="student-avatar-placeholder">
-                  {{ getInitials(student.student_id) }}
+                  {{ getInitials(student.user?.full_name || student.student_id) }}
                 </div>
-                <span>{{ student.student_id }}</span>
+                <span>{{ student.user?.full_name || student.student_id }}</span>
               </div>
             </td>
             <td>

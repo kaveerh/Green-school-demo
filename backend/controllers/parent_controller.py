@@ -24,6 +24,23 @@ import uuid
 router = APIRouter(prefix="/parents", tags=["parents"])
 
 
+def _parent_to_response(parent) -> ParentResponseSchema:
+    """Convert Parent model to response schema with user data"""
+    parent_dict = parent.to_dict(include_relationships=False)
+
+    # Add user relationship data if loaded
+    if hasattr(parent, 'user') and parent.user:
+        parent_dict['user'] = {
+            'id': str(parent.user.id),
+            'email': parent.user.email,
+            'first_name': parent.user.first_name,
+            'last_name': parent.user.last_name,
+            'persona': parent.user.persona
+        }
+
+    return ParentResponseSchema(**parent_dict)
+
+
 # Dependency to get ParentService
 async def get_parent_service(session: AsyncSession = Depends(get_db)) -> ParentService:
     return ParentService(session)
@@ -115,7 +132,7 @@ async def list_parents(
         parents, total = await service.get_parents_by_school(school_id, page, limit)
 
         return ParentListResponseSchema(
-            parents=[ParentResponseSchema(**p.to_dict(include_relationships=False)) for p in parents],
+            parents=[_parent_to_response(p) for p in parents],
             total=total,
             page=page,
             limit=limit
@@ -415,7 +432,7 @@ async def search_parents(
         parents, total = await service.search_parents(school_id, q, page, limit)
 
         return ParentListResponseSchema(
-            parents=[ParentResponseSchema(**p.to_dict(include_relationships=False)) for p in parents],
+            parents=[_parent_to_response(p) for p in parents],
             total=total,
             page=page,
             limit=limit

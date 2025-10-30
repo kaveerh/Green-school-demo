@@ -3,12 +3,15 @@ Teacher Schemas
 Pydantic models for request/response validation
 """
 from pydantic import BaseModel, Field, field_validator
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, TYPE_CHECKING
 from datetime import datetime, date
 from decimal import Decimal
 from enum import Enum
 import uuid
 import re
+
+if TYPE_CHECKING:
+    from schemas.user_schema import UserResponseSchema
 
 
 class TeacherStatusEnum(str, Enum):
@@ -204,6 +207,9 @@ class TeacherResponseSchema(TeacherBaseSchema):
     updated_at: datetime
     created_by: Optional[uuid.UUID] = None
     updated_by: Optional[uuid.UUID] = None
+
+    # Relationships
+    user: Optional[Dict[str, Any]] = None  # User data from relationship
 
     # Computed fields
     is_currently_employed: Optional[bool] = None

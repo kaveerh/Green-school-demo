@@ -3,7 +3,7 @@ Student Schemas
 Pydantic schemas for student request/response validation
 """
 from pydantic import BaseModel, Field, field_validator
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from datetime import date, datetime
 from enum import Enum
 import uuid
@@ -151,6 +151,11 @@ class StudentResponseSchema(BaseModel):
     emergency_contact_relation: Optional[str]
     photo_url: Optional[str]
     status: str
+
+    # Relationships
+    user: Optional[Dict[str, Any]] = None  # User data from relationship
+
+    # Computed fields
     is_currently_enrolled: Optional[bool]
     age: Optional[int]
     years_enrolled: Optional[int]

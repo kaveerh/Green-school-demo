@@ -39,8 +39,25 @@ class LessonService {
     })
 
     if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.detail || 'Failed to create lesson')
+      let errorMessage = 'Failed to create lesson'
+      try {
+        const error = await response.json()
+        // Handle different error formats
+        if (typeof error.detail === 'string') {
+          errorMessage = error.detail
+        } else if (Array.isArray(error.detail)) {
+          // Handle validation errors from FastAPI
+          errorMessage = error.detail.map((e: any) =>
+            `${e.loc?.join('.') || 'Field'}: ${e.msg}`
+          ).join('; ')
+        } else if (error.message) {
+          errorMessage = error.message
+        }
+      } catch (e) {
+        // If response is not JSON, use status text
+        errorMessage = `HTTP ${response.status}: ${response.statusText}`
+      }
+      throw new Error(errorMessage)
     }
 
     return response.json()

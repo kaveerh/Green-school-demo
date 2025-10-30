@@ -167,3 +167,12 @@ export interface TeacherWithDetails extends Teacher {
   class_count?: number
   student_count?: number
 }
+
+export interface PaginatedResponse<T> {
+  teachers?: T[]
+  items?: T[]
+  total: number
+  page: number
+  limit: number
+  total_pages: number
+}

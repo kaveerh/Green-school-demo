@@ -91,15 +91,49 @@
 
           <div class="form-row">
             <div class="form-group">
-              <label for="classId">Class *</label>
-              <input
-                id="classId"
-                v-model="bulkData.class_id"
-                type="text"
-                class="form-input"
-                placeholder="Enter Class ID"
-                required
-              />
+              <label for="classSearch">Class *</label>
+              <div class="class-search-wrapper">
+                <input
+                  id="classSearch"
+                  v-model="classSearchQuery"
+                  @input="handleClassSearch"
+                  @focus="showClassDropdown = true"
+                  type="text"
+                  class="form-input"
+                  placeholder="Search by class code (e.g., MATH-3-Q1-A)"
+                  autocomplete="off"
+                  required
+                />
+                <div v-if="showClassDropdown && (classSearchResults.length > 0 || classSearchLoading)" class="class-dropdown">
+                  <div v-if="classSearchLoading" class="dropdown-loading">
+                    Searching...
+                  </div>
+                  <div v-else-if="classSearchResults.length > 0" class="dropdown-results">
+                    <div
+                      v-for="classItem in classSearchResults"
+                      :key="classItem.id"
+                      @click="selectClass(classItem)"
+                      class="dropdown-item"
+                    >
+                      <div class="class-code">{{ classItem.code }}</div>
+                      <div class="class-info">
+                        <span class="class-name">{{ classItem.name }}</span>
+                        <span class="class-details">
+                          Grade {{ classItem.grade_level }} • {{ classItem.quarter }} • {{ classItem.subject_name }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-else class="dropdown-empty">
+                    No classes found
+                  </div>
+                </div>
+              </div>
+              <div v-if="selectedClass" class="selected-class-info">
+                <span class="icon">✓</span>
+                <strong>{{ selectedClass.code }}</strong> - {{ selectedClass.name }}
+                <button @click="clearClassSelection" class="btn-clear" type="button">×</button>
+              </div>
             </div>
 
             <div class="form-group">
@@ -114,7 +148,7 @@
             </div>
           </div>
 
-          <button @click="loadStudents" class="btn btn-primary" :disabled="loading">
+          <button @click="loadStudents" class="btn btn-primary" :disabled="loading || !selectedClass">
             {{ loading ? 'Loading...' : 'Load Students' }}
           </button>
         </div>
@@ -212,10 +246,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAttendanceStore } from '@/stores/attendanceStore'
+import { useClassStore } from '@/stores/classStore'
 import type { AttendanceStatus } from '@/types/attendance'
+import type { Class } from '@/types/class'
 
 interface StudentAttendanceData {
   id: string
@@ -232,12 +268,21 @@ interface StudentAttendanceData {
 const route = useRoute()
 const router = useRouter()
 const attendanceStore = useAttendanceStore()
+const classStore = useClassStore()
 
 const isEdit = computed(() => !!route.params.id)
 const attendanceId = computed(() => route.params.id as string)
 
 // Mock school ID - replace with actual from auth
 const schoolId = ref('60da2256-81fc-4ca5-bf6b-467b8d371c61')
+
+// Class search state
+const classSearchQuery = ref('')
+const classSearchResults = ref<Class[]>([])
+const classSearchLoading = ref(false)
+const showClassDropdown = ref(false)
+const selectedClass = ref<Class | null>(null)
+let searchTimeout: ReturnType<typeof setTimeout> | null = null
 
 // Single record edit form
 const formData = ref({
@@ -249,7 +294,7 @@ const formData = ref({
 
 // Bulk attendance form
 const bulkData = ref({
-  class_id: '2e008ff4-dc05-4c6b-8059-ca92fceb3f9a',
+  class_id: '',
   attendance_date: new Date().toISOString().split('T')[0]
 })
 
@@ -294,7 +339,59 @@ function clearAll() {
   })
 }
 
+async function handleClassSearch() {
+  // Clear previous timeout
+  if (searchTimeout) {
+    clearTimeout(searchTimeout)
+  }
+
+  const query = classSearchQuery.value.trim()
+
+  // Don't search if query is too short
+  if (query.length < 2) {
+    classSearchResults.value = []
+    showClassDropdown.value = false
+    return
+  }
+
+  // Debounce search
+  searchTimeout = setTimeout(async () => {
+    classSearchLoading.value = true
+    showClassDropdown.value = true
+
+    try {
+      await classStore.searchClasses(schoolId.value, query, 1, 20)
+      classSearchResults.value = classStore.classes
+    } catch (error) {
+      console.error('Failed to search classes:', error)
+      classSearchResults.value = []
+    } finally {
+      classSearchLoading.value = false
+    }
+  }, 300)
+}
+
+function selectClass(classItem: Class) {
+  selectedClass.value = classItem
+  bulkData.value.class_id = classItem.id
+  classSearchQuery.value = classItem.code
+  showClassDropdown.value = false
+  classSearchResults.value = []
+}
+
+function clearClassSelection() {
+  selectedClass.value = null
+  bulkData.value.class_id = ''
+  classSearchQuery.value = ''
+  classSearchResults.value = []
+}
+
 async function loadStudents() {
+  if (!selectedClass.value) {
+    alert('Please select a class first')
+    return
+  }
+
   // Mock student data - replace with actual API call
   students.value = [
     {
@@ -357,6 +454,14 @@ async function submitBulkAttendance() {
   }
 }
 
+// Close dropdown when clicking outside
+function handleClickOutside(event: MouseEvent) {
+  const target = event.target as HTMLElement
+  if (!target.closest('.class-search-wrapper')) {
+    showClassDropdown.value = false
+  }
+}
+
 onMounted(async () => {
   if (isEdit.value && attendanceId.value) {
     await attendanceStore.fetchAttendanceById(attendanceId.value)
@@ -369,6 +474,17 @@ onMounted(async () => {
         notes: currentAttendance.value.notes
       }
     }
+  }
+
+  // Add click outside listener
+  document.addEventListener('click', handleClickOutside)
+})
+
+// Cleanup
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+  if (searchTimeout) {
+    clearTimeout(searchTimeout)
   }
 })
 </script>
@@ -621,5 +737,116 @@ onMounted(async () => {
 
 .icon {
   font-size: 1rem;
+}
+
+/* Class Search Dropdown Styles */
+.class-search-wrapper {
+  position: relative;
+}
+
+.class-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.25rem;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 50;
+}
+
+.dropdown-loading,
+.dropdown-empty {
+  padding: 1rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.dropdown-results {
+  padding: 0.25rem 0;
+}
+
+.dropdown-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background: #f9fafb;
+}
+
+.class-code {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.class-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.class-name {
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.class-details {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.selected-class-info {
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #166534;
+}
+
+.selected-class-info .icon {
+  color: #16a34a;
+  font-size: 1rem;
+}
+
+.btn-clear {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-clear:hover {
+  background: #fee2e2;
+  color: #dc2626;
 }
 </style>

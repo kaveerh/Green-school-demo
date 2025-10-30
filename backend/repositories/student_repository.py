@@ -174,6 +174,8 @@ class StudentRepository(BaseRepository[Student]):
         else:
             query = query.order_by(Student.created_at.desc())
 
+        # Eagerly load user relationship
+        query = query.options(selectinload(Student.user))
         query = query.offset(offset).limit(limit)
 
         result = await self.session.execute(query)
