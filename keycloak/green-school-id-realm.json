@@ -1,0 +1,131 @@
+{
+  "realm": "green-school-id",
+  "enabled": true,
+  "displayName": "Green School Management",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "verifyEmail": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "sslRequired": "none",
+  "roles": {
+    "realm": [
+      {
+        "name": "administrator",
+        "description": "Administrator role with full system access"
+      },
+      {
+        "name": "teacher",
+        "description": "Teacher role for class and student management"
+      },
+      {
+        "name": "parent",
+        "description": "Parent role for viewing student progress"
+      },
+      {
+        "name": "student",
+        "description": "Student role for accessing own information"
+      },
+      {
+        "name": "vendor",
+        "description": "Vendor role for external services"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "green-school-id",
+      "name": "Green School Management System",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "authorizationServicesEnabled": false,
+      "fullScopeAllowed": true,
+      "rootUrl": "http://localhost:3000",
+      "baseUrl": "http://localhost:3000",
+      "adminUrl": "http://localhost:3000",
+      "redirectUris": [
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "+"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:3000/*"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "admin@greenschool.edu",
+      "email": "admin@greenschool.edu",
+      "firstName": "Admin",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["administrator"]
+    },
+    {
+      "username": "teacher@greenschool.edu",
+      "email": "teacher@greenschool.edu",
+      "firstName": "Teacher",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["teacher"]
+    },
+    {
+      "username": "parent@greenschool.edu",
+      "email": "parent@greenschool.edu",
+      "firstName": "Parent",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["parent"]
+    },
+    {
+      "username": "student@greenschool.edu",
+      "email": "student@greenschool.edu",
+      "firstName": "Student",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["student"]
+    }
+  ]
+}
