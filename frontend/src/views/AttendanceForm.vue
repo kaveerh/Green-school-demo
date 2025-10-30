@@ -250,6 +250,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAttendanceStore } from '@/stores/attendanceStore'
 import { useClassStore } from '@/stores/classStore'
+import { useSchool } from '@/composables/useSchool'
 import type { AttendanceStatus } from '@/types/attendance'
 import type { Class } from '@/types/class'
 
@@ -274,7 +275,7 @@ const isEdit = computed(() => !!route.params.id)
 const attendanceId = computed(() => route.params.id as string)
 
 // Mock school ID - replace with actual from auth
-const schoolId = ref('60da2256-81fc-4ca5-bf6b-467b8d371c61')
+const { currentSchoolId } = useSchool()
 
 // Class search state
 const classSearchQuery = ref('')
@@ -360,7 +361,7 @@ async function handleClassSearch() {
     showClassDropdown.value = true
 
     try {
-      await classStore.searchClasses(schoolId.value, query, 1, 20)
+      await classStore.searchClasses(currentSchoolId.value, query, 1, 20)
       classSearchResults.value = classStore.classes
     } catch (error) {
       console.error('Failed to search classes:', error)
@@ -436,7 +437,7 @@ async function submitBulkAttendance() {
 
   try {
     await attendanceStore.bulkCreateAttendance({
-      school_id: schoolId.value,
+      school_id: currentSchoolId.value,
       class_id: bulkData.value.class_id,
       attendance_date: bulkData.value.attendance_date,
       students: validStudents.map(s => ({

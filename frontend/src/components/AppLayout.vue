@@ -1,6 +1,6 @@
 <template>
   <div class="app-layout">
-    <!-- Navigation -->
+    <!-- Sidebar Navigation -->
     <AppNavigation />
 
     <!-- Main Content Area -->
@@ -12,23 +12,23 @@
       <div class="app-content" :class="contentClass">
         <slot></slot>
       </div>
-    </main>
 
-    <!-- Footer -->
-    <footer v-if="showFooter" class="app-footer">
-      <div class="footer-content">
-        <p class="footer-text">
-          © {{ currentYear }} Green School Management System
-        </p>
-        <div class="footer-links">
-          <a href="#" class="footer-link">Privacy Policy</a>
-          <span class="footer-separator">·</span>
-          <a href="#" class="footer-link">Terms of Service</a>
-          <span class="footer-separator">·</span>
-          <a href="#" class="footer-link">Help</a>
+      <!-- Footer -->
+      <footer v-if="showFooter" class="app-footer">
+        <div class="footer-content">
+          <p class="footer-text">
+            © {{ currentYear }} Green School Management System
+          </p>
+          <div class="footer-links">
+            <a href="#" class="footer-link">Privacy Policy</a>
+            <span class="footer-separator">·</span>
+            <a href="#" class="footer-link">Terms of Service</a>
+            <span class="footer-separator">·</span>
+            <a href="#" class="footer-link">Help</a>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </main>
   </div>
 </template>
 
@@ -59,14 +59,22 @@ const currentYear = computed(() => new Date().getFullYear())
 .app-layout {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   background: #f8f9fa;
 }
 
+/* Main Content Area */
 .app-main {
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-left: 260px; /* Width of expanded sidebar */
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+/* Adjust when sidebar is collapsed (using global class that will be added via JS) */
+:global(.sidebar-collapsed) .app-main {
+  margin-left: 70px;
 }
 
 .app-main.has-breadcrumb {
@@ -75,28 +83,30 @@ const currentYear = computed(() => new Date().getFullYear())
 
 .app-breadcrumb {
   background: white;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e5e7eb;
   padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .app-content {
   flex: 1;
   padding: 2rem;
-  max-width: 1400px;
+  max-width: 1600px;
   width: 100%;
-  margin: 0 auto;
 }
 
 /* Footer */
 .app-footer {
   background: white;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #e5e7eb;
   padding: 2rem;
   margin-top: auto;
 }
 
 .footer-content {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -107,8 +117,8 @@ const currentYear = computed(() => new Date().getFullYear())
 
 .footer-text {
   margin: 0;
-  color: #6c757d;
-  font-size: 0.9rem;
+  color: #6b7280;
+  font-size: 0.875rem;
 }
 
 .footer-links {
@@ -118,24 +128,34 @@ const currentYear = computed(() => new Date().getFullYear())
 }
 
 .footer-link {
-  color: #42b883;
+  color: #10b981;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   transition: color 0.2s;
 }
 
 .footer-link:hover {
-  color: #35a372;
+  color: #059669;
   text-decoration: underline;
 }
 
 .footer-separator {
-  color: #dee2e6;
+  color: #d1d5db;
 }
 
-@media (max-width: 768px) {
+/* Mobile Styles */
+@media (max-width: 1024px) {
+  .app-main {
+    margin-left: 0;
+  }
+
+  :global(.sidebar-collapsed) .app-main {
+    margin-left: 0;
+  }
+
   .app-breadcrumb {
     padding: 0.75rem 1rem;
+    padding-top: 5rem; /* Space for mobile menu button */
   }
 
   .app-content {

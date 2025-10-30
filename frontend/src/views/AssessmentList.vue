@@ -167,6 +167,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAssessmentStore } from '@/stores/assessmentStore'
+import { useSchool } from '@/composables/useSchool'
 import type { Assessment, AssessmentStatus, AssessmentType, Quarter } from '@/types/assessment'
 
 const router = useRouter()
@@ -175,7 +176,7 @@ const assessmentStore = useAssessmentStore()
 const quarterFilter = ref<Quarter | ''>('')
 const statusFilter = ref<AssessmentStatus | ''>('')
 const typeFilter = ref<AssessmentType | ''>('')
-const currentSchoolId = ref('60da2256-81fc-4ca5-bf6b-467b8d371c61') // TODO: Get from auth/school context
+const { currentSchoolId } = useSchool()
 const currentTeacherId = ref('fa4a570e-6ced-42e8-ab2f-beaf59b11a89') // TODO: Get from auth context
 
 // Computed

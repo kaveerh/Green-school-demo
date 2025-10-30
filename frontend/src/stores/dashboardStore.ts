@@ -4,6 +4,7 @@
  */
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useAuthStore } from './authStore'
 
 // Dashboard statistics interface
 export interface DashboardStatistics {
@@ -105,11 +106,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
     error.value = null
 
     try {
-      // Use provided schoolId, selected school, environment variable, or default
-      const targetSchoolId = schoolId ||
-                             selectedSchoolId.value ||
-                             import.meta.env.VITE_SCHOOL_ID ||
-                             '60da2256-81fc-4ca5-bf6b-467b8d371c61'
+      const authStore = useAuthStore()
+
+      // Use provided schoolId, auth store's selected school, or return early if no school
+      const targetSchoolId = schoolId || authStore.currentSchoolId
+
+      if (!targetSchoolId) {
+        throw new Error('Please select a school first')
+      }
 
       // Import all services dynamically
       const [

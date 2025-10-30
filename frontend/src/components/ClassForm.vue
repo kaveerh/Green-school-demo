@@ -423,6 +423,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useClassStore } from '@/stores/classStore';
+import { useSchool } from '@/composables/useSchool'
 import {
   QUARTERS,
   GRADE_LEVELS,
@@ -440,6 +441,7 @@ import type { ClassCreateInput, Schedule, Quarter } from '@/types/class';
 const route = useRoute();
 const router = useRouter();
 const classStore = useClassStore();
+const { currentSchoolId } = useSchool();
 
 const isEditMode = computed(() => !!route.params.id);
 const isLoading = computed(() => classStore.isLoading);
@@ -618,12 +620,15 @@ async function handleSubmit() {
   }
 
   try {
-    const schoolId = '60da2256-81fc-4ca5-bf6b-467b8d371c61'; // TODO: Get from auth context
+    if (!currentSchoolId.value) {
+      console.error('Cannot save class: no school selected');
+      return;
+    }
 
     if (isEditMode.value) {
       await classStore.updateClass(route.params.id as string, form.value);
     } else {
-      await classStore.createClass(schoolId, form.value);
+      await classStore.createClass(currentSchoolId.value, form.value);
     }
 
     router.push('/classes');

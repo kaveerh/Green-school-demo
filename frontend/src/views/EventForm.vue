@@ -249,11 +249,13 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useEventStore } from '@/stores/eventStore'
+import { useSchool } from '@/composables/useSchool'
 import type { EventCreateRequest, EventType, EventStatus } from '@/types/event'
 
 const route = useRoute()
 const router = useRouter()
 const eventStore = useEventStore()
+const { currentSchoolId } = useSchool()
 
 // State
 const formData = ref({
@@ -347,11 +349,16 @@ async function loadEvent() {
 async function handleSubmit() {
   submitting.value = true
 
-  const schoolId = '60da2256-81fc-4ca5-bf6b-467b8d371c61' // TODO: Get from auth
+  if (!currentSchoolId.value) {
+    console.error('Cannot save event: no school selected')
+    submitting.value = false
+    return
+  }
+
   const userId = 'bed3ada7-ab32-4a74-84a0-75602181f553' // TODO: Get from auth
 
   const eventData: EventCreateRequest = {
-    school_id: schoolId,
+    school_id: currentSchoolId.value,
     title: formData.value.title,
     description: formData.value.description || null,
     event_type: formData.value.event_type as EventType,

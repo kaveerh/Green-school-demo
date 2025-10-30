@@ -298,6 +298,7 @@ import { ref, reactive, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useLessonStore } from '@/stores/lessonStore'
 import { useClassStore } from '@/stores/classStore'
+import { useSchool } from '@/composables/useSchool'
 import { teacherService } from '@/services/teacherService'
 import { subjectService } from '@/services/subjectService'
 import type { LessonCreateRequest } from '@/types/lesson'
@@ -309,9 +310,9 @@ const router = useRouter()
 const route = useRoute()
 const lessonStore = useLessonStore()
 const classStore = useClassStore()
+const { currentSchoolId } = useSchool()
 
 const submitting = ref(false)
-const currentSchoolId = ref('60da2256-81fc-4ca5-bf6b-467b8d371c61') // TODO: Get from auth/school context
 
 const isEdit = computed(() => !!route.params.id)
 const lessonId = computed(() => route.params.id as string)

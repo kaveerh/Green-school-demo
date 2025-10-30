@@ -294,23 +294,39 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
+import { useAuthStore } from '@/stores/authStore'
 
 const dashboardStore = useDashboardStore()
+const authStore = useAuthStore()
 
 onMounted(async () => {
-  // First fetch schools, then load dashboard data
-  await dashboardStore.fetchSchools()
+  // Wait a bit for auth store to initialize and fetch schools
+  await new Promise(resolve => setTimeout(resolve, 500))
 
-  // fetchSchools will set selectedSchoolId, so we can fetch statistics
-  if (dashboardStore.selectedSchoolId) {
+  // Load dashboard data if school is selected
+  if (authStore.currentSchoolId) {
+    await loadDashboardData()
+  } else {
+    console.warn('No school selected, waiting for school selection...')
+  }
+})
+
+// Watch for school changes and reload data
+watch(() => authStore.currentSchoolId, async (newSchoolId) => {
+  if (newSchoolId) {
+    console.log('School changed, reloading dashboard data for:', newSchoolId)
     await loadDashboardData()
   }
 })
 
 async function loadDashboardData() {
   try {
+    if (!authStore.currentSchoolId) {
+      console.warn('Cannot load dashboard: no school selected')
+      return
+    }
     await dashboardStore.fetchAllStatistics()
   } catch (error) {
     console.error('Failed to load dashboard data:', error)
@@ -319,13 +335,6 @@ async function loadDashboardData() {
 
 async function refreshData() {
   await loadDashboardData()
-}
-
-function handleSchoolChange() {
-  // The selectSchool method in the store will automatically fetch statistics
-  if (dashboardStore.selectedSchoolId) {
-    dashboardStore.selectSchool(dashboardStore.selectedSchoolId)
-  }
 }
 
 function formatDate(date: Date): string {

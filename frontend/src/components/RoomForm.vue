@@ -310,6 +310,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useRoomStore } from '@/stores/roomStore'
+import { useSchool } from '@/composables/useSchool'
 import {
   getRoomTypeLabel,
   getDefaultRoomIcon,

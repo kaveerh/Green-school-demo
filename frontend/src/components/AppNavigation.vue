@@ -1,566 +1,464 @@
 <template>
-  <nav class="app-navigation" :class="{ 'is-mobile-open': mobileMenuOpen }">
-    <!-- Logo/Brand -->
-    <div class="nav-brand">
-      <router-link to="/" class="brand-link">
+  <aside class="app-sidebar" :class="{ 'is-collapsed': isCollapsed, 'is-mobile-open': mobileMenuOpen }">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <router-link to="/" class="brand-link" @click="closeMobileMenu">
         <span class="brand-icon">🌱</span>
-        <span class="brand-text">Green School</span>
+        <span class="brand-text" v-show="!isCollapsed">Green School</span>
       </router-link>
 
-      <!-- Mobile Menu Toggle -->
+      <!-- Desktop Collapse Toggle -->
       <button
-        class="mobile-menu-toggle"
-        @click="toggleMobileMenu"
-        aria-label="Toggle menu"
+        class="collapse-toggle"
+        @click="toggleCollapse"
+        aria-label="Toggle sidebar"
+        v-show="!mobileMenuOpen"
       >
-        <span class="hamburger-icon">☰</span>
+        <span class="toggle-icon">{{ isCollapsed ? '▶' : '◀' }}</span>
+      </button>
+
+      <!-- Mobile Close Button -->
+      <button
+        class="mobile-close"
+        @click="closeMobileMenu"
+        aria-label="Close menu"
+      >
+        <span class="close-icon">✕</span>
       </button>
     </div>
 
-    <!-- Navigation Links -->
-    <ul class="nav-menu" :class="{ 'is-open': mobileMenuOpen }">
-      <!-- Dashboard -->
-      <li class="nav-item">
-        <router-link to="/dashboard" class="nav-link" @click="closeMobileMenu">
+    <!-- Scrollable Menu Content -->
+    <div class="sidebar-content">
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <!-- Dashboard -->
+        <router-link to="/dashboard" class="nav-item" @click="closeMobileMenu">
           <span class="nav-icon">📊</span>
-          <span class="nav-text">Dashboard</span>
+          <span class="nav-text" v-show="!isCollapsed">Dashboard</span>
         </router-link>
-      </li>
 
-      <!-- Users Management -->
-      <li class="nav-item" v-if="canAccessUsers">
-        <div class="nav-dropdown">
+        <!-- Users Management -->
+        <div class="nav-group" v-if="canAccessUsers">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('users')"
             :class="{ 'is-active': isDropdownOpen('users') || isUsersRoute }"
           >
             <span class="nav-icon">👥</span>
-            <span class="nav-text">Users</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('users') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Users</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('users') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('users')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/users" class="nav-dropdown-link" @click="closeMobileMenu">
-                List Users
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/users/statistics" class="nav-dropdown-link" @click="closeMobileMenu">
-                Statistics
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/users/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create User
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('users') && !isCollapsed" class="nav-submenu">
+            <router-link to="/users" class="submenu-item" @click="closeMobileMenu">
+              List Users
+            </router-link>
+            <router-link to="/users/statistics" class="submenu-item" @click="closeMobileMenu">
+              Statistics
+            </router-link>
+            <router-link to="/users/create" class="submenu-item" @click="closeMobileMenu">
+              Create User
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Schools Management -->
-      <li class="nav-item" v-if="canAccessSchools">
-        <div class="nav-dropdown">
+        <!-- Schools Management -->
+        <div class="nav-group" v-if="canAccessSchools">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('schools')"
             :class="{ 'is-active': isDropdownOpen('schools') || isSchoolsRoute }"
           >
             <span class="nav-icon">🏫</span>
-            <span class="nav-text">Schools</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('schools') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Schools</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('schools') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('schools')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/schools" class="nav-dropdown-link" @click="closeMobileMenu">
-                List Schools
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/schools/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create School
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('schools') && !isCollapsed" class="nav-submenu">
+            <router-link to="/schools" class="submenu-item" @click="closeMobileMenu">
+              List Schools
+            </router-link>
+            <router-link to="/schools/create" class="submenu-item" @click="closeMobileMenu">
+              Create School
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Teachers Management -->
-      <li class="nav-item" v-if="canAccessTeachers">
-        <div class="nav-dropdown">
+        <!-- Teachers Management -->
+        <div class="nav-group" v-if="canAccessTeachers">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('teachers')"
             :class="{ 'is-active': isDropdownOpen('teachers') || isTeachersRoute }"
           >
             <span class="nav-icon">👨‍🏫</span>
-            <span class="nav-text">Teachers</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('teachers') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Teachers</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('teachers') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('teachers')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/teachers" class="nav-dropdown-link" @click="closeMobileMenu">
-                List Teachers
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/teachers/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Teacher
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('teachers') && !isCollapsed" class="nav-submenu">
+            <router-link to="/teachers" class="submenu-item" @click="closeMobileMenu">
+              List Teachers
+            </router-link>
+            <router-link to="/teachers/create" class="submenu-item" @click="closeMobileMenu">
+              Create Teacher
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Students Management -->
-      <li class="nav-item" v-if="canAccessStudents">
-        <div class="nav-dropdown">
+        <!-- Students Management -->
+        <div class="nav-group" v-if="canAccessStudents">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('students')"
             :class="{ 'is-active': isDropdownOpen('students') || isStudentsRoute }"
           >
             <span class="nav-icon">🎓</span>
-            <span class="nav-text">Students</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('students') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Students</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('students') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('students')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/students" class="nav-dropdown-link" @click="closeMobileMenu">
-                List Students
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/students/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Student
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('students') && !isCollapsed" class="nav-submenu">
+            <router-link to="/students" class="submenu-item" @click="closeMobileMenu">
+              List Students
+            </router-link>
+            <router-link to="/students/create" class="submenu-item" @click="closeMobileMenu">
+              Create Student
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Parents Management -->
-      <li class="nav-item" v-if="canAccessParents">
-        <div class="nav-dropdown">
+        <!-- Parents Management -->
+        <div class="nav-group" v-if="canAccessParents">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('parents')"
             :class="{ 'is-active': isDropdownOpen('parents') || isParentsRoute }"
           >
             <span class="nav-icon">👪</span>
-            <span class="nav-text">Parents</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('parents') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Parents</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('parents') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('parents')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/parents" class="nav-dropdown-link" @click="closeMobileMenu">
-                List Parents
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/parents/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Parent
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('parents') && !isCollapsed" class="nav-submenu">
+            <router-link to="/parents" class="submenu-item" @click="closeMobileMenu">
+              List Parents
+            </router-link>
+            <router-link to="/parents/create" class="submenu-item" @click="closeMobileMenu">
+              Create Parent
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Subjects Management -->
-      <li class="nav-item" v-if="canAccessSubjects">
-        <div class="nav-dropdown">
+        <!-- Subjects Management -->
+        <div class="nav-group" v-if="canAccessSubjects">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('subjects')"
             :class="{ 'is-active': isDropdownOpen('subjects') || isSubjectsRoute }"
           >
             <span class="nav-icon">📚</span>
-            <span class="nav-text">Subjects</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('subjects') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Subjects</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('subjects') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('subjects')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/subjects" class="nav-dropdown-link" @click="closeMobileMenu">
-                List Subjects
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/subjects/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Subject
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('subjects') && !isCollapsed" class="nav-submenu">
+            <router-link to="/subjects" class="submenu-item" @click="closeMobileMenu">
+              List Subjects
+            </router-link>
+            <router-link to="/subjects/create" class="submenu-item" @click="closeMobileMenu">
+              Create Subject
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Rooms Management -->
-      <li class="nav-item" v-if="canAccessRooms">
-        <div class="nav-dropdown">
+        <!-- Rooms Management -->
+        <div class="nav-group" v-if="canAccessRooms">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('rooms')"
             :class="{ 'is-active': isDropdownOpen('rooms') || isRoomsRoute }"
           >
             <span class="nav-icon">🏢</span>
-            <span class="nav-text">Rooms</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('rooms') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Rooms</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('rooms') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('rooms')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/rooms" class="nav-dropdown-link" @click="closeMobileMenu">
-                List Rooms
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/rooms/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Room
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('rooms') && !isCollapsed" class="nav-submenu">
+            <router-link to="/rooms" class="submenu-item" @click="closeMobileMenu">
+              List Rooms
+            </router-link>
+            <router-link to="/rooms/create" class="submenu-item" @click="closeMobileMenu">
+              Create Room
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Classes Management -->
-      <li class="nav-item" v-if="canAccessClasses">
-        <div class="nav-dropdown">
+        <!-- Classes Management -->
+        <div class="nav-group" v-if="canAccessClasses">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('classes')"
             :class="{ 'is-active': isDropdownOpen('classes') || isClassesRoute }"
           >
             <span class="nav-icon">🎒</span>
-            <span class="nav-text">Classes</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('classes') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Classes</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('classes') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('classes')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/classes" class="nav-dropdown-link" @click="closeMobileMenu">
-                List Classes
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/classes/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Class
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('classes') && !isCollapsed" class="nav-submenu">
+            <router-link to="/classes" class="submenu-item" @click="closeMobileMenu">
+              List Classes
+            </router-link>
+            <router-link to="/classes/create" class="submenu-item" @click="closeMobileMenu">
+              Create Class
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Lessons Management -->
-      <li class="nav-item" v-if="canAccessLessons">
-        <div class="nav-dropdown">
+        <!-- Lessons Management -->
+        <div class="nav-group" v-if="canAccessLessons">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('lessons')"
             :class="{ 'is-active': isDropdownOpen('lessons') || isLessonsRoute }"
           >
             <span class="nav-icon">📝</span>
-            <span class="nav-text">Lessons</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('lessons') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Lessons</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('lessons') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('lessons')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/lessons" class="nav-dropdown-link" @click="closeMobileMenu">
-                List Lessons
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/lessons/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Lesson
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('lessons') && !isCollapsed" class="nav-submenu">
+            <router-link to="/lessons" class="submenu-item" @click="closeMobileMenu">
+              List Lessons
+            </router-link>
+            <router-link to="/lessons/create" class="submenu-item" @click="closeMobileMenu">
+              Create Lesson
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Assessments Management -->
-      <li class="nav-item" v-if="canAccessAssessments">
-        <div class="nav-dropdown">
+        <!-- Assessments Management -->
+        <div class="nav-group" v-if="canAccessAssessments">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('assessments')"
             :class="{ 'is-active': isDropdownOpen('assessments') || isAssessmentsRoute }"
           >
-            <span class="nav-icon">📊</span>
-            <span class="nav-text">Assessments</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('assessments') ? '▼' : '▶' }}</span>
+            <span class="nav-icon">📋</span>
+            <span class="nav-text" v-show="!isCollapsed">Assessments</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('assessments') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('assessments')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/assessments" class="nav-dropdown-link" @click="closeMobileMenu">
-                List Assessments
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/assessments/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Assessment
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('assessments') && !isCollapsed" class="nav-submenu">
+            <router-link to="/assessments" class="submenu-item" @click="closeMobileMenu">
+              List Assessments
+            </router-link>
+            <router-link to="/assessments/create" class="submenu-item" @click="closeMobileMenu">
+              Create Assessment
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Attendance Management -->
-      <li class="nav-item" v-if="canAccessAttendance">
-        <div class="nav-dropdown">
+        <!-- Attendance Management -->
+        <div class="nav-group" v-if="canAccessAttendance">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('attendance')"
             :class="{ 'is-active': isDropdownOpen('attendance') || isAttendanceRoute }"
           >
             <span class="nav-icon">✓</span>
-            <span class="nav-text">Attendance</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('attendance') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Attendance</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('attendance') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('attendance')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/attendance" class="nav-dropdown-link" @click="closeMobileMenu">
-                View Attendance
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/attendance/mark" class="nav-dropdown-link" @click="closeMobileMenu">
-                Mark Attendance
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('attendance') && !isCollapsed" class="nav-submenu">
+            <router-link to="/attendance" class="submenu-item" @click="closeMobileMenu">
+              View Attendance
+            </router-link>
+            <router-link to="/attendance/mark" class="submenu-item" @click="closeMobileMenu">
+              Mark Attendance
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Events Management -->
-      <li class="nav-item" v-if="canAccessEvents">
-        <div class="nav-dropdown">
+        <!-- Events Management -->
+        <div class="nav-group" v-if="canAccessEvents">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('events')"
             :class="{ 'is-active': isDropdownOpen('events') || isEventsRoute }"
           >
             <span class="nav-icon">📅</span>
-            <span class="nav-text">Events</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('events') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Events</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('events') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('events')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/events" class="nav-dropdown-link" @click="closeMobileMenu">
-                View Events
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/events/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Event
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('events') && !isCollapsed" class="nav-submenu">
+            <router-link to="/events" class="submenu-item" @click="closeMobileMenu">
+              View Events
+            </router-link>
+            <router-link to="/events/create" class="submenu-item" @click="closeMobileMenu">
+              Create Event
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Activities Management -->
-      <li class="nav-item" v-if="canAccessActivities">
-        <div class="nav-dropdown">
+        <!-- Activities Management -->
+        <div class="nav-group" v-if="canAccessActivities">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('activities')"
             :class="{ 'is-active': isDropdownOpen('activities') || isActivitiesRoute }"
           >
             <span class="nav-icon">⚽</span>
-            <span class="nav-text">Activities</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('activities') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Activities</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('activities') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('activities')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/activities" class="nav-dropdown-link" @click="closeMobileMenu">
-                View Activities
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/activities/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Activity
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('activities') && !isCollapsed" class="nav-submenu">
+            <router-link to="/activities" class="submenu-item" @click="closeMobileMenu">
+              View Activities
+            </router-link>
+            <router-link to="/activities/create" class="submenu-item" @click="closeMobileMenu">
+              Create Activity
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Vendors Management -->
-      <li class="nav-item" v-if="canAccessVendors">
-        <div class="nav-dropdown">
+        <!-- Vendors Management -->
+        <div class="nav-group" v-if="canAccessVendors">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('vendors')"
             :class="{ 'is-active': isDropdownOpen('vendors') || isVendorsRoute }"
           >
-            <span class="nav-icon">🏢</span>
-            <span class="nav-text">Vendors</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('vendors') ? '▼' : '▶' }}</span>
+            <span class="nav-icon">🏪</span>
+            <span class="nav-text" v-show="!isCollapsed">Vendors</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('vendors') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('vendors')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/vendors" class="nav-dropdown-link" @click="closeMobileMenu">
-                View Vendors
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/vendors/create" class="nav-dropdown-link" @click="closeMobileMenu">
-                Create Vendor
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('vendors') && !isCollapsed" class="nav-submenu">
+            <router-link to="/vendors" class="submenu-item" @click="closeMobileMenu">
+              View Vendors
+            </router-link>
+            <router-link to="/vendors/create" class="submenu-item" @click="closeMobileMenu">
+              Create Vendor
+            </router-link>
+          </div>
         </div>
-      </li>
 
-      <!-- Merits Management -->
-      <li class="nav-item" v-if="canAccessMerits">
-        <div class="nav-dropdown">
+        <!-- Merits Management -->
+        <div class="nav-group" v-if="canAccessMerits">
           <button
-            class="nav-link nav-dropdown-toggle"
+            class="nav-item nav-toggle"
             @click="toggleDropdown('merits')"
             :class="{ 'is-active': isDropdownOpen('merits') || isMeritsRoute }"
           >
             <span class="nav-icon">⭐</span>
-            <span class="nav-text">Merits</span>
-            <span class="dropdown-arrow">{{ isDropdownOpen('merits') ? '▼' : '▶' }}</span>
+            <span class="nav-text" v-show="!isCollapsed">Merits</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('merits') ? '▼' : '▶' }}</span>
           </button>
-
-          <ul
-            v-show="isDropdownOpen('merits')"
-            class="nav-dropdown-menu"
-          >
-            <li>
-              <router-link to="/merits" class="nav-dropdown-link" @click="closeMobileMenu">
-                View Merits
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/merits/leaderboard" class="nav-dropdown-link" @click="closeMobileMenu">
-                Leaderboard
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/merits/award" class="nav-dropdown-link" @click="closeMobileMenu">
-                Award Merit
-              </router-link>
-            </li>
-          </ul>
+          <div v-show="isDropdownOpen('merits') && !isCollapsed" class="nav-submenu">
+            <router-link to="/merits" class="submenu-item" @click="closeMobileMenu">
+              View Merits
+            </router-link>
+            <router-link to="/merits/leaderboard" class="submenu-item" @click="closeMobileMenu">
+              Leaderboard
+            </router-link>
+            <router-link to="/merits/award" class="submenu-item" @click="closeMobileMenu">
+              Award Merit
+            </router-link>
+          </div>
         </div>
-      </li>
-    </ul>
+      </nav>
+    </div>
 
-    <!-- User Menu -->
-    <div class="nav-user">
-      <div class="nav-dropdown">
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <!-- School Selector -->
+      <div class="footer-section" v-show="!isCollapsed">
+        <SchoolSelector />
+      </div>
+
+      <!-- User Menu -->
+      <div class="footer-section user-section">
         <button
-          class="nav-user-button"
+          class="user-button"
           @click="toggleDropdown('user')"
           :class="{ 'is-active': isDropdownOpen('user') }"
         >
           <span class="user-avatar">{{ userInitials }}</span>
-          <span class="user-name">{{ currentUserName }}</span>
-          <span class="dropdown-arrow">{{ isDropdownOpen('user') ? '▼' : '▶' }}</span>
+          <div class="user-info" v-show="!isCollapsed">
+            <span class="user-name">{{ authStore.userName }}</span>
+            <span class="user-role">{{ authStore.currentUser?.persona || 'User' }}</span>
+          </div>
+          <span class="user-arrow" v-show="!isCollapsed">{{ isDropdownOpen('user') ? '▲' : '▼' }}</span>
         </button>
 
-        <ul
-          v-show="isDropdownOpen('user')"
-          class="nav-dropdown-menu nav-user-menu"
-        >
-          <li>
-            <router-link to="/profile" class="nav-dropdown-link" @click="closeMobileMenu">
-              Profile
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/settings" class="nav-dropdown-link" @click="closeMobileMenu">
-              Settings
-            </router-link>
-          </li>
-          <li class="nav-dropdown-divider"></li>
-          <li>
-            <button class="nav-dropdown-link" @click="handleLogout">
-              Logout
-            </button>
-          </li>
-        </ul>
+        <div v-show="isDropdownOpen('user') && !isCollapsed" class="user-menu">
+          <router-link to="/profile" class="user-menu-item" @click="closeMobileMenu">
+            <span class="menu-icon">👤</span>
+            Profile
+          </router-link>
+          <router-link to="/settings" class="user-menu-item" @click="closeMobileMenu">
+            <span class="menu-icon">⚙️</span>
+            Settings
+          </router-link>
+          <div class="menu-divider"></div>
+          <button class="user-menu-item" @click="handleLogout">
+            <span class="menu-icon">🚪</span>
+            Logout
+          </button>
+        </div>
       </div>
     </div>
-  </nav>
+  </aside>
+
+  <!-- Mobile Overlay -->
+  <div
+    v-if="mobileMenuOpen"
+    class="sidebar-overlay"
+    @click="closeMobileMenu"
+  ></div>
+
+  <!-- Mobile Menu Toggle -->
+  <button
+    class="mobile-menu-button"
+    @click="toggleMobileMenu"
+    aria-label="Open menu"
+  >
+    <span class="hamburger-icon">☰</span>
+  </button>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
+import SchoolSelector from './SchoolSelector.vue'
 
 const route = useRoute()
+const authStore = useAuthStore()
 
 // State
+const isCollapsed = ref(false)
 const mobileMenuOpen = ref(false)
 const openDropdowns = ref<Set<string>>(new Set())
 
-// Mock user data (TODO: Replace with actual auth store)
-const currentUserName = ref('Admin User')
-const currentUserRole = ref('administrator')
+// Load collapsed state from localStorage
+onMounted(() => {
+  const saved = localStorage.getItem('sidebar-collapsed')
+  if (saved !== null) {
+    isCollapsed.value = saved === 'true'
+  }
+
+  // Apply initial collapsed state to document
+  updateGlobalCollapsedClass()
+})
+
+/**
+ * Update global collapsed class on document
+ */
+function updateGlobalCollapsedClass() {
+  if (isCollapsed.value) {
+    document.documentElement.classList.add('sidebar-collapsed')
+  } else {
+    document.documentElement.classList.remove('sidebar-collapsed')
+  }
+}
 
 /**
  * User initials for avatar
  */
 const userInitials = computed(() => {
-  const names = currentUserName.value.split(' ')
+  const names = authStore.userName.split(' ')
   return names.map(n => n[0]).join('').toUpperCase().slice(0, 2)
 })
 
@@ -568,211 +466,125 @@ const userInitials = computed(() => {
  * Check if user can access users module
  */
 const canAccessUsers = computed(() => {
-  return currentUserRole.value === 'administrator'
+  return authStore.hasRole('administrator')
 })
 
 /**
  * Check if user can access schools module
  */
 const canAccessSchools = computed(() => {
-  return currentUserRole.value === 'administrator'
+  return authStore.hasRole('administrator')
 })
 
 /**
  * Check if user can access teachers module
  */
 const canAccessTeachers = computed(() => {
-  return currentUserRole.value === 'administrator'
+  return authStore.hasRole('administrator')
 })
 
 /**
  * Check if user can access students module
  */
 const canAccessStudents = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if user can access parents module
  */
 const canAccessParents = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if user can access subjects module
  */
 const canAccessSubjects = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if user can access rooms module
  */
 const canAccessRooms = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if user can access classes module
  */
 const canAccessClasses = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if user can access lessons module
  */
 const canAccessLessons = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if user can access assessments module
  */
 const canAccessAssessments = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if user can access attendance module
  */
 const canAccessAttendance = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if user can access events module
  */
 const canAccessEvents = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if user can access activities module
  */
 const canAccessActivities = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if user can access vendors module
  */
 const canAccessVendors = computed(() => {
-  return currentUserRole.value === 'administrator'
+  return authStore.hasRole('administrator')
 })
 
 /**
  * Check if user can access merits module
  */
 const canAccessMerits = computed(() => {
-  return ['administrator', 'teacher'].includes(currentUserRole.value)
+  return authStore.hasAnyRole(['administrator', 'teacher'])
 })
 
 /**
  * Check if current route is users-related
  */
-const isUsersRoute = computed(() => {
-  return route.path.startsWith('/users')
-})
-
-/**
- * Check if current route is schools-related
- */
-const isSchoolsRoute = computed(() => {
-  return route.path.startsWith('/schools')
-})
-
-/**
- * Check if current route is teachers-related
- */
-const isTeachersRoute = computed(() => {
-  return route.path.startsWith('/teachers')
-})
-
-/**
- * Check if current route is students-related
- */
-const isStudentsRoute = computed(() => {
-  return route.path.startsWith('/students')
-})
-
-/**
- * Check if current route is parents-related
- */
-const isParentsRoute = computed(() => {
-  return route.path.startsWith('/parents')
-})
-
-/**
- * Check if current route is subjects-related
- */
-const isSubjectsRoute = computed(() => {
-  return route.path.startsWith('/subjects')
-})
-
-/**
- * Check if current route is rooms-related
- */
-const isRoomsRoute = computed(() => {
-  return route.path.startsWith('/rooms')
-})
-
-/**
- * Check if current route is classes-related
- */
-const isClassesRoute = computed(() => {
-  return route.path.startsWith('/classes')
-})
-
-/**
- * Check if current route is lessons-related
- */
-const isLessonsRoute = computed(() => {
-  return route.path.startsWith('/lessons')
-})
-
-/**
- * Check if current route is assessments-related
- */
-const isAssessmentsRoute = computed(() => {
-  return route.path.startsWith('/assessments')
-})
-
-/**
- * Check if current route is attendance-related
- */
-const isAttendanceRoute = computed(() => {
-  return route.path.startsWith('/attendance')
-})
-
-/**
- * Check if current route is events-related
- */
-const isEventsRoute = computed(() => {
-  return route.path.startsWith('/events')
-})
-
-/**
- * Check if current route is activities-related
- */
-const isActivitiesRoute = computed(() => {
-  return route.path.startsWith('/activities')
-})
-
-/**
- * Check if current route is vendors-related
- */
-const isVendorsRoute = computed(() => {
-  return route.path.startsWith('/vendors')
-})
-
-/**
- * Check if current route is merits-related
- */
-const isMeritsRoute = computed(() => {
-  return route.path.startsWith('/merits')
-})
+const isUsersRoute = computed(() => route.path.startsWith('/users'))
+const isSchoolsRoute = computed(() => route.path.startsWith('/schools'))
+const isTeachersRoute = computed(() => route.path.startsWith('/teachers'))
+const isStudentsRoute = computed(() => route.path.startsWith('/students'))
+const isParentsRoute = computed(() => route.path.startsWith('/parents'))
+const isSubjectsRoute = computed(() => route.path.startsWith('/subjects'))
+const isRoomsRoute = computed(() => route.path.startsWith('/rooms'))
+const isClassesRoute = computed(() => route.path.startsWith('/classes'))
+const isLessonsRoute = computed(() => route.path.startsWith('/lessons'))
+const isAssessmentsRoute = computed(() => route.path.startsWith('/assessments'))
+const isAttendanceRoute = computed(() => route.path.startsWith('/attendance'))
+const isEventsRoute = computed(() => route.path.startsWith('/events'))
+const isActivitiesRoute = computed(() => route.path.startsWith('/activities'))
+const isVendorsRoute = computed(() => route.path.startsWith('/vendors'))
+const isMeritsRoute = computed(() => route.path.startsWith('/merits'))
 
 /**
  * Check if dropdown is open
@@ -793,6 +605,22 @@ function toggleDropdown(name: string) {
 }
 
 /**
+ * Toggle sidebar collapse
+ */
+function toggleCollapse() {
+  isCollapsed.value = !isCollapsed.value
+  localStorage.setItem('sidebar-collapsed', String(isCollapsed.value))
+
+  // Update global class
+  updateGlobalCollapsedClass()
+
+  // Close all dropdowns when collapsing
+  if (isCollapsed.value) {
+    openDropdowns.value.clear()
+  }
+}
+
+/**
  * Toggle mobile menu
  */
 function toggleMobileMenu() {
@@ -804,39 +632,45 @@ function toggleMobileMenu() {
  */
 function closeMobileMenu() {
   mobileMenuOpen.value = false
-  openDropdowns.value.clear()
 }
 
 /**
  * Handle logout
  */
 function handleLogout() {
-  // TODO: Implement actual logout logic
-  console.log('Logout clicked')
+  authStore.logout()
   closeMobileMenu()
 }
 </script>
 
 <style scoped>
-.app-navigation {
+.app-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 260px;
+  background: #1e293b;
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  z-index: 1000;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.app-sidebar.is-collapsed {
+  width: 70px;
+}
+
+/* Sidebar Header */
+.sidebar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  height: 64px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-/* Brand */
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid #334155;
+  min-height: 70px;
 }
 
 .brand-link {
@@ -844,270 +678,418 @@ function handleLogout() {
   align-items: center;
   gap: 0.75rem;
   text-decoration: none;
-  color: #2c3e50;
-  font-weight: 600;
-  font-size: 1.25rem;
+  color: #f8fafc;
+  font-weight: 700;
+  font-size: 1.125rem;
   transition: color 0.2s;
+  flex: 1;
 }
 
 .brand-link:hover {
-  color: #42b883;
+  color: #10b981;
 }
 
 .brand-icon {
   font-size: 1.75rem;
+  flex-shrink: 0;
 }
 
-.mobile-menu-toggle {
-  display: none;
-  background: none;
+.brand-text {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.collapse-toggle {
+  background: #334155;
   border: none;
-  font-size: 1.5rem;
+  color: #e2e8f0;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
   cursor: pointer;
-  padding: 0.5rem;
-  color: #2c3e50;
-}
-
-/* Navigation Menu */
-.nav-menu {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.collapse-toggle:hover {
+  background: #475569;
+  color: #10b981;
+}
+
+.toggle-icon {
+  font-size: 0.875rem;
+}
+
+.mobile-close {
+  display: none;
+}
+
+/* Sidebar Content */
+.sidebar-content {
   flex: 1;
-  margin-left: 2rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem 0;
+}
+
+.sidebar-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 3px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Navigation */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
 }
 
 .nav-item {
-  position: relative;
-}
-
-.nav-link {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   padding: 0.75rem 1rem;
+  color: #cbd5e1;
   text-decoration: none;
-  color: #2c3e50;
-  border-radius: 4px;
-  transition: background 0.2s, color 0.2s;
-  white-space: nowrap;
+  border-radius: 8px;
+  transition: all 0.2s;
   cursor: pointer;
   border: none;
   background: none;
-  font-size: 1rem;
+  width: 100%;
+  font-size: 0.9375rem;
   font-family: inherit;
+  text-align: left;
 }
 
-.nav-link:hover {
-  background: #f8f9fa;
-  color: #42b883;
+.nav-item:hover {
+  background: #334155;
+  color: #f8fafc;
 }
 
-.nav-link.router-link-active {
-  background: #e8f5e9;
-  color: #42b883;
+.nav-item.router-link-active {
+  background: #10b981;
+  color: #ffffff;
   font-weight: 500;
 }
 
+.nav-item.is-active {
+  background: #334155;
+  color: #10b981;
+}
+
 .nav-icon {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
 }
 
-.nav-item-disabled .nav-link {
-  cursor: not-allowed;
-  opacity: 0.5;
+.nav-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.coming-soon {
-  font-size: 0.7rem;
-  background: #ffc107;
-  color: #212529;
-  padding: 0.15rem 0.4rem;
-  border-radius: 3px;
-  font-weight: 600;
-  margin-left: 0.5rem;
+.nav-arrow {
+  font-size: 0.75rem;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
-/* Dropdown */
-.nav-dropdown {
-  position: relative;
+/* Nav Groups & Submenus */
+.nav-group {
+  display: flex;
+  flex-direction: column;
 }
 
-.nav-dropdown-toggle {
-  width: 100%;
+.nav-toggle {
+  justify-content: space-between;
 }
 
-.dropdown-arrow {
-  font-size: 0.7rem;
-  margin-left: 0.25rem;
-  transition: transform 0.2s;
+.nav-submenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.25rem 0 0.25rem 2.75rem;
+  margin-top: 0.25rem;
 }
 
-.nav-dropdown-toggle.is-active .dropdown-arrow {
-  transform: rotate(90deg);
-}
-
-.nav-dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 0.5rem;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  list-style: none;
-  padding: 0.5rem 0;
-  min-width: 180px;
-  z-index: 1000;
-}
-
-.nav-dropdown-link {
+.submenu-item {
   display: block;
-  padding: 0.75rem 1rem;
-  color: #2c3e50;
+  padding: 0.625rem 1rem;
+  color: #94a3b8;
   text-decoration: none;
-  transition: background 0.2s, color 0.2s;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+}
+
+.submenu-item:hover {
+  background: #334155;
+  color: #f8fafc;
+}
+
+.submenu-item.router-link-active {
+  background: #334155;
+  color: #10b981;
+  font-weight: 500;
+}
+
+/* Collapsed State */
+.is-collapsed .nav-item {
+  justify-content: center;
+  padding: 0.75rem;
+}
+
+.is-collapsed .nav-submenu {
+  display: none;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+  border-top: 1px solid #334155;
+  padding: 0.75rem 0.5rem;
+}
+
+.footer-section {
+  padding: 0.5rem;
+}
+
+/* User Section */
+.user-section {
+  padding: 0;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+  color: #e2e8f0;
+  font-family: inherit;
+}
+
+.user-button:hover {
+  background: #334155;
+}
+
+.user-button.is-active {
+  background: #334155;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #10b981;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #f8fafc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.user-role {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: capitalize;
+}
+
+.user-arrow {
+  font-size: 0.75rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.user-menu {
+  margin-top: 0.5rem;
+  background: #0f172a;
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #cbd5e1;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s;
   cursor: pointer;
   border: none;
   background: none;
   width: 100%;
   text-align: left;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   font-family: inherit;
 }
 
-.nav-dropdown-link:hover {
-  background: #f8f9fa;
-  color: #42b883;
+.user-menu-item:hover {
+  background: #1e293b;
+  color: #f8fafc;
 }
 
-.nav-dropdown-link.router-link-active {
-  background: #e8f5e9;
-  color: #42b883;
-  font-weight: 500;
+.user-menu-item.router-link-active {
+  background: #1e293b;
+  color: #10b981;
 }
 
-.nav-dropdown-divider {
+.menu-icon {
+  font-size: 1rem;
+}
+
+.menu-divider {
   height: 1px;
-  background: #e0e0e0;
-  margin: 0.5rem 0;
+  background: #334155;
+  margin: 0.25rem 0;
 }
 
-/* User Menu */
-.nav-user {
-  margin-left: auto;
+/* Mobile Overlay */
+.sidebar-overlay {
+  display: none;
 }
 
-.nav-user-button {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 1rem;
-  background: none;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-  font-family: inherit;
-}
-
-.nav-user-button:hover {
-  background: #f8f9fa;
-  border-color: #42b883;
-}
-
-.user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #42b883;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.user-name {
-  font-size: 0.95rem;
-  color: #2c3e50;
-}
-
-.nav-user-menu {
-  right: 0;
-  left: auto;
+.mobile-menu-button {
+  display: none;
 }
 
 /* Mobile Styles */
-@media (max-width: 768px) {
-  .app-navigation {
-    padding: 0 1rem;
-    height: auto;
-    flex-wrap: wrap;
+@media (max-width: 1024px) {
+  .app-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    width: 280px;
   }
 
-  .nav-brand {
-    width: 100%;
-    justify-content: space-between;
-    padding: 1rem 0;
+  .app-sidebar.is-mobile-open {
+    transform: translateX(0);
   }
 
-  .mobile-menu-toggle {
-    display: block;
+  .app-sidebar.is-collapsed {
+    width: 280px;
   }
 
-  .nav-menu {
+  .collapse-toggle {
     display: none;
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-    margin: 0;
-    padding: 1rem 0;
-    border-top: 1px solid #e0e0e0;
   }
 
-  .nav-menu.is-open {
+  .mobile-close {
     display: flex;
-  }
-
-  .nav-item {
-    width: 100%;
-  }
-
-  .nav-link {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .nav-dropdown-menu {
-    position: static;
-    margin-top: 0.5rem;
-    box-shadow: none;
+    background: #334155;
     border: none;
-    border-left: 2px solid #42b883;
-    padding-left: 1rem;
+    color: #e2e8f0;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
   }
 
-  .nav-user {
-    width: 100%;
-    margin: 0;
-    padding: 1rem 0;
-    border-top: 1px solid #e0e0e0;
+  .mobile-close:hover {
+    background: #475569;
+    color: #ef4444;
   }
 
-  .nav-user-button {
-    width: 100%;
-    justify-content: space-between;
+  .close-icon {
+    font-size: 1.25rem;
   }
 
-  .nav-user-menu {
-    position: static;
-    margin-top: 0.5rem;
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .mobile-menu-button {
+    display: flex;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 998;
+    background: #1e293b;
+    border: none;
+    color: #e2e8f0;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
+  }
+
+  .mobile-menu-button:hover {
+    background: #334155;
+    color: #10b981;
+  }
+
+  .hamburger-icon {
+    font-size: 1.5rem;
   }
 }
 </style>

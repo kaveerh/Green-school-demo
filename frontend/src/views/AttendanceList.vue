@@ -78,7 +78,56 @@
 
       <div v-if="viewType === 'class'" class="filter-group">
         <label>Class</label>
-        <input v-model="selectedClassId" type="text" placeholder="Class ID" class="filter-input" />
+        <div class="searchable-select">
+          <input
+            v-model="classSearchQuery"
+            @input="handleClassSearch"
+            @focus="showClassDropdown = true"
+            type="text"
+            placeholder="Search by class code (e.g., MATH-3-Q1-A)"
+            class="filter-input"
+            autocomplete="off"
+          />
+
+          <!-- Selected Class Badge -->
+          <div v-if="selectedClass" class="selected-badge">
+            <span>{{ selectedClass.code }} - {{ selectedClass.name }}</span>
+            <button @click="clearClassSelection" class="clear-btn">×</button>
+          </div>
+
+          <!-- Dropdown -->
+          <div v-if="showClassDropdown && !selectedClass" class="dropdown-menu">
+            <!-- Loading -->
+            <div v-if="classSearchLoading" class="dropdown-loading">
+              <div class="spinner-sm"></div>
+              <span>Searching...</span>
+            </div>
+
+            <!-- Results -->
+            <div v-else-if="classSearchResults.length > 0" class="dropdown-results">
+              <button
+                v-for="classItem in classSearchResults"
+                :key="classItem.id"
+                @click="selectClass(classItem)"
+                class="dropdown-item"
+                type="button"
+              >
+                <div class="dropdown-item-main">
+                  <strong>{{ classItem.code }}</strong>
+                  <span class="dropdown-item-sub">{{ classItem.name }}</span>
+                </div>
+                <div class="dropdown-item-meta">
+                  Grade {{ classItem.grade_level }} • {{ classItem.quarter }}
+                </div>
+              </button>
+            </div>
+
+            <!-- Empty -->
+            <div v-else class="dropdown-empty">
+              <span>{{ classSearchQuery.length < 2 ? 'Type at least 2 characters to search' : 'No classes found' }}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="filter-group">
@@ -235,24 +284,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAttendanceStore } from '@/stores/attendanceStore'
+import { useClassStore } from '@/stores/classStore'
+import { useSchool } from '@/composables/useSchool'
 import { getStatusLabel, formatTime, formatDuration } from '@/types/attendance'
 import type { Attendance, AttendanceStatus } from '@/types/attendance'
 
 const router = useRouter()
 const attendanceStore = useAttendanceStore()
+const classStore = useClassStore()
 
-// Mock school ID - replace with actual from auth
-const schoolId = ref('60da2256-81fc-4ca5-bf6b-467b8d371c61')
+// School context
+const { currentSchoolId } = useSchool()
 
 // Filters
 const viewType = ref<'student' | 'class' | 'school'>('class')
 const selectedStudentId = ref('')
-const selectedClassId = ref('2e008ff4-dc05-4c6b-8059-ca92fceb3f9a')
+const selectedClassId = ref('')
 const selectedDate = ref(new Date().toISOString().split('T')[0])
 const selectedStatus = ref<AttendanceStatus | ''>('')
+
+// Class search state
+const classSearchQuery = ref('')
+const showClassDropdown = ref(false)
+const selectedClass = ref<any>(null)
+const classSearchResults = ref<any[]>([])
+const classSearchLoading = ref(false)
+let classSearchTimeout: ReturnType<typeof setTimeout> | null = null
 
 // State
 const loading = computed(() => attendanceStore.loading)
@@ -287,6 +347,61 @@ function formatDate(dateStr: string): string {
   })
 }
 
+// Class search functions
+async function handleClassSearch() {
+  if (classSearchTimeout) {
+    clearTimeout(classSearchTimeout)
+  }
+
+  classSearchTimeout = setTimeout(async () => {
+    const query = classSearchQuery.value.trim()
+
+    if (query.length < 2) {
+      classSearchResults.value = []
+      return
+    }
+
+    if (!currentSchoolId.value) {
+      console.warn('Cannot search classes: no school selected')
+      return
+    }
+
+    try {
+      classSearchLoading.value = true
+      await classStore.searchClasses(currentSchoolId.value, query, 1, 20)
+      classSearchResults.value = classStore.classes
+    } catch (error) {
+      console.error('Failed to search classes:', error)
+      classSearchResults.value = []
+    } finally {
+      classSearchLoading.value = false
+    }
+  }, 300)
+}
+
+function selectClass(classItem: any) {
+  selectedClass.value = classItem
+  selectedClassId.value = classItem.id
+  showClassDropdown.value = false
+  classSearchQuery.value = ''
+  classSearchResults.value = []
+}
+
+function clearClassSelection() {
+  selectedClass.value = null
+  selectedClassId.value = ''
+  classSearchQuery.value = ''
+  classSearchResults.value = []
+}
+
+// Click outside handler
+function handleClickOutside(event: MouseEvent) {
+  const target = event.target as HTMLElement
+  if (!target.closest('.searchable-select')) {
+    showClassDropdown.value = false
+  }
+}
+
 async function applyFilters() {
   try {
     if (viewType.value === 'student' && selectedStudentId.value) {
@@ -299,7 +414,7 @@ async function applyFilters() {
       await attendanceStore.fetchClassAttendance(selectedClassId.value, selectedDate.value)
     } else if (viewType.value === 'school') {
       await attendanceStore.fetchSchoolAttendance(
-        schoolId.value,
+        currentSchoolId.value,
         selectedDate.value,
         selectedStatus.value || undefined
       )
@@ -307,14 +422,14 @@ async function applyFilters() {
 
     // Fetch statistics
     await attendanceStore.fetchStatistics(
-      schoolId.value,
+      currentSchoolId.value,
       selectedDate.value,
       selectedDate.value,
       selectedClassId.value || undefined
     )
 
     // Fetch unnotified absences
-    await attendanceStore.fetchUnnotifiedAbsences(schoolId.value, selectedDate.value)
+    await attendanceStore.fetchUnnotifiedAbsences(currentSchoolId.value, selectedDate.value)
   } catch (err) {
     console.error('Failed to fetch attendance:', err)
   }
@@ -363,6 +478,14 @@ async function notifyParents() {
 
 onMounted(() => {
   applyFilters()
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  if (classSearchTimeout) {
+    clearTimeout(classSearchTimeout)
+  }
+  document.removeEventListener('click', handleClickOutside)
 })
 </script>
 
@@ -729,5 +852,121 @@ onMounted(() => {
 .text-muted {
   color: #9ca3af;
   font-style: italic;
+}
+
+/* Searchable Select Styles */
+.searchable-select {
+  position: relative;
+}
+
+.selected-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #eff6ff;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #1e40af;
+}
+
+.selected-badge .clear-btn {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.5rem;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.selected-badge .clear-btn:hover {
+  color: #1e40af;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  margin-top: 0.25rem;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+}
+
+.dropdown-loading,
+.dropdown-empty {
+  padding: 1rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.spinner-sm {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.dropdown-results {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.dropdown-item:hover {
+  background: #f9fafb;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item-main {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.dropdown-item-main strong {
+  color: #1f2937;
+  font-size: 0.875rem;
+}
+
+.dropdown-item-sub {
+  color: #6b7280;
+  font-size: 0.8125rem;
+}
+
+.dropdown-item-meta {
+  color: #9ca3af;
+  font-size: 0.75rem;
 }
 </style>

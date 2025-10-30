@@ -121,6 +121,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useLessonStore } from '@/stores/lessonStore'
+import { useSchool } from '@/composables/useSchool'
 import { LessonStatusLabels } from '@/types/lesson'
 import type { Lesson } from '@/types/lesson'
 
@@ -128,7 +129,7 @@ const lessonStore = useLessonStore()
 
 const searchQuery = ref('')
 const statusFilter = ref('')
-const currentSchoolId = ref('60da2256-81fc-4ca5-bf6b-467b8d371c61') // TODO: Get from auth/school context
+const { currentSchoolId } = useSchool()
 
 // Computed
 const lessons = computed(() => lessonStore.lessons)

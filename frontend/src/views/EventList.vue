@@ -203,6 +203,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useEventStore } from '@/stores/eventStore'
+import { useSchool } from '@/composables/useSchool'
 import { useRouter } from 'vue-router'
 import {
   getEventTypeLabel,
@@ -219,6 +220,7 @@ import {
 
 const eventStore = useEventStore()
 const router = useRouter()
+const { currentSchoolId } = useSchool()
 
 // State
 const filters = ref({
@@ -240,10 +242,13 @@ const upcomingCount = computed(() => eventStore.upcomingCount)
 
 // Methods
 async function loadEvents() {
-  const schoolId = '60da2256-81fc-4ca5-bf6b-467b8d371c61' // TODO: Get from auth
+  if (!currentSchoolId.value) {
+    console.warn('Cannot load events: no school selected')
+    return
+  }
 
   const params: any = {
-    school_id: schoolId,
+    school_id: currentSchoolId.value,
     page: page.value,
     limit: 50
   }
@@ -261,11 +266,14 @@ async function loadEvents() {
 }
 
 async function loadStatistics() {
-  const schoolId = '60da2256-81fc-4ca5-bf6b-467b8d371c61' // TODO: Get from auth
+  if (!currentSchoolId.value) {
+    console.warn('Cannot load event statistics: no school selected')
+    return
+  }
 
   try {
     await eventStore.fetchStatistics({
-      school_id: schoolId,
+      school_id: currentSchoolId.value,
       start_date: filters.value.start_date || undefined,
       end_date: filters.value.end_date || undefined
     })

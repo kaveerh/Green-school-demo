@@ -204,6 +204,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAssessmentStore } from '@/stores/assessmentStore'
+import { useSchool } from '@/composables/useSchool'
 import type { AssessmentCreateRequest, AssessmentUpdateRequest } from '@/types/assessment'
 
 const router = useRouter()
@@ -213,7 +214,7 @@ const assessmentStore = useAssessmentStore()
 const assessmentId = computed(() => route.params.id as string)
 const isEditing = computed(() => !!assessmentId.value && route.name !== 'assessment-create')
 
-const currentSchoolId = ref('60da2256-81fc-4ca5-bf6b-467b8d371c61') // TODO: Get from auth/school context
+const { currentSchoolId } = useSchool()
 
 const form = ref<Partial<AssessmentCreateRequest>>({
   school_id: currentSchoolId.value,

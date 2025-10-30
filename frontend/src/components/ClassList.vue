@@ -459,6 +459,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useClassStore } from '@/stores/classStore';
+import { useSchool } from '@/composables/useSchool'
 import {
   QUARTERS,
   GRADE_LEVELS,
@@ -471,6 +472,7 @@ import {
 import type { Class, Quarter } from '@/types/class';
 
 const classStore = useClassStore();
+const { currentSchoolId } = useSchool();
 const searchQuery = ref('');
 const searchTimeout = ref<number | null>(null);
 const classToDelete = ref<Class | null>(null);
@@ -519,10 +521,13 @@ onMounted(async () => {
 });
 
 async function loadClasses() {
-  const schoolId = '60da2256-81fc-4ca5-bf6b-467b8d371c61'; // TODO: Get from auth context
+  if (!currentSchoolId.value) {
+    console.warn('Cannot load classes: no school selected');
+    return;
+  }
 
   await classStore.fetchClasses({
-    school_id: schoolId,
+    school_id: currentSchoolId.value,
     page: pagination.value.page,
     limit: pagination.value.limit,
     ...filters.value
@@ -530,8 +535,11 @@ async function loadClasses() {
 }
 
 async function loadStatistics() {
-  const schoolId = '60da2256-81fc-4ca5-bf6b-467b8d371c61'; // TODO: Get from auth context
-  await classStore.fetchStatistics(schoolId);
+  if (!currentSchoolId.value) {
+    console.warn('Cannot load class statistics: no school selected');
+    return;
+  }
+  await classStore.fetchStatistics(currentSchoolId.value);
 }
 
 function handleSearch() {
@@ -541,8 +549,11 @@ function handleSearch() {
 
   searchTimeout.value = window.setTimeout(async () => {
     if (searchQuery.value.trim().length >= 2) {
-      const schoolId = '60da2256-81fc-4ca5-bf6b-467b8d371c61';
-      await classStore.searchClasses(schoolId, searchQuery.value.trim());
+      if (!currentSchoolId.value) {
+        console.warn('Cannot search classes: no school selected');
+        return;
+      }
+      await classStore.searchClasses(currentSchoolId.value, searchQuery.value.trim());
     } else if (searchQuery.value.trim().length === 0) {
       await loadClasses();
     }

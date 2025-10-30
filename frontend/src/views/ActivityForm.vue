@@ -381,11 +381,13 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useActivityStore } from '@/stores/activityStore'
+import { useSchool } from '@/composables/useSchool'
 import type { ActivityCreateInput, ActivityType, ActivityStatus, ActivitySchedule } from '@/types/activity'
 
 const route = useRoute()
 const router = useRouter()
 const activityStore = useActivityStore()
+const { currentSchoolId } = useSchool()
 
 // Week days for schedule
 const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -504,7 +506,12 @@ async function handleSubmit() {
 
   submitting.value = true
 
-  const schoolId = '60da2256-81fc-4ca5-bf6b-467b8d371c61' // TODO: Get from auth
+  if (!currentSchoolId.value) {
+    console.error('Cannot save activity: no school selected')
+    submitting.value = false
+    return
+  }
+
   const userId = 'bed3ada7-ab32-4a74-84a0-75602181f553' // TODO: Get from auth
 
   // Parse requirements and equipment from textarea
@@ -529,7 +536,7 @@ async function handleSubmit() {
   }
 
   const activityData: ActivityCreateInput = {
-    school_id: schoolId,
+    school_id: currentSchoolId.value,
     name: formData.value.name,
     code: formData.value.code || undefined,
     activity_type: formData.value.activity_type as ActivityType,
