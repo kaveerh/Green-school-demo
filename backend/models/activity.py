@@ -74,6 +74,7 @@ class Activity(BaseModel):
     coordinator = relationship("User", foreign_keys=[coordinator_id])
     room = relationship("Room", foreign_keys=[room_id])
     enrollments = relationship("ActivityEnrollment", back_populates="activity", cascade="all, delete-orphan")
+    activity_fees = relationship("ActivityFee", back_populates="activity")
 
     # Constraints
     __table_args__ = (

@@ -43,6 +43,8 @@ class Student(BaseModel):
     parent_relationships = relationship("ParentStudentRelationship", back_populates="student")
     assessments = relationship("Assessment", back_populates="student")
     attendance_records = relationship("Attendance", back_populates="student")
+    student_fees = relationship("StudentFee", back_populates="student")
+    payments = relationship("Payment", back_populates="student")
     # classes = relationship("ClassEnrollment", back_populates="student")
 
     # Constraints

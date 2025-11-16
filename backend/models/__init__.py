@@ -16,6 +16,11 @@ from models.assessment import Assessment
 from models.attendance import Attendance
 from models.event import Event
 from models.activity import Activity, ActivityEnrollment
+from models.fee_structure import FeeStructure
+from models.bursary import Bursary
+from models.student_fee import StudentFee
+from models.payment import Payment
+from models.activity_fee import ActivityFee
 
 # Export all models
 __all__ = [
@@ -36,4 +41,9 @@ __all__ = [
     "Event",
     "Activity",
     "ActivityEnrollment",
+    "FeeStructure",
+    "Bursary",
+    "StudentFee",
+    "Payment",
+    "ActivityFee",
 ]

@@ -17,6 +17,11 @@ from controllers.event_controller import router as event_router
 from controllers.activity_controller import router as activity_router
 from controllers.vendor_controller import router as vendor_router
 from controllers.merit_controller import router as merit_router
+from controllers.student_fee_controller import router as student_fee_router
+from controllers.payment_controller import router as payment_router
+from controllers.fee_structure_controller import router as fee_structure_router
+from controllers.bursary_controller import router as bursary_router
+from controllers.activity_fee_controller import router as activity_fee_router
 
 # Export all routers
 __all__ = [
@@ -35,4 +40,9 @@ __all__ = [
     "activity_router",
     "vendor_router",
     "merit_router",
+    "student_fee_router",
+    "payment_router",
+    "fee_structure_router",
+    "bursary_router",
+    "activity_fee_router",
 ]

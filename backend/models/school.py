@@ -61,6 +61,11 @@ class School(BaseModel):
     classes = relationship("Class", back_populates="school")
     lessons = relationship("Lesson", back_populates="school")
     assessments = relationship("Assessment", back_populates="school")
+    fee_structures = relationship("FeeStructure", back_populates="school")
+    bursaries = relationship("Bursary", back_populates="school")
+    student_fees = relationship("StudentFee", back_populates="school")
+    payments = relationship("Payment", back_populates="school")
+    activity_fees = relationship("ActivityFee", back_populates="school")
     principal = relationship("User", foreign_keys=[principal_id])
     hod = relationship("User", foreign_keys=[hod_id])
 
