@@ -50,7 +50,9 @@ class PaymentRepository(BaseRepository[Payment]):
             )
         ).options(
             selectinload(Payment.student).selectinload(Student.user),
-            selectinload(Payment.student_fee)
+            selectinload(Payment.student_fee),
+            selectinload(Payment.school),
+            selectinload(Payment.processor)
         )
 
         result = await self.session.execute(query)
@@ -90,7 +92,9 @@ class PaymentRepository(BaseRepository[Payment]):
 
         # Data query
         query = select(Payment).where(and_(*conditions)).options(
+            selectinload(Payment.student).selectinload(Student.user),
             selectinload(Payment.student_fee),
+            selectinload(Payment.school),
             selectinload(Payment.processor)
         ).offset(offset).limit(limit).order_by(Payment.payment_date.desc())
 
@@ -120,6 +124,9 @@ class PaymentRepository(BaseRepository[Payment]):
 
         # Data query
         query = select(Payment).where(and_(*conditions)).options(
+            selectinload(Payment.student).selectinload(Student.user),
+            selectinload(Payment.student_fee),
+            selectinload(Payment.school),
             selectinload(Payment.processor)
         ).offset(offset).limit(limit).order_by(Payment.payment_date.desc())
 
@@ -163,7 +170,9 @@ class PaymentRepository(BaseRepository[Payment]):
         # Data query
         query = select(Payment).where(and_(*conditions)).options(
             selectinload(Payment.student).selectinload(Student.user),
-            selectinload(Payment.student_fee)
+            selectinload(Payment.student_fee),
+            selectinload(Payment.school),
+            selectinload(Payment.processor)
         ).offset(offset).limit(limit).order_by(Payment.payment_date.desc())
 
         result = await self.session.execute(query)
@@ -293,7 +302,9 @@ class PaymentRepository(BaseRepository[Payment]):
         # Data query
         query = select(Payment).where(and_(*conditions)).options(
             selectinload(Payment.student).selectinload(Student.user),
-            selectinload(Payment.student_fee)
+            selectinload(Payment.student_fee),
+            selectinload(Payment.school),
+            selectinload(Payment.processor)
         ).offset(offset).limit(limit).order_by(Payment.payment_date.desc())
 
         result = await self.session.execute(query)
@@ -330,7 +341,10 @@ class PaymentRepository(BaseRepository[Payment]):
 
         # Data query
         query = select(Payment).where(and_(*conditions)).options(
-            selectinload(Payment.student).selectinload(Student.user)
+            selectinload(Payment.student).selectinload(Student.user),
+            selectinload(Payment.student_fee),
+            selectinload(Payment.school),
+            selectinload(Payment.processor)
         ).offset(offset).limit(limit).order_by(desc(Payment.refunded_at))
 
         result = await self.session.execute(query)

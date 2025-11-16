@@ -199,7 +199,8 @@ class PaymentService:
             student_fee.update_payment_status()
             await self.session.flush()
 
-        return payment
+        # Reload with relationships to avoid lazy-loading issues
+        return await self.repository.get_with_relationships(payment_id)
 
     async def get_payment(
         self,

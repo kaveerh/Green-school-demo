@@ -322,7 +322,7 @@ async def generate_receipt(
 @router.get("", response_model=PaymentListResponseSchema)
 async def list_payments(
     school_id: uuid.UUID = Query(...),
-    status: Optional[PaymentStatusEnum] = None,
+    payment_status: Optional[PaymentStatusEnum] = None,
     payment_method: Optional[PaymentMethodEnum] = None,
     start_date: Optional[date] = None,
     end_date: Optional[date] = None,
@@ -334,7 +334,7 @@ async def list_payments(
     List payments with filtering and pagination.
 
     **Filters:**
-    - status: pending, completed, failed, refunded, cancelled
+    - payment_status: pending, completed, failed, refunded, cancelled
     - payment_method: cash, card, bank_transfer, check, online, other
     - start_date / end_date: Date range
 
@@ -343,7 +343,7 @@ async def list_payments(
     try:
         payments, total = await service.list_payments(
             school_id=school_id,
-            status=status.value if status else None,
+            status=payment_status.value if payment_status else None,
             payment_method=payment_method.value if payment_method else None,
             start_date=start_date,
             end_date=end_date,
@@ -372,7 +372,7 @@ async def list_payments(
 @router.get("/student/{student_id}", response_model=PaymentListResponseSchema)
 async def get_student_payments(
     student_id: uuid.UUID,
-    status: Optional[PaymentStatusEnum] = None,
+    payment_status: Optional[PaymentStatusEnum] = None,
     payment_method: Optional[PaymentMethodEnum] = None,
     start_date: Optional[date] = None,
     end_date: Optional[date] = None,
@@ -388,7 +388,7 @@ async def get_student_payments(
     try:
         payments, total = await service.get_student_payments(
             student_id=student_id,
-            status=status.value if status else None,
+            status=payment_status.value if payment_status else None,
             payment_method=payment_method.value if payment_method else None,
             start_date=start_date,
             end_date=end_date,
