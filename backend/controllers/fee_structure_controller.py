@@ -123,7 +123,7 @@ async def get_fee_structure_by_grade_year(
     **Permissions:** Administrator
     """
     try:
-        fee_structure = await service.get_by_grade_and_year(
+        fee_structure = await service.get_by_school_and_grade(
             school_id=school_id,
             grade_level=grade_level,
             academic_year=academic_year

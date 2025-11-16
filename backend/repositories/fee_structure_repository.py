@@ -48,6 +48,8 @@ class FeeStructureRepository(BaseRepository[FeeStructure]):
                 FeeStructure.academic_year == academic_year,
                 FeeStructure.deleted_at.is_(None)
             )
+        ).options(
+            selectinload(FeeStructure.school)
         )
 
         result = await self.session.execute(query)
