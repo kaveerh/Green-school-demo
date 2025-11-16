@@ -25,6 +25,10 @@ import math
 
 router = APIRouter(prefix="/student-fees", tags=["student-fees"])
 
+# TEMPORARY: Hardcoded admin ID for testing (until Keycloak auth is integrated)
+# TODO: Replace with get_current_user() from auth middleware
+TEMP_ADMIN_ID = uuid.UUID("ea2ad94a-b077-48c2-ae25-6e3e8dc54499")
+
 
 # Dependency
 async def get_student_fee_service(session: AsyncSession = Depends(get_db)) -> StudentFeeService:
@@ -91,7 +95,7 @@ async def create_student_fee(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         student_fee = await service.create_student_fee(
             school_id=fee_data.school_id,
@@ -284,7 +288,7 @@ async def update_student_fee(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         updated_fee = await service.update_student_fee(
             fee_id=fee_id,
@@ -363,7 +367,7 @@ async def delete_student_fee(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         success = await service.delete_student_fee(fee_id, current_user_id)
 

@@ -21,6 +21,10 @@ import math
 
 router = APIRouter(prefix="/fee-structures", tags=["fee-structures"])
 
+# TEMPORARY: Hardcoded admin ID for testing (until Keycloak auth is integrated)
+# TODO: Replace with get_current_user() from auth middleware
+TEMP_ADMIN_ID = uuid.UUID("ea2ad94a-b077-48c2-ae25-6e3e8dc54499")
+
 
 # Dependency
 async def get_fee_structure_service(session: AsyncSession = Depends(get_db)) -> FeeStructureService:
@@ -45,7 +49,7 @@ async def create_fee_structure(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         fee_structure = await service.create_fee_structure(
             school_id=fee_structure_data.school_id,
@@ -208,7 +212,7 @@ async def update_fee_structure(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         updated_fee_structure = await service.update_fee_structure(
             fee_structure_id=fee_structure_id,
@@ -256,7 +260,7 @@ async def delete_fee_structure(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         success = await service.delete_fee_structure(fee_structure_id, current_user_id)
 

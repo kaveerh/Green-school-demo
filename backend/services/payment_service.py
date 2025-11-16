@@ -87,7 +87,8 @@ class PaymentService:
         student_fee.record_payment(amount, payment_date or date.today())
         await self.session.flush()
 
-        return payment
+        # Reload with relationships to avoid lazy-loading issues
+        return await self.repository.get_with_relationships(payment.id)
 
     async def create_pending_payment(
         self,
@@ -129,7 +130,9 @@ class PaymentService:
             'notes': notes
         }
 
-        return await self.repository.create(payment_data)
+        created = await self.repository.create(payment_data)
+        # Reload with relationships to avoid lazy-loading issues
+        return await self.repository.get_with_relationships(created.id)
 
     async def confirm_payment(
         self,
@@ -165,7 +168,10 @@ class PaymentService:
             student_fee.record_payment(payment.amount, payment.payment_date)
             await self.session.flush()
 
-        return updated_payment
+        # Reload with relationships to avoid lazy-loading issues
+        if updated_payment:
+            return await self.repository.get_with_relationships(updated_payment.id)
+        return None
 
     async def refund_payment(
         self,
@@ -312,9 +318,13 @@ class PaymentService:
             update_data['notes'] = notes
 
         if not update_data:
-            return await self.repository.get_by_id(payment_id)
+            return await self.repository.get_with_relationships(payment_id)
 
-        return await self.repository.update(payment_id, update_data, updated_by_id)
+        updated = await self.repository.update(payment_id, update_data, updated_by_id)
+        if updated:
+            # Reload with relationships to avoid lazy-loading issues
+            return await self.repository.get_with_relationships(updated.id)
+        return None
 
     async def delete_payment(
         self,

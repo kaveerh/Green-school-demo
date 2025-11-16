@@ -237,7 +237,8 @@ class StudentFeeService:
             await self.bursary_repository.increment_recipients(bursary_id)
             await self.session.flush()
 
-        return student_fee
+        # Reload with relationships to avoid lazy-loading issues
+        return await self.repository.get_with_relationships(student_fee.id)
 
     async def update_student_fee(
         self,
@@ -320,8 +321,10 @@ class StudentFeeService:
         if updated_fee:
             updated_fee.update_payment_status()
             await self.session.flush()
+            # Reload with relationships to avoid lazy-loading issues
+            return await self.repository.get_with_relationships(updated_fee.id)
 
-        return updated_fee
+        return None
 
     async def get_student_fee(
         self,

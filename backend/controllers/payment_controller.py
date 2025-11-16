@@ -29,6 +29,10 @@ import math
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 
+# TEMPORARY: Hardcoded admin ID for testing (until Keycloak auth is integrated)
+# TODO: Replace with get_current_user() from auth middleware
+TEMP_ADMIN_ID = uuid.UUID("ea2ad94a-b077-48c2-ae25-6e3e8dc54499")
+
 
 # Dependency
 async def get_payment_service(session: AsyncSession = Depends(get_db)) -> PaymentService:
@@ -55,7 +59,7 @@ async def create_payment(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         payment = await service.create_payment(
             school_id=payment_data.school_id,
@@ -99,7 +103,7 @@ async def create_pending_payment(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         payment = await service.create_pending_payment(
             school_id=payment_data.school_id,
@@ -143,7 +147,7 @@ async def confirm_payment(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         payment = await service.confirm_payment(
             payment_id=payment_id,
@@ -193,7 +197,7 @@ async def refund_payment(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         payment = await service.refund_payment(
             payment_id=payment_id,
@@ -467,7 +471,7 @@ async def update_payment(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         updated_payment = await service.update_payment(
             payment_id=payment_id,
@@ -510,7 +514,7 @@ async def delete_payment(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         success = await service.delete_payment(payment_id, current_user_id)
 

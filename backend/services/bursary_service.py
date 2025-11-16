@@ -95,7 +95,9 @@ class BursaryService:
             'terms_and_conditions': terms_and_conditions
         }
 
-        return await self.repository.create(bursary_data, created_by_id)
+        created = await self.repository.create(bursary_data, created_by_id)
+        # Reload with relationships to avoid lazy-loading issues
+        return await self.repository.get_with_relationships(created.id)
 
     async def update_bursary(
         self,
@@ -166,9 +168,13 @@ class BursaryService:
             update_data['is_active'] = is_active
 
         if not update_data:
-            return await self.repository.get_by_id(bursary_id)
+            return await self.repository.get_with_relationships(bursary_id)
 
-        return await self.repository.update(bursary_id, update_data, updated_by_id)
+        updated = await self.repository.update(bursary_id, update_data, updated_by_id)
+        if updated:
+            # Reload with relationships to avoid lazy-loading issues
+            return await self.repository.get_with_relationships(updated.id)
+        return None
 
     async def get_bursary(
         self,

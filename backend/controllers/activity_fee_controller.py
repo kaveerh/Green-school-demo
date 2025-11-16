@@ -26,6 +26,10 @@ import math
 
 router = APIRouter(prefix="/activity-fees", tags=["activity-fees"])
 
+# TEMPORARY: Hardcoded admin ID for testing (until Keycloak auth is integrated)
+# TODO: Replace with get_current_user() from auth middleware
+TEMP_ADMIN_ID = uuid.UUID("ea2ad94a-b077-48c2-ae25-6e3e8dc54499")
+
 
 # Dependency
 async def get_activity_fee_service(session: AsyncSession = Depends(get_db)) -> ActivityFeeService:
@@ -55,7 +59,7 @@ async def create_activity_fee(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         activity_fee = await service.create_activity_fee(
             school_id=activity_fee_data.school_id,
@@ -263,7 +267,7 @@ async def update_activity_fee(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         updated_activity_fee = await service.update_activity_fee(
             activity_fee_id=activity_fee_id,
@@ -334,7 +338,7 @@ async def delete_activity_fee(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         success = await service.delete_activity_fee(activity_fee_id, current_user_id)
 

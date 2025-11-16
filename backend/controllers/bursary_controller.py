@@ -24,6 +24,10 @@ import math
 
 router = APIRouter(prefix="/bursaries", tags=["bursaries"])
 
+# TEMPORARY: Hardcoded admin ID for testing (until Keycloak auth is integrated)
+# TODO: Replace with get_current_user() from auth middleware
+TEMP_ADMIN_ID = uuid.UUID("ea2ad94a-b077-48c2-ae25-6e3e8dc54499")
+
 
 # Dependency
 async def get_bursary_service(session: AsyncSession = Depends(get_db)) -> BursaryService:
@@ -47,7 +51,7 @@ async def create_bursary(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         bursary = await service.create_bursary(
             school_id=bursary_data.school_id,
@@ -245,7 +249,7 @@ async def update_bursary(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         updated_bursary = await service.update_bursary(
             bursary_id=bursary_id,
@@ -323,7 +327,7 @@ async def delete_bursary(
     """
     try:
         # TODO: Get current_user_id from auth
-        current_user_id = uuid.uuid4()
+        current_user_id = TEMP_ADMIN_ID
 
         success = await service.delete_bursary(bursary_id, current_user_id)
 

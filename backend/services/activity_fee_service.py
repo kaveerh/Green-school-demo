@@ -81,7 +81,9 @@ class ActivityFeeService:
             'is_active': is_active
         }
 
-        return await self.repository.create(fee_data, created_by_id)
+        created = await self.repository.create(fee_data, created_by_id)
+        # Reload with relationships to avoid lazy-loading issues
+        return await self.repository.get_with_relationships(created.id)
 
     async def update_activity_fee(
         self,
@@ -122,9 +124,13 @@ class ActivityFeeService:
             update_data['is_active'] = is_active
 
         if not update_data:
-            return await self.repository.get_by_id(activity_fee_id)
+            return await self.repository.get_with_relationships(activity_fee_id)
 
-        return await self.repository.update(activity_fee_id, update_data, updated_by_id)
+        updated = await self.repository.update(activity_fee_id, update_data, updated_by_id)
+        if updated:
+            # Reload with relationships to avoid lazy-loading issues
+            return await self.repository.get_with_relationships(updated.id)
+        return None
 
     async def get_activity_fee(
         self,
@@ -241,11 +247,15 @@ class ActivityFeeService:
         updated_by_id: uuid.UUID
     ) -> Optional[ActivityFee]:
         """Activate an activity fee"""
-        return await self.repository.update(
+        updated = await self.repository.update(
             activity_fee_id,
             {'is_active': True},
             updated_by_id
         )
+        if updated:
+            # Reload with relationships to avoid lazy-loading issues
+            return await self.repository.get_with_relationships(updated.id)
+        return None
 
     async def deactivate_activity_fee(
         self,
@@ -253,11 +263,15 @@ class ActivityFeeService:
         updated_by_id: uuid.UUID
     ) -> Optional[ActivityFee]:
         """Deactivate an activity fee"""
-        return await self.repository.update(
+        updated = await self.repository.update(
             activity_fee_id,
             {'is_active': False},
             updated_by_id
         )
+        if updated:
+            # Reload with relationships to avoid lazy-loading issues
+            return await self.repository.get_with_relationships(updated.id)
+        return None
 
     async def delete_activity_fee(
         self,

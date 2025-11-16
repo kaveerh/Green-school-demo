@@ -90,7 +90,9 @@ class FeeStructureService:
             'is_active': is_active
         }
 
-        return await self.repository.create(fee_data, created_by_id)
+        created = await self.repository.create(fee_data, created_by_id)
+        # Reload with relationships to avoid lazy-loading issues
+        return await self.repository.get_with_relationships(created.id)
 
     async def update_fee_structure(
         self,
@@ -148,9 +150,13 @@ class FeeStructureService:
             update_data['is_active'] = is_active
 
         if not update_data:
-            return await self.repository.get_by_id(fee_structure_id)
+            return await self.repository.get_with_relationships(fee_structure_id)
 
-        return await self.repository.update(fee_structure_id, update_data, updated_by_id)
+        updated = await self.repository.update(fee_structure_id, update_data, updated_by_id)
+        if updated:
+            # Reload with relationships to avoid lazy-loading issues
+            return await self.repository.get_with_relationships(updated.id)
+        return None
 
     async def get_fee_structure(
         self,
