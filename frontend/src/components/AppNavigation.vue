@@ -357,6 +357,33 @@
             </router-link>
           </div>
         </div>
+
+        <!-- Fees & Payments Management -->
+        <div class="nav-group" v-if="canAccessFees">
+          <button
+            class="nav-item nav-toggle"
+            @click="toggleDropdown('fees')"
+            :class="{ 'is-active': isDropdownOpen('fees') || isFeesRoute }"
+          >
+            <span class="nav-icon">💰</span>
+            <span class="nav-text" v-show="!isCollapsed">Fees & Payments</span>
+            <span class="nav-arrow" v-show="!isCollapsed">{{ isDropdownOpen('fees') ? '▼' : '▶' }}</span>
+          </button>
+          <div v-show="isDropdownOpen('fees') && !isCollapsed" class="nav-submenu">
+            <router-link to="/payments" class="submenu-item" @click="closeMobileMenu">
+              Payments
+            </router-link>
+            <router-link to="/payments/create" class="submenu-item" @click="closeMobileMenu">
+              Record Payment
+            </router-link>
+            <router-link to="/fee-structures" class="submenu-item" @click="closeMobileMenu">
+              Fee Structures
+            </router-link>
+            <router-link to="/payments/pending" class="submenu-item" @click="closeMobileMenu">
+              Pending Payments
+            </router-link>
+          </div>
+        </div>
       </nav>
     </div>
 
@@ -574,6 +601,14 @@ const canAccessMerits = computed(() => {
 })
 
 /**
+ * Check if user can access fees and payments module
+ * Only administrators can access fees and payments
+ */
+const canAccessFees = computed(() => {
+  return authStore.hasRole('administrator')
+})
+
+/**
  * Check if current route is users-related
  */
 const isUsersRoute = computed(() => route.path.startsWith('/users'))
@@ -591,6 +626,7 @@ const isEventsRoute = computed(() => route.path.startsWith('/events'))
 const isActivitiesRoute = computed(() => route.path.startsWith('/activities'))
 const isVendorsRoute = computed(() => route.path.startsWith('/vendors'))
 const isMeritsRoute = computed(() => route.path.startsWith('/merits'))
+const isFeesRoute = computed(() => route.path.startsWith('/fee-structures') || route.path.startsWith('/payments'))
 
 /**
  * Check if dropdown is open

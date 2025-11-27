@@ -33,12 +33,18 @@
           </span>
         </button>
 
-        <!-- Demo Accounts Link -->
+        <!-- Registration and Demo Links -->
         <div class="login-footer">
           <p class="text-muted">Don't have an account?</p>
-          <router-link to="/demo" class="link-primary">
-            View Demo Accounts
-          </router-link>
+          <div class="footer-links">
+            <router-link to="/register" class="link-primary">
+              Create Account
+            </router-link>
+            <span class="separator">or</span>
+            <router-link to="/demo" class="link-secondary">
+              View Demo Accounts
+            </router-link>
+          </div>
         </div>
       </div>
 
@@ -272,6 +278,32 @@ function handleLogin() {
 
 .link-primary:hover {
   color: #764ba2;
+  text-decoration: underline;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.separator {
+  color: #cbd5e1;
+  font-size: 0.875rem;
+}
+
+.link-secondary {
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  transition: color 0.2s;
+}
+
+.link-secondary:hover {
+  color: #667eea;
   text-decoration: underline;
 }
 

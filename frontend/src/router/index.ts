@@ -15,6 +15,12 @@ const routes: RouteRecordRaw[] = [
     meta: { public: true }
   },
   {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/RegistrationView.vue'),
+    meta: { public: true }
+  },
+  {
     path: '/demo',
     name: 'demo',
     component: () => import('@/views/DemoView.vue'),
@@ -410,6 +416,64 @@ const routes: RouteRecordRaw[] = [
     name: 'merit-leaderboard',
     component: () => import('@/views/MeritList.vue'),
     meta: { requiresAuth: true }
+  },
+
+  // Fee Structure Management Routes
+  {
+    path: '/fee-structures',
+    name: 'fee-structures',
+    component: () => import('@/views/FeeStructuresList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/fee-structures/create',
+    name: 'fee-structure-create',
+    component: () => import('@/views/FeeStructureForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/fee-structures/:id',
+    name: 'fee-structure-detail',
+    component: () => import('@/views/FeeStructuresList.vue'), // TODO: Create FeeStructureDetail.vue
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/fee-structures/:id/edit',
+    name: 'fee-structure-edit',
+    component: () => import('@/views/FeeStructureForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+
+  // Payment Management Routes
+  {
+    path: '/payments',
+    name: 'payments',
+    component: () => import('@/views/PaymentsList.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/payments/create',
+    name: 'payment-create',
+    component: () => import('@/views/PaymentForm.vue'),
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/payments/pending',
+    name: 'payments-pending',
+    component: () => import('@/views/PaymentsList.vue'), // TODO: Create PaymentsPendingView.vue
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/payments/:id',
+    name: 'payment-detail',
+    component: () => import('@/views/PaymentsList.vue'), // TODO: Create PaymentDetail.vue
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
+  },
+  {
+    path: '/payments/:id/receipt',
+    name: 'payment-receipt',
+    component: () => import('@/views/PaymentsList.vue'), // TODO: Create PaymentReceipt.vue
+    meta: { requiresAuth: true, requiresRole: ['administrator'] }
   },
 ]
 
