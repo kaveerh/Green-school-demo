@@ -41,7 +41,13 @@ Beyond features, this project was about validating an accelerated process. We se
 3.  **Synthetic Data Generation:** A script was created to generate realistic, synthetic data, enabling robust testing and creating a rich environment for stakeholder demos.
 4.  **Documentation & User Guides:** We produced user guides demonstrating the different login views and functionalities for each persona, ensuring the prototype was immediately usable and understandable.
 
-`[Insert Screenshot: A collage showing the different UI views for a Teacher, a Parent, and an Administrator.]`
+### UI Views for Different Personas
+
+![Administrator Login Flow](https://github.com/kaveerh/Green-school-demo/blob/main/frontend/test-results/login-guide-Login-Guide----093eb--1-Administrator-Login-Flow-chromium/test-finished-1.png)
+_Administrator Login View_
+
+![Teacher Login Flow](https://github.com/kaveerh/Green-school-demo/blob/main/frontend/test-results/login-guide-Login-Guide----09cb0--Types-2-Teacher-Login-Flow-chromium/test-finished-1.png)
+_Teacher Login View_
 
 ## Explore the Project
 
