@@ -3,6 +3,8 @@
  * TypeScript definitions for student-related data structures
  */
 
+import type { User } from './user'
+
 export type StudentStatus = 'enrolled' | 'graduated' | 'transferred' | 'withdrawn' | 'suspended'
 export type Gender = 'male' | 'female' | 'other' | 'prefer_not_to_say'
 export type RelationshipType = 'mother' | 'father' | 'guardian' | 'grandparent' | 'other'
@@ -24,6 +26,7 @@ export interface Student {
   emergency_contact_relation?: string
   photo_url?: string
   status: string
+  user?: User
   is_currently_enrolled?: boolean
   age?: number
   years_enrolled?: number
